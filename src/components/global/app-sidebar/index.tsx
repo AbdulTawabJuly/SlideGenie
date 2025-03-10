@@ -1,3 +1,5 @@
+"use client"
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Sidebar,
@@ -12,6 +14,7 @@ import { Presentation } from "lucide-react";
 
 import React from "react";
 import NavMain from "./nav-main";
+import { data } from "@/lib/constants";
 
 const AppSidebar = ({
   recentProjects,
@@ -43,7 +46,7 @@ const AppSidebar = ({
         </SidebarMenuButton>
       </SidebarHeader>
       <SidebarContent className=" px-3 mt-10 gap-y-6">
-        <NavMain />
+        <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>
