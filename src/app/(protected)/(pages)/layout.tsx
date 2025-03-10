@@ -1,4 +1,5 @@
 import { onAuthenticateUser } from "@/actions/user";
+import AppSidebar from "@/components/global/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -13,7 +14,7 @@ const Layout = async ({ children }: Props) => {
     redirect("/sign-in");
   }
   return <SidebarProvider>
-    
+    <AppSidebar></AppSidebar>
   </SidebarProvider>;
 };
 
