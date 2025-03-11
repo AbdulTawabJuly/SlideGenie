@@ -98,7 +98,7 @@ const ProjectCard = ({
     }
   };
 
-  const theme = themes.find((theme) => theme.name === themeName) || themes[0];
+//   const theme = themes.find((theme) => theme.name === themeName) || themes[0];
   return (
     <motion.div
       className={`group w-full flex flex-col gap-y-3 rounded-xl p-3 transition-colors ${
@@ -110,10 +110,10 @@ const ProjectCard = ({
         className="relative aspect-[16/10] overflow-hidden rounded-lg cursor-pointer"
         onClick={handleNavigation}
       >
-        <ThumbnailPreview
+        {/* <ThumbnailPreview
           theme={theme}
           //   slide={JSON.parse(JSON.stringify(slideData))?.[0]}
-        />
+        /> */}
       </div>
       <div className="w-full">
         <div className="space-y-1">
