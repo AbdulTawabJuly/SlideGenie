@@ -17,7 +17,6 @@ type Props = {
   projectId: string;
   tittle: string;
   createdAt: string;
-  src: string;
   isDeleted?: boolean;
   slideData: JsonValue;
   themeName: string;
@@ -27,7 +26,6 @@ const ProjectCard = ({
   projectId,
   tittle,
   createdAt,
-  src,
   isDeleted,
   slideData,
   themeName,
@@ -84,7 +82,7 @@ const ProjectCard = ({
       const res = await deleteProject(projectId);
       if (res.status !== 200) {
         toast.error("Opps", {
-          description: res.error || "something went wrong",
+          description: res.error || "Failed to Delete Project",
         });
       }
       setOpen(false);
