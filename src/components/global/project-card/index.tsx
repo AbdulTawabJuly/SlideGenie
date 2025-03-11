@@ -64,6 +64,7 @@ const ProjectCard = ({
             >
                 {timeAgo(createdAt)}
             </p>
+            {isDeleted ? <></>:<></>}
           </div>
         </div>
       </div>
