@@ -1,5 +1,6 @@
 import { getAllProjects } from "@/actions/project";
 import ProjectNotFound from "@/components/global/not-found";
+import ProjectCard from "@/components/global/project-card";
 import Projects from "@/components/global/projects";
 import React from "react";
 
@@ -18,9 +19,10 @@ const DashboardPage = async () => {
         </div>
       </div>
 
+      <ProjectCard/>
       {/* {"Projects"} */}
       {allProjects.data && allProjects.data.length > 0 ? (
-        <Projects />
+        <Projects projects={allProjects.data}/>
       ) : (
         <ProjectNotFound />
       )}
