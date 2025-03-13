@@ -15,7 +15,7 @@ type Props = {
 };
 
 const CreatePage = ({onSelectOption}: Props) => {
-    const {pr}= usePromptStore()
+    const {prompts , setPage}= usePromptStore()
 
   return (
     <motion.div initial="hidden" animate="visible" className="space-y-8">
@@ -26,7 +26,7 @@ const CreatePage = ({onSelectOption}: Props) => {
       </motion.div>
       <motion.div
         variants={containerVariants}
-        className=" grid gap-6 md:grid-cols-3"
+        className=" grid gap-20 md:grid-cols-2"
       >
         {CreatePageCard.map((option) => (
           <motion.div

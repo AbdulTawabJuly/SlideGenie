@@ -6,7 +6,7 @@ type Props = {}
 
 const index = (props: Props) => {
   return (
-    <main className='w-full h-full pt-6'>
+    <main className='w-full h-full flex justify-center items-center pt-6'>
       <Suspense fallback={<CreatePageSkeleton/>}>
         <RenderPage/>
       </Suspense> 
