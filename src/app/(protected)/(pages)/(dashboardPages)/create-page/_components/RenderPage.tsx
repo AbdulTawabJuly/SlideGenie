@@ -22,12 +22,16 @@ const RenderPage = (props: Props) => {
     }
   };
 
+  const handleBack = () =>{
+    setPage("create")
+  }
+
   const renderStep = () => {
     switch (page) {
       case "create":
         return <CreatePage onSelectOption={handleSelectOption} />;
       case "creative-ai":
-        return <CreativeAI/>;
+        return <CreativeAI onBack={handleBack}/>;
       case "create-scratch":
         return <></>;
       default:
