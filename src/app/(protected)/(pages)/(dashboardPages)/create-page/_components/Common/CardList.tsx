@@ -8,7 +8,7 @@ type Props = {
   editText: string;
   addOutline?: (card: OutlineCard) => void;
   onEditChange: (value: string) => void;
-  onCardSelected: (id: string) => void;
+  onCardSelect: (id: string) => void;
   onCardDoubleClick: (id: string, title: string) => void;
   setEditText: (value: string) => void;
   setEditingCard: (id: string | null) => void;
@@ -16,7 +16,17 @@ type Props = {
   addMultipleOutlines: (card: OutlineCard[]) => void;
 };
 
-const CardList = (props: Props) => {
+const CardList = ({
+  addMultipleOutlines,
+  editText,
+  editingCard,
+  onCardDoubleClick,
+  onCardSelect,
+  onEditChange,
+  outlines,
+  setSelectedCard,
+  addOutline,
+}: Props) => {
   return <div>CardList</div>;
 };
 
