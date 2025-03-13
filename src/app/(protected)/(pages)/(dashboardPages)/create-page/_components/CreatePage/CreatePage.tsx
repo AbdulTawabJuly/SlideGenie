@@ -8,12 +8,15 @@ import {
 } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import RecentPrompts from "../GenerateAI/RecentPrompts";
+import usePromptStore from "@/store/usePromptStore";
 
 type Props = {
   onSelectOption: (option: string) => void;
 };
 
 const CreatePage = ({onSelectOption}: Props) => {
+    const {pr}= usePromptStore()
+
   return (
     <motion.div initial="hidden" animate="visible" className="space-y-8">
       <motion.div variants={itemVariants} className=" text-center space-y-2">
