@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import React from "react";
 import CreatePage from "./CreatePage/CreatePage";
+import CreativeAI from "./GenerateAI/CreativeAI";
 
 type Props = {};
 
@@ -25,9 +26,9 @@ const RenderPage = (props: Props) => {
     switch (page) {
       case "create":
         return <CreatePage onSelectOption={handleSelectOption} />;
-      case "create-scratch":
-        return <></>;
       case "creative-ai":
+        return <CreativeAI/>;
+      case "create-scratch":
         return <></>;
       default:
         return null;
