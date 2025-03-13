@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { containerVariants, itemVariants } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, RotateCcw } from "lucide-react";
+import { ChevronLeft, Loader2, RotateCcw } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import useCreativeAIStore from "@/store/useCreativeAIStore";
 import {
@@ -117,8 +117,13 @@ const CreativeAI = ({ onBack }: Props) => {
 
         <Button className="font-medium text-lg flex gap-2 items-center"
         // onClick={generateOutline}
-        >Generate</Button>
+        disabled = {isGenerating}
+        >{isGenerating ?<>
+        <Loader2 className="animate-spin mr-2"/>
+        </>: "Generate Outline "}</Button>
       </div>
+
+      <CardList/>
     </motion.div>
   );
 };
