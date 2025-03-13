@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   containerVariants,
@@ -14,8 +14,12 @@ type Props = {
   onSelectOption: (option: string) => void;
 };
 
-const CreatePage = ({onSelectOption}: Props) => {
-    const {prompts , setPage}= usePromptStore()
+const CreatePage = ({ onSelectOption }: Props) => {
+  const { prompts, setPage } = usePromptStore();
+
+  useEffect(()=>{
+    setPage("create")
+  },[])
 
   return (
     <motion.div initial="hidden" animate="visible" className="space-y-8">
@@ -26,7 +30,7 @@ const CreatePage = ({onSelectOption}: Props) => {
       </motion.div>
       <motion.div
         variants={containerVariants}
-        className=" grid gap-20 md:grid-cols-2"
+        className=" grid gap-6 md:grid-cols-3"
       >
         {CreatePageCard.map((option) => (
           <motion.div
@@ -84,8 +88,7 @@ const CreatePage = ({onSelectOption}: Props) => {
           </motion.div>
         ))}
       </motion.div>
-
-      <RecentPrompts />
+      { prompts.length > 0 &&<RecentPrompts />}{" "}
     </motion.div>
   );
 };

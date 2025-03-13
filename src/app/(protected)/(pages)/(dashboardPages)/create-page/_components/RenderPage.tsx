@@ -11,10 +11,20 @@ const RenderPage = (props: Props) => {
   const router = useRouter();
   const { page, setPage } = usePromptStore();
 
+  const handleSelectOption = (option: string) => {
+    if (option === "template") {
+      router.push("/template");
+    } else if (option === "create-scratch") {
+      setPage("create-scratch");
+    } else {
+      setPage("creative-ai");
+    }
+  };
+
   const renderStep = () => {
     switch (page) {
       case "create":
-        return <CreatePage/>;
+        return <CreatePage onSelectOption={handleSelectOption} />;
       case "create-scratch":
         return <></>;
       case "creative-ai":
@@ -33,7 +43,6 @@ const RenderPage = (props: Props) => {
         exit={{ opacity: 0, x: -20 }}
         transition={{ duration: 0.3 }}
       >
-
         {renderStep()}
       </motion.div>
     </AnimatePresence>

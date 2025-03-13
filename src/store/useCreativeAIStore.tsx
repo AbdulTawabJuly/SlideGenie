@@ -7,6 +7,7 @@ type CreativeAIStore = {
   addMultipleOutlines: (outlines: OutlineCard[]) => void;
   addOutline: (outline: OutlineCard) => void;
   currentAiPrompt: string;
+  setCurrentAiPrompt : (prompt: string) => void;
 };
 
 const useCreativeAIStore = create<CreativeAIStore>()(
