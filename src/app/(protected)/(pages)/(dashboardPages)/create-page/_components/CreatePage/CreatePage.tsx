@@ -6,12 +6,14 @@ import {
   CreatePageCard,
   itemVariants,
 } from "@/lib/constants";
+import { Button } from "@/components/ui/button";
+import RecentPrompts from "../GenerateAI/RecentPrompts";
 
 type Props = {
-  onSlectOption: (option: string) => void;
+  onSelectOption: (option: string) => void;
 };
 
-const CreatePage = (props: Props) => {
+const CreatePage = ({onSelectOption}: Props) => {
   return (
     <motion.div initial="hidden" animate="visible" className="space-y-8">
       <motion.div variants={itemVariants} className=" text-center space-y-2">
@@ -28,22 +30,59 @@ const CreatePage = (props: Props) => {
             key={option.type}
             variants={itemVariants}
             whileHover={{
-              scale: 0.1,
+              scale: 1.05,
               rotate: 1,
               transition: { duration: 0.1 },
             }}
             className={`${
               option.highlight
-                ? "bg-vivid-gradient"
-                : "hover:bg-vivid-gradient border"
+                ? "dark:bg-white bg-black"
+                : "dark:hover:bg-white hover:bg-black border"
             } rounded-xl p-[1px] transition-all duration-300 ease-in-out`}
           >
-            <motion.div>
-                
+            <motion.div
+              className="w-full p-4 flex flex-col gap-y-6 items-start bg-white dark:bg-black rounded-xl"
+              whileHover={{
+                transition: { duration: 0.1 },
+              }}
+            >
+              <div className="flex flex-col items-start w-full gap-y-3">
+                <div>
+                  <p className="text-primary text-lg font-semibold">
+                    {option.title}
+                  </p>
+                  <p
+                    className={`${
+                      option.highlight ? "text-vivid" : "text-primary"
+                    } text-4xl font-bol`}
+                  >
+                    {option.highlightedText}
+                  </p>
+                </div>
+                <p className="text-secondary text-sm font-normal">
+                  {option.description}
+                </p>
+              </div>
+              <motion.div
+                className="self-end"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button
+                  variant={option.highlight ? "default" : "outline"}
+                  className="w-fit rounded-xl font-bold"
+                  size={"sm"}
+                  onClick={() => onSelectOption(option.type)}
+                >
+                  {option.highlight ? "Generate" : "Continue"}
+                </Button>
+              </motion.div>
             </motion.div>
           </motion.div>
         ))}
       </motion.div>
+
+      <RecentPrompts />
     </motion.div>
   );
 };

@@ -372,7 +372,7 @@ export const CreatePageCard = [
   },
   {
     title: "Generate with",
-    highlightedText: "Creative AI",
+    highlightedText: "AI",
     description: "Write a prompt and leave everything else for us to handle",
     type: "creative-ai",
     highlight: true,
