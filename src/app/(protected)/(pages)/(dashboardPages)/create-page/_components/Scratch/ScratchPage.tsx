@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { containerVariants, itemVariants } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, RotateCcw } from "lucide-react";
 import useScratchStore from "@/store/useStartScratchStore";
 import {
   Select,
@@ -19,11 +19,21 @@ type Props = {
 const ScratchPage = ({ onBack }: Props) => {
   const { outlines, addMultipleOutlines, addOutlines, resetOutlines } =
     useScratchStore();
+
+    const [editText, setEditText] = useState("")
+
+
   const handleBack = () => {
     resetOutlines();
     onBack();
   };
+
+  const resetCards =() => {
+     setEditText("")
+     resetOutlines();
+  }
   return (
+
     <motion.div
       className="space-y-6 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"
       variants={containerVariants}
@@ -70,6 +80,9 @@ const ScratchPage = ({ onBack }: Props) => {
               )}
             </SelectContent>
           </Select>
+          <Button variant="destructive" onClick={resetCards} size="icon" aria-label="Reset Cards">
+            <RotateCcw className="h-4 w-4 animate-pulse"/>
+          </Button>
         </div>
       </motion.div>
     </motion.div>
