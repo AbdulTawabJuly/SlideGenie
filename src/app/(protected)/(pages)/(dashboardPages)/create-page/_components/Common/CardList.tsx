@@ -1,9 +1,9 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
 import { OutlineCard } from "@/lib/types";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
+import Card from "./Card";
 
 type Props = {
   outlines: OutlineCard[];

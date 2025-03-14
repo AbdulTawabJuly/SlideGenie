@@ -23,12 +23,18 @@ type Props = {
 
 const CreativeAI = ({ onBack }: Props) => {
   const router = useRouter();
-  const { currentAiPrompt, setCurrentAiPrompt, outlines, resetOutlines } =
-    useCreativeAIStore();
+  const {
+    currentAiPrompt,
+    setCurrentAiPrompt,
+    outlines,
+    resetOutlines,
+    addOutline,
+    addMultipleOutlines,
+  } = useCreativeAIStore();
   const [noOfCards, setNoOfCards] = useState(0);
-  const [editingCards, setEditingCards] = useState<string | null>(null);
+  const [editingCard, setEditingCard] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [selectedCards, setSelectedCards] = useState<string | null>(null);
+  const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const [editText, setEditText] = useState("");
 
   const handleBack = () => {
@@ -36,14 +42,14 @@ const CreativeAI = ({ onBack }: Props) => {
   };
 
   const resetCards = () => {
-    setEditingCards(null);
-    setSelectedCards(null);
+    setEditingCard(null);
+    setSelectedCard(null);
     setEditText("");
 
     setCurrentAiPrompt("");
     resetOutlines();
   };
-//   const generateOutline = () => {}
+  //   const generateOutline = () => {}
   return (
     <motion.div
       className="space-y-6 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"
@@ -115,16 +121,38 @@ const CreativeAI = ({ onBack }: Props) => {
       </motion.div>
 
       <div className="w-ful flex justify-center items-center">
-
-        <Button className="font-medium text-lg flex gap-2 items-center"
-        // onClick={generateOutline}
-        disabled = {isGenerating}
-        >{isGenerating ?<>
-        <Loader2 className="animate-spin mr-2"/>
-        </>: "Generate Outline "}</Button>
+        <Button
+          className="font-medium text-lg flex gap-2 items-center"
+          // onClick={generateOutline}
+          disabled={isGenerating}
+        >
+          {isGenerating ? (
+            <>
+              <Loader2 className="animate-spin mr-2" />
+            </>
+          ) : (
+            "Generate Outline "
+          )}
+        </Button>
       </div>
 
-      <CardList/>
+      <CardList
+        outlines={outlines}
+        addOutline={addOutline}
+        addMultipleOutlines={addMultipleOutlines}
+        editingCard={editingCard}
+        selectedCard={selectedCard}
+        editText={editText}
+        onEditChange={setEditText}
+        onCardSelect={setSelectedCard}
+        setEditText={setEditText}
+        setEditingCard={setEditingCard}
+        setSelectedCard={setSelectedCard}
+        onCardDoubleClick={(id, title) => {
+          setEditingCard(id);
+          setEditText(title);
+        }}
+      />
     </motion.div>
   );
 };
