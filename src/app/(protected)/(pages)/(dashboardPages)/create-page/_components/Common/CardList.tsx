@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { OutlineCard } from "@/lib/types";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 
 type Props = {
@@ -86,7 +86,14 @@ const CardList = ({
         e.preventDefault();
         onDrop(e);
       }}
-    ></motion.div>
+    >
+
+      <AnimatePresence >
+        {outlines.map((card,index)=><React.Fragment key={card.id}>
+          <Card/>
+        </React.Fragment>)}
+      </AnimatePresence>
+    </motion.div>
   );
 };
 
