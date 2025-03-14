@@ -15,6 +15,7 @@ import {
   SelectTrigger,
 } from "@/components/ui/select";
 import { SelectValue } from "@radix-ui/react-select";
+import CardList from "../Common/CardList";
 
 type Props = {
   onBack: () => void;
