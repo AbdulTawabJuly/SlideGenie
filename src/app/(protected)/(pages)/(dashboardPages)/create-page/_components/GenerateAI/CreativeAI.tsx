@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { containerVariants, itemVariants } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, Loader2, RotateCcw } from "lucide-react";
+import { ChevronLeft, Loader2, Rotate3d, RotateCcw } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import useCreativeAIStore from "@/store/useCreativeAIStore";
 import {
