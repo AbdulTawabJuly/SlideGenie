@@ -16,6 +16,10 @@ import {
 } from "@/components/ui/select";
 import { SelectValue } from "@radix-ui/react-select";
 import CardList from "../Common/CardList";
+import usePromptStore from "@/store/usePromptStore";
+import RecentPrompts from "./RecentPrompts";
+import { toast } from "sonner";
+import { generateCreativePrompt } from "@/actions/chatgpt";
 
 type Props = {
   onBack: () => void;
@@ -36,6 +40,7 @@ const CreativeAI = ({ onBack }: Props) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const [editText, setEditText] = useState("");
+  const {prompts , addPrompt} = usePromptStore()
 
   const handleBack = () => {
     onBack();
@@ -49,6 +54,16 @@ const CreativeAI = ({ onBack }: Props) => {
     setCurrentAiPrompt("");
     resetOutlines();
   };
+  const generateOutline = async() => {
+    if(currentAiPrompt === ""){
+      toast.error("Error",{
+        description : "Please Enter a Prompt to Generate an Outline"
+      })
+      return
+    }
+    setIsGenerating(true)
+    const res = await generateCreativePrompt(currentAiPrompt)
+  }
   const handleGenerate = () => {};
   return (
     <motion.div
@@ -168,6 +183,8 @@ const CreativeAI = ({ onBack }: Props) => {
           )}
         </Button>
       )}
+
+      {prompts?.length > 0 && <RecentPrompts/> }
     </motion.div>
   );
 };
