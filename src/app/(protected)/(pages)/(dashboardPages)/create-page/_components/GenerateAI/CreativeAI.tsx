@@ -49,7 +49,7 @@ const CreativeAI = ({ onBack }: Props) => {
     setCurrentAiPrompt("");
     resetOutlines();
   };
-  //   const generateOutline = () => {}
+  const handleGenerate = () => {};
   return (
     <motion.div
       className="space-y-6 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"
@@ -153,6 +153,21 @@ const CreativeAI = ({ onBack }: Props) => {
           setEditText(title);
         }}
       />
+      {outlines.length > 0 && (
+        <Button
+          className="w-full"
+          onClick={handleGenerate}
+          disabled={isGenerating}
+        >
+          {isGenerating ? (
+            <>
+              <Loader2 className="mr-2 animate-spin" /> Generating ...
+            </>
+          ) : (
+            "Generate "
+          )}
+        </Button>
+      )}
     </motion.div>
   );
 };
