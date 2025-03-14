@@ -1,16 +1,20 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { containerVariants } from "@/lib/constants";
+import { containerVariants, itemVariants } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
+import useScratchStore from "@/store/useStartScratchStore";
+import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type Props = {
   onBack: () => void;
 };
 
 const ScratchPage = ({ onBack }: Props) => {
+  const { outlines, addMultipleOutlines, addOutlines, resetOutlines } =
+    useScratchStore();
   const handleBack = () => {
-    resetOutlines()
+    resetOutlines();
     onBack();
   };
   return (
@@ -24,6 +28,23 @@ const ScratchPage = ({ onBack }: Props) => {
         <ChevronLeft className="mr-2 h-4 w-4" />
         Back
       </Button>
+      <h1 className="text-2xl sm:text-3xl font-bold text-primary text-left">
+        Prompt
+      </h1>
+      <motion.div
+        className="bg-primary/10 p-4 rounded-xl"
+        variants={itemVariants}
+      >
+        <div className="flex flex-col sm:flex-row justify-between gap-3 items-center rounded-xl">
+          <Select
+            value={outlines.length > 0 ? outlines.length.toString() : "0"}
+          >
+            <SelectTrigger className="w-fit gap-2 font-semibold shadow-xl">
+              <SelectValue placeholder="Select Number of Cards" />
+            </SelectTrigger>
+          </Select>
+        </div>
+      </motion.div>
     </motion.div>
   );
 };
