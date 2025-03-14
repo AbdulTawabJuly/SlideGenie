@@ -2,7 +2,7 @@
 
 import { OutlineCard } from "@/lib/types";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Card from "./Card";
 
 type Props = {
@@ -30,9 +30,13 @@ const CardList = ({
   outlines,
   setSelectedCard,
   addOutline,
+  selectedCard,
+  setEditingCard,
+  setEditText,
 }: Props) => {
   const [draggedItem, setDraggedItem] = useState<OutlineCard | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+  const dragoffsetY = useRef<number>(0);
 
   const onDragOver = (e: React.DragEvent, index: number) => {
     e.preventDefault();
@@ -69,6 +73,69 @@ const CardList = ({
     setDraggedItem(null);
     setDragOverIndex(null);
   };
+
+  const onCardUpdate = (id: string, newTitle: string) => {
+    addMultipleOutlines(
+      outlines.map((card) =>
+        card.id === id ? { ...card, title: newTitle } : card
+      )
+    );
+    setSelectedCard(null);
+    setEditingCard(null);
+    setEditText("");
+  };
+
+  const onCardDelete = (id: string) => {
+    addMultipleOutlines(
+      outlines
+        .filter((card) => card.id !== id)
+        .map((card, index) => ({ ...card, order: index + 1 }))
+    );
+  };
+  const onDragStart = (e: React.DragEvent, card: OutlineCard) => {
+    setDraggedItem(card);
+    e.dataTransfer.effectAllowed = "move";
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    dragoffsetY.current = e.clientY - rect.top;
+
+    const draggedEl = e.currentTarget.cloneNode(true) as HTMLElement;
+    draggedEl.style.position = "absolute";
+    draggedEl.style.top = "-1000px";
+    draggedEl.style.opacity = "0.8";
+    draggedEl.style.width = `${(e.currentTarget as HTMLElement).offsetWidth}px`;
+    document.body.appendChild(draggedEl);
+    e.dataTransfer.setDragImage(draggedEl, 0, dragoffsetY.current);
+
+    setTimeout(() => {
+      setDragOverIndex(outlines.findIndex((c) => c.id === card.id));
+      document.body.removeChild(draggedEl);
+    }, 0);
+  };
+
+  const onDragEnd = () => {
+    setDraggedItem(null);
+    setDragOverIndex(null);
+  };
+
+  const getDragOverStyles = (cardIndex: number) => {
+    if (dragOverIndex === null || draggedItem === null) {
+      return {};
+    }
+    if (cardIndex === dragOverIndex) {
+      return {
+        borderTop: "2px solid #000",
+        marginTop: "0.5rem",
+        transition: "margin 0.2s cubic-bezier(0.25, 0.1, 0.25, 1)",
+      };
+    } else if (cardIndex === dragOverIndex - 1) {
+      return {
+        borderBottom: "2px solid #000",
+        marginBottom: "0.5rem",
+        transition: "margin 0.2s cubic-bezier(0.25, 0.1, 0.25, 1)",
+      };
+    }
+    return {};
+  };
   return (
     <motion.div
       className="space-y-2 -my-2"
@@ -87,11 +154,33 @@ const CardList = ({
         onDrop(e);
       }}
     >
-
-      <AnimatePresence >
-        {outlines.map((card,index)=><React.Fragment key={card.id}>
-          <Card/>
-        </React.Fragment>)}
+      <AnimatePresence>
+        {outlines.map((card, index) => (
+          <React.Fragment key={card.id}>
+            <Card
+              onDragOver={(e) => onDragOver(e, index)}
+              card={card}
+              isEditing={editingCard === card.id}
+              isSelected={selectedCard === card.id}
+              editText={editText}
+              onEditChange={onEditChange}
+              onEditBlur={() => onCardUpdate(card.id, editText)}
+              onEditKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  onCardUpdate(card.id, editText);
+                }
+              }}
+              onCardClick={() => onCardSelect(card.id)}
+              onCardDoubleClick={() => onCardDoubleClick(card.id, card.title)}
+              onDeleteClick={() => onCardDelete(card.id)}
+              dragHandlers={{
+                onDragStart: (e) => onDragStart(e, card),
+                onDragEnd: onDragEnd,
+              }}
+              dragOverStyles={getDragOverStyles(index)}
+            />
+          </React.Fragment>
+        ))}
       </AnimatePresence>
     </motion.div>
   );
