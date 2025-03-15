@@ -22,13 +22,16 @@ import { toast } from "sonner";
 import { generateCreativePrompt } from "@/actions/chatgpt";
 import { v4 as uuid } from "uuid";
 import { OutlineCard } from "@/lib/types";
+import { createProject } from "@/actions/project";
+import { useSlideStore } from "@/store/useSlideStore";
 
 type Props = {
   onBack: () => void;
 };
 
 const CreativeAI = ({ onBack }: Props) => {
-  // const router = useRouter();
+  const router = useRouter();
+  const { setProject } = useSlideStore();
   const {
     currentAiPrompt,
     setCurrentAiPrompt,
@@ -42,7 +45,7 @@ const CreativeAI = ({ onBack }: Props) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const [editText, setEditText] = useState("");
-  const { prompts } = usePromptStore();
+  const { prompts, addPrompt } = usePromptStore();
 
   const handleBack = () => {
     onBack();
@@ -90,7 +93,50 @@ const CreativeAI = ({ onBack }: Props) => {
     }
     setIsGenerating(false);
   };
-  const handleGenerate = () => {};
+  const handleGenerate = async () => {
+    setIsGenerating(true);
+    if (outlines.length === 0) {
+      toast.error("L move 💀", {
+        description:
+          "No outlines, no slides 🤡 Add at least one card to cook! 🔥",
+      });
+      return;
+    }
+    try {
+      const res = await createProject(
+        currentAiPrompt,
+        outlines.slice(0, noOfCards)
+      );
+
+      if (res.status !== 200 || !res.data) {
+        throw new Error("Unable to Create Project");
+      }
+      router.push(`/presentation/${res.data.id}/select-theme`);
+      setProject(res.data);
+
+      addPrompt({
+        id: uuid(),
+        title: currentAiPrompt || outlines?.[0]?.title,
+        outlines: outlines,
+        createdAt: new Date().toISOString(),
+      });
+
+      toast.success("W move 🚀", {
+        description:
+          "Project Successfully Created! 🎉 Your slides are ready to slay! 📊💥",
+      });
+      setCurrentAiPrompt("");
+      resetOutlines();
+    } catch (error) {
+      console.log(error);
+      toast.error("L moment 💀", {
+        description:
+          "Bummer! Project creation didn't go as planned. 😢 Retry later! 🔄",
+      });
+    } finally {
+      setIsGenerating(false);
+    }
+  };
 
   useEffect(() => {
     setNoOfCards(outlines.length);
