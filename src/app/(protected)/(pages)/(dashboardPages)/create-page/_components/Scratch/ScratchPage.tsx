@@ -17,6 +17,7 @@ import { title } from "process";
 import { OutlineCard } from "@/lib/types";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "sonner";
+import { createProject } from "@/actions/project";
 
 type Props = {
   onBack: () => void;
@@ -49,12 +50,15 @@ const ScratchPage = ({ onBack }: Props) => {
     setEditText("");
     addOutlines(newCard);
   };
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (outlines.length === 0) {
       toast.error("Bruh 💀", {
-        description: "Ain’t no way you tryna make a PPT with no cards... Add some first! 😭",
+        description:
+          "Ain’t no way you tryna make a PPT with no cards... Add some first! 😭",
       });
+      return;
     }
+    const res = await createProject(outlines?.[0].title, outlines);
   };
   return (
     <motion.div
