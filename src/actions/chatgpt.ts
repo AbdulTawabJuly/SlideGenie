@@ -1,5 +1,11 @@
 "use server"
-export const generateCreativePrompt = async( userPrompt : string) =>{
+import OpenAI from "openai"
+
+export const generateCreativePrompt = async (userPrompt: string) => {
+
+    const openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY,
+    })
 
     const finalPrompt = `
     Create a coherent and relevant outline for the following prompt : ${userPrompt}.
@@ -22,9 +28,38 @@ export const generateCreativePrompt = async( userPrompt : string) =>{
     `
 
     try {
-        
+        const completion = await openai.chat.completions.create({
+            model: "chatgpt-4o-latest",
+            messages: [
+                {
+                    role: "system",
+                    content: "You are a helpful AI that generates outlines for presentations."
+                },
+                {
+                    role: "user",
+                    content: finalPrompt
+                }
+            ],
+            max_tokens: 1000,
+            temperature: 0.0,
+        })
+
+        const responseContent = completion.choices[0].message?.content
+
+        if (responseContent) {
+            try {
+                const jsonResponse = JSON.parse(responseContent)
+                return { status: 200, data: jsonResponse }
+            } catch (error) {
+                console.error("Invalid JSON Received : ", responseContent, error)
+                return { status: 500, error: "Invalid JSON Format Received from AI" }
+            }
+        }
+
+        return { status : 400 , error: "No Content Generated "}
     } catch (error) {
-        
+        console.error("😶‍🌫️ Error", error)
+        return { status: 500, error: "Internal Server Error" }
     }
 
 }
