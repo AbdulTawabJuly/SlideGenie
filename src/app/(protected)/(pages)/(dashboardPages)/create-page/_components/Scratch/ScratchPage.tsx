@@ -18,6 +18,8 @@ import { OutlineCard } from "@/lib/types";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "sonner";
 import { createProject } from "@/actions/project";
+import { useSlideStore } from "@/store/useSlideStore";
+import { useRouter } from "next/navigation";
 
 type Props = {
   onBack: () => void;
@@ -26,6 +28,8 @@ type Props = {
 const ScratchPage = ({ onBack }: Props) => {
   const { outlines, addMultipleOutlines, addOutlines, resetOutlines } =
     useScratchStore();
+  const { setProject } = useSlideStore();
+  const router = useRouter();
 
   const [editText, setEditText] = useState("");
   const [editingCard, setEditingCard] = useState<string | null>(null);
@@ -59,6 +63,25 @@ const ScratchPage = ({ onBack }: Props) => {
       return;
     }
     const res = await createProject(outlines?.[0].title, outlines);
+    if (res.status !== 200) {
+      toast.error("Nah fam 💀", {
+        description:
+          res.error || "Couldn't create the project... Try again maybe? 🤷‍♂️",
+      });
+      return;
+    }
+    if (res.data) {
+      setProject(res.data);
+      resetOutlines();
+      toast.success("W move 🚀", {
+        description: "Project created successfully! Let's gooo! 🎉",
+      });
+      router.push(`/presentation/${res.data.id}/select-theme`);
+    } else {
+      toast.error("Nah fam 💀", {
+        description: "Couldn't create the project... Try again maybe? 🤷‍♂",
+      });
+    }
   };
   return (
     <motion.div
