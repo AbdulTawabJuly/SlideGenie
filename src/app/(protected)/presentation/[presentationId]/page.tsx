@@ -5,7 +5,7 @@ import { useSlideStore } from "@/store/useSlideStore";
 import { Loader2 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { redirect, useParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 type Props = {};
@@ -53,7 +53,8 @@ const Page = (props: Props) => {
     );
   }
 
-  return <div>Page</div>;
+  return (
+  );
 };
 
 export default Page;
