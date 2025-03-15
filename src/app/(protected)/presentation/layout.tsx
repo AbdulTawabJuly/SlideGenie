@@ -1,11 +1,13 @@
-import React from 'react'
+import React from "react";
 
-type Props = {}
+type Props = {
+  children: React.ReactNode;
+};
 
-const PresentationLayout = (props: Props) => {
+const Layout = (props: Props) => {
   return (
-    <div>Layout</div>
-  )
-}
+    <div className="h-full w-full overflow-x-hidden">{props.children}</div>
+  );
+};
 
-export default PresentationLayout
+export default Layout;
