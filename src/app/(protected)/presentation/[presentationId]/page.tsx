@@ -33,7 +33,8 @@ const Page = (props: Props) => {
           (theme) => theme.name === res.data.themeName
         );
         setCurrentTheme(findTheme || themes[0]);
-        setTheme(findTheme?.type === "dark" ? "dark" : "light");
+        // setTheme(findTheme?.type === "dark" ? "dark" : "light");
+        setTheme("dark")
         setProject(res.data);
         setSlides(JSON.parse(JSON.stringify(res.data.slides)));
       } catch (error) {

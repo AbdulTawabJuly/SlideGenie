@@ -3,7 +3,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { User } from "@prisma/client";
 import React from "react";
 import SearchBar from "./upper-info-searchbar";
-// import ThemeSwitcher from "../mode-toggle";
+import ThemeSwitcher from "../mode-toggle";
 import NewProjectButton from "./new-project-button";
 
 type Props = {
@@ -18,7 +18,7 @@ const UpperInfoBar = ({ user }: Props) => {
 
       <div className="w-full max-w-[95%] flex items-center justify-between gap-4 flex-wrap">
         <SearchBar />
-        {/* <ThemeSwitcher /> */}
+        <ThemeSwitcher />
         <div className = "flex flex-wrap gap-4 items-center justify-end">
             <NewProjectButton user={user} />
 
