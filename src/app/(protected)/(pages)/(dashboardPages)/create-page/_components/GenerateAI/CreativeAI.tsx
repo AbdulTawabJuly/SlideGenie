@@ -1,11 +1,11 @@
 "use Client";
 
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+// import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { containerVariants, itemVariants } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, Loader2, Rotate3d, RotateCcw } from "lucide-react";
+import { ChevronLeft, Loader2, RotateCcw } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import useCreativeAIStore from "@/store/useCreativeAIStore";
 import {
@@ -26,7 +26,7 @@ type Props = {
 };
 
 const CreativeAI = ({ onBack }: Props) => {
-  const router = useRouter();
+  // const router = useRouter();
   const {
     currentAiPrompt,
     setCurrentAiPrompt,
@@ -40,7 +40,7 @@ const CreativeAI = ({ onBack }: Props) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const [editText, setEditText] = useState("");
-  const {prompts , addPrompt} = usePromptStore()
+  const { prompts } = usePromptStore();
 
   const handleBack = () => {
     onBack();
@@ -54,17 +54,22 @@ const CreativeAI = ({ onBack }: Props) => {
     setCurrentAiPrompt("");
     resetOutlines();
   };
-  const generateOutline = async() => {
-    if(currentAiPrompt === ""){
-      toast.error("Bruh 💀",{
-        description: "You really thought I could read your mind? Drop a prompt first! 🤦‍♂️",
-      })
-      return
+  const generateOutline = async () => {
+    if (currentAiPrompt === "") {
+      toast.error("Bruh 💀", {
+        description:
+          "You really thought I could read your mind? Drop a prompt first! 🤦‍♂️",
+      });
+      return;
     }
-    setIsGenerating(true)
-    const res = await generateCreativePrompt(currentAiPrompt)
-  }
+    setIsGenerating(true);
+    const res = await generateCreativePrompt(currentAiPrompt);
+  };
   const handleGenerate = () => {};
+
+  useEffect(() => {
+    setNoOfCards(outlines.length);
+  }, [outlines.length]);
   return (
     <motion.div
       className="space-y-6 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"
@@ -138,7 +143,7 @@ const CreativeAI = ({ onBack }: Props) => {
       <div className="w-ful flex justify-center items-center">
         <Button
           className="font-medium text-lg flex gap-2 items-center"
-          // onClick={generateOutline}
+          onClick={generateOutline}
           disabled={isGenerating}
         >
           {isGenerating ? (
@@ -184,7 +189,7 @@ const CreativeAI = ({ onBack }: Props) => {
         </Button>
       )}
 
-      {prompts?.length > 0 && <RecentPrompts/> }
+      {prompts?.length > 0 && <RecentPrompts />}
     </motion.div>
   );
 };
