@@ -42,8 +42,21 @@ const AppSidebar = ({
               {/* <AvatarFallback className="rounded-lg">SG</AvatarFallback> */}
             </Avatar>
           </div>
-          <span className="truncate text-primary text-xl font-semibold ml-2">
+          {/* <span className="truncate text-primary text-xl font-semibold ml-2">
             Slide Genie
+          </span> */}
+          <span
+            className=" text-primary text-2xl font-semibold ml-2 mb-2"
+            style={{
+              fontFamily: "var(--font-noto-nastaliq-urdu)",
+              fontWeight: 700,
+              direction: "rtl",
+              display: "inline-block", // Ensure the span behaves like a block for width control
+              width: "fit-content", // Allow the span to size itself based on content
+              overflow: "visible", // Ensure no text is cut off
+            }}
+          >
+            سلائیڈ جینی
           </span>
         </SidebarMenuButton>
       </SidebarHeader>
@@ -52,7 +65,7 @@ const AppSidebar = ({
         <RecentOpen recentProjects={recentProjects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavFooter prismaUser={user}/>
+        <NavFooter prismaUser={user} />
       </SidebarFooter>
     </Sidebar>
   );
