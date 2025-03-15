@@ -20,6 +20,8 @@ import usePromptStore from "@/store/usePromptStore";
 import RecentPrompts from "./RecentPrompts";
 import { toast } from "sonner";
 import { generateCreativePrompt } from "@/actions/chatgpt";
+import { v4 as uuid } from "uuid";
+import { OutlineCard } from "@/lib/types";
 
 type Props = {
   onBack: () => void;
@@ -64,12 +66,36 @@ const CreativeAI = ({ onBack }: Props) => {
     }
     setIsGenerating(true);
     const res = await generateCreativePrompt(currentAiPrompt);
+    if (res.status === 200 && res?.data?.outlines) {
+      const cardsData: OutlineCard[] = [];
+      res.data?.outlines.map((outline: string, idx: number) => {
+        const newCard = {
+          id: uuid(),
+          title: outline,
+          order: idx + 1,
+        };
+        cardsData.push(newCard);
+      });
+      addMultipleOutlines(cardsData);
+      setNoOfCards(cardsData.length);
+      toast.success("W move 🚀", {
+        description:
+          "Outline cooked to perfection! 🔥 Now go be productive... or not 😎",
+      });
+    } else {
+      toast.error("L moment 💀", {
+        description:
+          "Couldn't generate the outline... Maybe try manifesting it? ✨",
+      });
+    }
+    setIsGenerating(false);
   };
   const handleGenerate = () => {};
 
   useEffect(() => {
     setNoOfCards(outlines.length);
   }, [outlines.length]);
+
   return (
     <motion.div
       className="space-y-6 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"
