@@ -1,3 +1,5 @@
+"use client";
+
 import { containerVariants } from "@/lib/constants";
 import { Project } from "@prisma/client";
 import { motion } from "framer-motion";
@@ -28,6 +30,20 @@ const Projects = ({ projects }: Props) => {
         />
       ))}
     </motion.div>
+
+    // <div>
+    //   {projects.map((project, id) => (
+    //     <ProjectCard
+    //       key={id}
+    //       projectId={project?.id}
+    //       tittle={project?.title}
+    //       createdAt={project?.createdAt.toString()}
+    //       isDeleted={project?.isDeleted}
+    //       slideData={project?.slides}
+    //       themeName={project?.themeName}
+    //     />
+    //   ))}
+    // </div>
   );
 };
 

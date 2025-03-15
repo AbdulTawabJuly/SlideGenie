@@ -47,7 +47,6 @@ const RecentPrompts = () => {
                 </h3>
                 <p className=" font-semibold text-sm text-muted-foreground">
                   {timeAgo(prompt?.createdAt)}
-                  This is the time
                 </p>
               </div>
 

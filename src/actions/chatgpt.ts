@@ -29,7 +29,7 @@ export const generateCreativePrompt = async (userPrompt: string) => {
 
     try {
         const completion = await openai.chat.completions.create({
-            model: "chatgpt-4o-latest",
+            model: "gpt-4o-mini",
             messages: [
                 {
                     role: "system",
