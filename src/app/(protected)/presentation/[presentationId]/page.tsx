@@ -54,7 +54,7 @@ const Page = (props: Props) => {
     );
   }
 
-  return <DndProvider></DndProvider>;
+  return;
 };
 
 export default Page;
