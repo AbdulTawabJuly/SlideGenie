@@ -12,6 +12,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import CardList from "../Common/CardList";
+import { title } from "process";
+import { OutlineCard } from "@/lib/types";
+import { v4 as uuidv4 } from "uuid";
+import { toast } from "sonner";
 
 type Props = {
   onBack: () => void;
@@ -22,6 +27,8 @@ const ScratchPage = ({ onBack }: Props) => {
     useScratchStore();
 
   const [editText, setEditText] = useState("");
+  const [editingCard, setEditingCard] = useState<string | null>(null);
+  const [selectedCard, setSelectedCard] = useState<string | null>(null);
 
   const handleBack = () => {
     resetOutlines();
@@ -31,6 +38,23 @@ const ScratchPage = ({ onBack }: Props) => {
   const resetCards = () => {
     setEditText("");
     resetOutlines();
+  };
+
+  const handleAddCard = () => {
+    const newCard: OutlineCard = {
+      id: uuidv4(),
+      title: editText || "New Section",
+      order: outlines.length + 1,
+    };
+    setEditText("");
+    addOutlines(newCard);
+  };
+  const handleGenerate = () => {
+    if (outlines.length === 0) {
+      toast.error("Error", {
+        description: "Ain’t no way you tryna make a PPT with no cards... Add some first! 😭",
+      });
+    }
   };
   return (
     <motion.div
@@ -97,6 +121,36 @@ const ScratchPage = ({ onBack }: Props) => {
           </div>
         </div>
       </motion.div>
+      <CardList
+        outlines={outlines}
+        addOutline={addOutlines}
+        addMultipleOutlines={addMultipleOutlines}
+        editingCard={editingCard}
+        selectedCard={selectedCard}
+        editText={editText}
+        onEditChange={setEditText}
+        onCardSelect={setSelectedCard}
+        onCardDoubleClick={(id, title) => {
+          setEditingCard(id);
+          setEditText(title);
+        }}
+        setEditText={setEditText}
+        setEditingCard={setEditingCard}
+        setSelectedCard={setSelectedCard}
+      />
+      <Button
+        onClick={handleAddCard}
+        variant={"secondary"}
+        className="w-full bg-primary-10"
+      >
+        Add Card
+      </Button>
+
+      {outlines?.length > 0 && (
+        <Button className="w-full" onClick={handleGenerate}>
+          Generate PPT
+        </Button>
+      )}
     </motion.div>
   );
 };
