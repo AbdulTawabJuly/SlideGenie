@@ -48,7 +48,8 @@ export const generateCreativePrompt = async (userPrompt: string) => {
 
         if (responseContent) {
             try {
-                const jsonResponse = JSON.parse(responseContent)
+                const cleanedContent = responseContent.replace(/```json|```/g, "").trim(); // Remove markdown formatting
+                const jsonResponse = JSON.parse(cleanedContent)
                 return { status: 200, data: jsonResponse }
             } catch (error) {
                 console.error("Invalid JSON Received : ", responseContent, error)
