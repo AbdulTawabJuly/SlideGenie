@@ -56,8 +56,8 @@ const CreativeAI = ({ onBack }: Props) => {
   };
   const generateOutline = async() => {
     if(currentAiPrompt === ""){
-      toast.error("Error",{
-        description : "Please Enter a Prompt to Generate an Outline"
+      toast.error("Bruh 💀",{
+        description: "You really thought I could read your mind? Drop a prompt first! 🤦‍♂️",
       })
       return
     }

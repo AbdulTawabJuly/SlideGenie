@@ -25,8 +25,8 @@ const RecentOpen = ({ recentProjects }: Props) => {
 
   const handleClick = (projectId: string, slides: JsonValue) => {
     if (!projectId || !slides) {
-      toast.error("Project not Found", {
-        description: "Please try again",
+      toast.error("Bruh 💀", {
+        description: "Project missing? Try again, bestie! 🤔",
       });
       return;
     }

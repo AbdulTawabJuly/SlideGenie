@@ -51,7 +51,7 @@ const ScratchPage = ({ onBack }: Props) => {
   };
   const handleGenerate = () => {
     if (outlines.length === 0) {
-      toast.error("Error", {
+      toast.error("Bruh 💀", {
         description: "Ain’t no way you tryna make a PPT with no cards... Add some first! 😭",
       });
     }

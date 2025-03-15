@@ -19,8 +19,8 @@ const RecentPrompts = () => {
       addMultipleOutlines(prompt?.outlines);
       setCurrentAiPrompt(prompt?.title);
     } else {
-      toast.error("Error", {
-        description: "Prompt Not Found",
+      toast.error("Bruh 💀", {
+        description: "Can't find that prompt, are you sure it exists? 🤔",
       });
     }
   };

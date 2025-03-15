@@ -44,27 +44,28 @@ const ProjectCard = ({
     setLoading(true);
     if (!projectId) {
       setLoading(false);
-      toast.error("Error", {
-        description: "Project not Found",
+      toast.error("Bruh 💀", {
+        description: "Project not found... You sure it exists? 🤨",
       });
       return;
     }
     try {
       const res = await recoverProject(projectId);
       if (res.status !== 200) {
-        toast.error("Opps", {
-          description: res.error || "something went wrong",
+        toast.error("Uh-oh 😬", {
+          description: res.error || "Something went wrong, not my fault tho 🤷‍♂️",
         });
+        return
       }
       setOpen(false);
       router.refresh();
-      toast.success("Success", {
-        description: "Project Recovered Successfully",
+      toast.success("Whew 😮‍💨", {
+        description: "Project recovered! Crisis averted 🚀",
       });
     } catch (error) {
       console.log(error);
-      toast.error("Opps", {
-        description: "There was an Error in Recovering the Project",
+      toast.error("Yikes 😵", {
+        description: "Error recovering project... Try again maybe? 🤔",
       });
     }
   };
@@ -73,27 +74,27 @@ const ProjectCard = ({
     setLoading(true);
     if (!projectId) {
       setLoading(false);
-      toast.error("Error", {
-        description: "Project not Found",
+      toast.error("Bruh 💀", {
+        description: "Project not found... You deleting ghosts now? 👻",
       });
       return;
     }
     try {
       const res = await deleteProject(projectId);
       if (res.status !== 200) {
-        toast.error("Opps", {
-          description: res.error || "Failed to Delete Project",
+        toast.error("Uh-oh 😬", {
+          description: res.error || "Couldn't delete it... maybe it has plot armor? 🛡️",
         });
       }
       setOpen(false);
       router.refresh();
-      toast.success("Success", {
-        description: "Project Deleted Successfully",
+      toast.success("Gone. Poof! ✨", {
+        description: "Project deleted successfully. No take-backs! 🚀",
       });
     } catch (error) {
       console.log(error);
-      toast.error("Opps", {
-        description: "There was an Error in Deleting the Project",
+      toast.error("Yikes 😵", {
+        description: "Something went wrong... Guess it's immortal now 🤷‍♂️",
       });
     }
   };
