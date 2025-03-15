@@ -24,6 +24,7 @@ import { v4 as uuid } from "uuid";
 import { OutlineCard } from "@/lib/types";
 import { createProject } from "@/actions/project";
 import { useSlideStore } from "@/store/useSlideStore";
+import { useRouter } from "next/navigation";
 
 type Props = {
   onBack: () => void;
