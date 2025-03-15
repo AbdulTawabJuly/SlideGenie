@@ -1,13 +1,31 @@
-"use client"
-import React from 'react'
+"use client";
+import { getProjectById } from "@/actions/project";
+import { useSlideStore } from "@/store/useSlideStore";
+import { useTheme } from "next-themes";
+import { useParams } from "next/navigation";
+import React, { useEffect } from "react";
 
-type Props = {}
+type Props = {};
 
 const Page = (props: Props) => {
-    
-  return (
-    <div>Page</div>
-  )
-}
+  const params = useParams();
+  const { setTheme } = useTheme();
+  const [isLoading, setIsLoading] = useState(true);
+  const { setSlides, setProject, setCurrentTheme, currentTheme } =
+    useSlideStore();
 
-export default Page
+    useEffect(()   =>{
+        (async () => {
+            try {
+                const res = await getProjectById(params.presentationId as string);
+            } catch (error) {
+                
+            }
+        })()
+    })
+    
+
+  return <div>Page</div>;
+};
+
+export default Page;
