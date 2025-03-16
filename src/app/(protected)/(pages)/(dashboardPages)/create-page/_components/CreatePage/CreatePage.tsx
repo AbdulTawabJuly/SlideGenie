@@ -30,7 +30,8 @@ const CreatePage = ({ onSelectOption }: Props) => {
       </motion.div>
       <motion.div
         variants={containerVariants}
-        className=" grid gap-6 md:grid-cols-3"
+        className=" flex flex-row justify-center" 
+        // gap-6 md:grid-cols-1
       >
         {CreatePageCard.map((option) => (
           <motion.div
@@ -45,7 +46,7 @@ const CreatePage = ({ onSelectOption }: Props) => {
               option.highlight
                 ? "dark:bg-white bg-black"
                 : "dark:hover:bg-white hover:bg-black border"
-            } rounded-xl p-[1px] transition-all duration-300 ease-in-out`}
+            } rounded-xl p-[1px] transition-all duration-300 ease-in-out w-full max-w-[80%]`}
           >
             <motion.div
               className="w-full p-4 flex flex-col gap-y-6 items-start bg-white dark:bg-black rounded-xl"

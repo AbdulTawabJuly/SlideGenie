@@ -364,12 +364,12 @@ export const themes: Theme[] = [
 ];
 
 export const CreatePageCard = [
-  {
-    title: "Use a",
-    highlightedText: "Template",
-    description: "Write a prompt and leave everything else for us to handle",
-    type: "template"
-  },
+  // {
+  //   title: "Use a",
+  //   highlightedText: "Template",
+  //   description: "Write a prompt and leave everything else for us to handle",
+  //   type: "template"
+  // },
   {
     title: "Generate with",
     highlightedText: "AI",
@@ -377,10 +377,10 @@ export const CreatePageCard = [
     type: "creative-ai",
     highlight: true,
   },
-  {
-    title: "Start from",
-    highlightedText: "Scratch",
-    description: "Write a prompt and leave everything else for us to handle",
-    type: "create-scratch"
-  }
+  // {
+  //   title: "Start from",
+  //   highlightedText: "Scratch",
+  //   description: "Write a prompt and leave everything else for us to handle",
+  //   type: "create-scratch"
+  // }
 ]
