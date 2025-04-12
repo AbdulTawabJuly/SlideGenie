@@ -174,6 +174,14 @@ const ThemePreview = () => {
               theme={selectedTheme}
               controls={controls}
             />
+             <ThemeCard
+              title="Quick Start"
+              description="Get started with our pre-built templates and themes."
+              content={leftCardContent}
+              variant="left"
+              theme={selectedTheme}
+              controls={controls}
+            />
           </div>
         </div>
       </div>
