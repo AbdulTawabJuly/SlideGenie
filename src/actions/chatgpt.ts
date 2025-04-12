@@ -492,35 +492,50 @@ const existingLayouts = [
 
 const generateImageUrl = async (prompt: string): Promise<string> => {
     try {
-        //   const improvedPrompt = `
-        //   Create a highly realistic, professional image based on the following description. The image should look as if captured in real life, with attention to detail, lighting, and texture. 
+        //-------------------- First One ------------------------
+          const improvedPrompt = `
+          Create a highly realistic, professional image based on the following description. The image should look as if captured in real life, with attention to detail, lighting, and texture. 
+          Description: ${prompt}
+          Important Notes:
+          - The image must be in a photorealistic style and visually compelling.
+          - Ensure all text, signs, or visible writing in the image are in English.
+          - Pay special attention to lighting, shadows, and textures to make the image as lifelike as possible.
+          - Avoid elements that appear abstract, cartoonish, or overly artistic. The image should be suitable for professional presentations.
+          - Focus on accurately depicting the concept described, including specific objects, environment, mood, and context. Maintain relevance to the description provided.
+          Example Use Cases: Business presentations, educational slides.
+        `
+
+        // ------------------ Second One with Ghibli Art -------------------------------
+        //     const improvedPrompt = `
+        //   Create a highly realistic, professional image in the style of Studio Ghibli based on the following description. The image should look as if captured in real life, yet with the dreamy, detailed artistry and vibrant color palette characteristic of Studio Ghibli films.
 
         //   Description: ${prompt}
 
         //   Important Notes:
-        //   - The image must be in a photorealistic style and visually compelling.
+        //   - The image must be in a Studio Ghibli art style and visually compelling, combining a photorealistic level of detail with the magic and charm of Ghibli aesthetics.
         //   - Ensure all text, signs, or visible writing in the image are in English.
-        //   - Pay special attention to lighting, shadows, and textures to make the image as lifelike as possible.
-        //   - Avoid elements that appear abstract, cartoonish, or overly artistic. The image should be suitable for professional presentations.
+        //   - Pay special attention to lighting, shadows, and textures to make the image as lifelike as possible while still evoking the Ghibli style.
+        //   - Avoid elements that appear abstract or overly cartoonish beyond the distinctive Ghibli flair. The image should remain suitable for professional presentations.
         //   - Focus on accurately depicting the concept described, including specific objects, environment, mood, and context. Maintain relevance to the description provided.
 
         //   Example Use Cases: Business presentations, educational slides, professional designs.
-        // `
+        // `;
 
-        const improvedPrompt = `
-      Create a highly realistic, professional image in the style of Studio Ghibli based on the following description. The image should look as if captured in real life, yet with the dreamy, detailed artistry and vibrant color palette characteristic of Studio Ghibli films.
+        // -------------------- Third one with Ghibli + short length --------------------------
+//         const improvedPrompt = `
+//   Create a highly realistic, professional image in the Studio Ghibli style using the description below. The image should look lifelike while showcasing the dreamy, detailed, and vibrant aesthetic of Studio Ghibli films.
 
-      Description: ${prompt}
-  
-      Important Notes:
-      - The image must be in a Studio Ghibli art style and visually compelling, combining a photorealistic level of detail with the magic and charm of Ghibli aesthetics.
-      - Ensure all text, signs, or visible writing in the image are in English.
-      - Pay special attention to lighting, shadows, and textures to make the image as lifelike as possible while still evoking the Ghibli style.
-      - Avoid elements that appear abstract or overly cartoonish beyond the distinctive Ghibli flair. The image should remain suitable for professional presentations.
-      - Focus on accurately depicting the concept described, including specific objects, environment, mood, and context. Maintain relevance to the description provided.
-  
-      Example Use Cases: Business presentations, educational slides, professional designs.
-    `;
+//   Description: ${prompt}
+
+//   Important:
+//   - Use Studio Ghibli art style with photorealistic detail and magical charm.
+//   - All text, signs, or visible writing must be in English.
+//   - Emphasize natural lighting, shadows, and textures.
+//   - Avoid overly abstract or cartoonish elements; ensure professionalism.
+//   - Accurately depict the concept, including specific objects, environment, mood, and context.
+
+//   Example Use Cases: Business presentations, educational slides, professional designs.
+// `;
 
         const dalleResponse = await openai.images.generate({
             prompt: improvedPrompt,

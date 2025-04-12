@@ -6,6 +6,8 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { generateLayouts } from "@/actions/chatgpt";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { motion } from "framer-motion";
 
 type Props = {
   selectedThemes: Theme;
@@ -41,7 +43,23 @@ const ThemePicker = ({ selectedThemes, themes, onThemeSelect }: Props) => {
         params.presentationId as string,
         currentTheme.name
       );
-    } catch (error) {}
+
+      if (res.status !== 200 && !res.data) {
+        throw new Error("Failed to Generate Layouts");
+      }
+      toast.success("Success", {
+        description: "Layouts Generated Successfully",
+      });
+      router.push(`/presentation/${project?.id}`);
+      setSlides(res.data);
+    } catch (error) {
+      console.error("Error ", error);
+      toast.error("Error", {
+        description: "Failed to Generate Layouts",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -89,6 +107,24 @@ const ThemePicker = ({ selectedThemes, themes, onThemeSelect }: Props) => {
           )}
         </Button>
       </div>
+
+      <ScrollArea className="flex-grow px-8 pb-8">
+        <div className="grid grid-cols-1 gap-4">
+          {themes.map((theme) => (
+            <motion.div
+              key={theme.name}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Button onClick={()=>{
+                onThemeSelect(theme)
+              }}>
+
+              </Button>
+            </motion.div>
+          ))}
+        </div>
+      </ScrollArea>
     </div>
   );
 };
