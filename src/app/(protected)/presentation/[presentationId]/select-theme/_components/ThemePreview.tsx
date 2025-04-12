@@ -102,8 +102,9 @@ const ThemePreview = () => {
       </div>
     </div>
   );
-  const rightCardContent = <div className="space-y-4">Right Card</div>;
-  return (
+
+  const rightCardContent =
+  (
     <div className="space-y-4">
       <div
         className="rounded-xl p-6"
@@ -137,18 +138,18 @@ const ThemePreview = () => {
         Explore Features
       </Button>
     </div>
-  );
+  )
 
   return (
     <div
-      className="h-screen w-full flex"
+      className="h-screen w-full flex "
       style={{
         backgroundColor: selectedTheme.backgroundColor,
         color: selectedTheme.accentColor,
         fontFamily: selectedTheme.fontFamily,
       }}
     >
-      <div className="felx-grow overflow-y-auto">
+      <div className="flex-grow overflow-y-auto">
         <div className="p-12 flex flex-col items-center min-h-screen">
           <Button
             variant="outline"
@@ -156,16 +157,23 @@ const ThemePreview = () => {
             size="lg"
             style={{
               backgroundColor: selectedTheme.accentColor + "10",
-              color : selectedTheme.accentColor,
-              borderColor : selectedTheme.accentColor + "20"
+              color: selectedTheme.accentColor,
+              borderColor: selectedTheme.accentColor + "20",
             }}
             onClick={() => router.push("/create-page")}
           >
-            <ArrowLeft className="mr-2 h-5 w-5"/>
+            <ArrowLeft className="mr-2 h-5 w-5" />
             Back
           </Button>
           <div className="w-full flex justify-center items-center relative flex-grow">
-             <ThemeCard/>
+            <ThemeCard
+              title="Quick Start"
+              description="Get started with our pre-built templates and themes."
+              content={leftCardContent}
+              variant="left"
+              theme={selectedTheme}
+              controls={controls}
+            />
           </div>
         </div>
       </div>
