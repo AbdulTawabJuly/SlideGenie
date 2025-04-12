@@ -1,5 +1,8 @@
 "use server"
+import { client } from "@/lib/prisma"
+import { currentUser } from "@clerk/nextjs/server"
 import OpenAI from "openai"
+import { isDataView } from "util/types"
 
 export const generateCreativePrompt = async (userPrompt: string) => {
 
@@ -57,10 +60,48 @@ export const generateCreativePrompt = async (userPrompt: string) => {
             }
         }
 
-        return { status : 400 , error: "No Content Generated "}
+        return { status: 400, error: "No Content Generated " }
     } catch (error) {
         console.error("😶‍🌫️ Error", error)
         return { status: 500, error: "Internal Server Error" }
+    }
+
+}
+
+export const generateLayouts = async (projectId: string, theme: string) => {
+
+    try {
+        if (!projectId) {
+            return { status: 400, error: "Project ID is required" }
+        }
+        const user = await currentUser()
+        if (!user) {
+            return { status: 403, error: "User not Authenticated" }
+        }
+
+        const userExist = await client.user.findUnique({
+            where: { clerkId: user.id }
+        })
+
+        if (!userExist || !userExist.subscription) {
+            return {
+                status: 403,
+                error: !userExist?.subscription ? "User Does not have an active subscription" : "User not found in the Database"
+            }
+        }
+        const project = await cleint.project.findUnique({
+            where: { id: projectId , isDeleted : false}
+        })
+
+        if(!project){
+            return { status: 404, error: "Project Not Found" }
+        }
+        if(!project.outlines || project.outlines.length === 0){
+            return { status: 400, error: "No Outlines Found for the Project" }
+        }
+
+    } catch (error) {
+
     }
 
 }
