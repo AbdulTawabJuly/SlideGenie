@@ -103,8 +103,7 @@ const ThemePreview = () => {
     </div>
   );
 
-  const rightCardContent =
-  (
+  const rightCardContent = (
     <div className="space-y-4">
       <div
         className="rounded-xl p-6"
@@ -138,7 +137,7 @@ const ThemePreview = () => {
         Explore Features
       </Button>
     </div>
-  )
+  );
 
   return (
     <div
@@ -167,20 +166,31 @@ const ThemePreview = () => {
           </Button>
           <div className="w-full flex justify-center items-center relative flex-grow">
             <ThemeCard
-              title="Quick Start"
-              description="Get started with our pre-built templates and themes."
+              title="Jump In"
+              description="Get your vibe on with chill templates."
               content={leftCardContent}
               variant="left"
               theme={selectedTheme}
               controls={controls}
+              image = "/Theme_Card_Left.png"
             />
-             <ThemeCard
-              title="Quick Start"
-              description="Get started with our pre-built templates and themes."
-              content={leftCardContent}
-              variant="left"
+            <ThemeCard
+              title="Glow Up"
+              description="Make your slides pop and flex your style."
+              content={mainCardContent}
+              variant="main"
               theme={selectedTheme}
               controls={controls}
+              image = "/Theme_Card_Main.png"
+            />
+            <ThemeCard
+              title="Show Off"
+              description="Drop your work and stunt on 'em."
+              content={rightCardContent}
+              variant="right"
+              theme={selectedTheme}
+              controls={controls}
+              image = "/Theme_Card_Right.png"
             />
           </div>
         </div>

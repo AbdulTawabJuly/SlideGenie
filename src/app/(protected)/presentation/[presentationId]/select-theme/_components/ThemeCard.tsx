@@ -11,6 +11,7 @@ type Props = {
   variant: "left" | "main" | "right";
   theme: Theme;
   controls: AnimationControls;
+  image: string;
 };
 
 const ThemeCard = ({
@@ -20,6 +21,7 @@ const ThemeCard = ({
   variant,
   theme,
   controls,
+  image,
 }: Props) => {
   const variants = {
     left: {
@@ -103,7 +105,7 @@ const ThemeCard = ({
           </CardContent>
           <div className="relative w-full md:w-1/2 h-80 md:h-auto overflow-hidden rounded-r-lg">
             <Image
-              src="/Theme_Card_Image.png"
+              src={image}
               alt="Theme Preview Image"
               layout="fill"
               objectFit="cover"
