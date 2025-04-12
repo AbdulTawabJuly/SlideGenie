@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { generateLayouts } from "@/actions/chatgpt";
 
 type Props = {
   selectedThemes: Theme;
@@ -18,7 +19,7 @@ const ThemePicker = ({ selectedThemes, themes, onThemeSelect }: Props) => {
   const { project, setSlides, currentTheme } = useSlideStore();
   const [loading, setLoading] = useState(false);
 
-  const handleGenerateLayouts = () => {
+  const handleGenerateLayouts = async () => {
     setLoading(true);
     if (!selectedThemes) {
       toast.error("Error", {
@@ -36,10 +37,11 @@ const ThemePicker = ({ selectedThemes, themes, onThemeSelect }: Props) => {
     }
 
     try {
-        
-    } catch (error) {
-        
-    }
+      const res = await generateLayouts(
+        params.presentationId as string,
+        currentTheme.name
+      );
+    } catch (error) {}
   };
 
   return (
