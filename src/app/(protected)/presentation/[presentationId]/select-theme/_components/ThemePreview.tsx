@@ -7,6 +7,8 @@ import { Theme } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import ThemeCard from "./ThemeCard";
+import ThemePicker from "./ThemePicker";
+import { themes } from "@/lib/constants";
 
 const ThemePreview = () => {
   const params = useParams();
@@ -139,6 +141,11 @@ const ThemePreview = () => {
     </div>
   );
 
+  const applyTheme = (theme: Theme) => {
+    setSelectedTheme(theme);
+    setCurrentTheme(theme);
+  };
+
   return (
     <div
       className="h-screen w-full flex "
@@ -172,7 +179,7 @@ const ThemePreview = () => {
               variant="left"
               theme={selectedTheme}
               controls={controls}
-              image = "/Theme_Card_Left.png"
+              image="/Theme_Card_Left.png"
             />
             <ThemeCard
               title="Glow Up"
@@ -181,7 +188,7 @@ const ThemePreview = () => {
               variant="main"
               theme={selectedTheme}
               controls={controls}
-              image = "/Theme_Card_Main.png"
+              image="/Theme_Card_Main.png"
             />
             <ThemeCard
               title="Show Off"
@@ -190,11 +197,17 @@ const ThemePreview = () => {
               variant="right"
               theme={selectedTheme}
               controls={controls}
-              image = "/Theme_Card_Right.png"
+              image="/Theme_Card_Right.png"
             />
           </div>
         </div>
       </div>
+
+      <ThemePicker
+        selectedThemes={selectedTheme}
+        themes={themes}
+        onThemeSelect={applyTheme}
+      />
     </div>
   );
 };
