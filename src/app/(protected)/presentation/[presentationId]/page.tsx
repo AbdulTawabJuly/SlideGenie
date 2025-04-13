@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import Navbar from "./_components/Navbar/NAvbar";
+import Navbar from "./_components/Navbar/Navbar";
 
 const Page = () => {
   const params = useParams();

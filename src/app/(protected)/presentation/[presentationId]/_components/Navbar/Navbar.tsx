@@ -1,6 +1,9 @@
+import { Button } from "@/components/ui/button";
 import { useSlideStore } from "@/store/useSlideStore";
+import { Home, Play, Share } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
+import { toast } from "sonner";
 
 type Props = {
   presentationId: string;
@@ -9,6 +12,15 @@ type Props = {
 const Navbar = ({ presentationId }: Props) => {
   const { currentTheme } = useSlideStore();
   const [isPresentationMode, setIsPresentationMode] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(
+      `${window.location.origin}/share/${presentationId}`
+    );
+    toast.success("Link Copied", {
+      description: "The Link has been copied to your clipboard",
+    });
+  };
 
   return (
     <nav
@@ -19,7 +31,42 @@ const Navbar = ({ presentationId }: Props) => {
         color: currentTheme.accentColor,
       }}
     >
-      <Link href={"/dashboard"} passHref></Link>
+      <Link href={"/dashboard"} passHref>
+        <Button
+          variant="outline"
+          className={`flex items-center gap-2`}
+          style={{ backgroundColor: currentTheme.backgroundColor }}
+        >
+          <Home className="w-4 h-4" />
+          <span className="hidden sm:inline">Return Home</span>
+        </Button>
+      </Link>
+
+      <Link
+        href="/presentation/template-market"
+        className="text-lg font-semibold hidden sm:block"
+      >
+        Presentation Editor
+      </Link>
+      <div className="flex items-center gap-4">
+        <Button
+          style={{ backgroundColor: currentTheme.backgroundColor }}
+          onClick={handleCopy}
+          variant="outline"
+        >
+          <Share className="w-4 h-4" />
+        </Button>
+        <Button
+          variant={"default"}
+          className="flex items-center gap-2"
+          onClick={() => setIsPresentationMode(true)}
+        >
+          <Play className="w-4 h-4" />
+          <span className="hidden sm:inline">Present</span>
+        </Button>
+      </div>
+
+       {/* {isPresentationMode && <PresentationMode/>} */}
     </nav>
   );
 };
