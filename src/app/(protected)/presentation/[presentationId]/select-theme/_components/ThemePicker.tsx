@@ -116,10 +116,20 @@ const ThemePicker = ({ selectedThemes, themes, onThemeSelect }: Props) => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <Button onClick={()=>{
-                onThemeSelect(theme)
-              }}>
-
+              <Button
+                onClick={() => {
+                  onThemeSelect(theme);
+                }}
+                className="flex flex-col items-center justify-start p-6 w-full h-auto"
+                style={{
+                  fontFamily: theme.fontFamily,
+                  color: theme.fontColor,
+                  background: theme.gradientBackground || theme.backgroundColor,
+                }}
+              >
+                <div className="w-full flex items-center justify-between ">
+                  <span className="text-xl font-bold">{theme.name}</span>
+                </div>
               </Button>
             </motion.div>
           ))}
