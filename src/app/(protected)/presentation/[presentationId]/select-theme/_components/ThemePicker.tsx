@@ -129,6 +129,16 @@ const ThemePicker = ({ selectedThemes, themes, onThemeSelect }: Props) => {
               >
                 <div className="w-full flex items-center justify-between ">
                   <span className="text-xl font-bold">{theme.name}</span>
+
+                </div>
+                <div className="space-y-1 w-full">
+                  <div className="text-2xl font-bold" style={{color : theme.accentColor}}>
+                    Title
+                  </div>
+                  <div className="text-base opacity-80">
+                    Body & {" "}
+                    <span style={{color : theme.accentColor}}>link</span>
+                  </div>
                 </div>
               </Button>
             </motion.div>
