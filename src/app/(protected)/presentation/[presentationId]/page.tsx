@@ -8,10 +8,9 @@ import { redirect, useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
-type Props = {};
-
-const Page = (props: Props) => {
+const Page = () => {
   const params = useParams();
   const { setTheme } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
@@ -38,6 +37,7 @@ const Page = (props: Props) => {
         setProject(res.data);
         setSlides(JSON.parse(JSON.stringify(res.data.slides)));
       } catch (error) {
+        console.log(error)
         toast.error("Error", {
           description: "An Unexpected Error Occured",
         });
@@ -55,7 +55,14 @@ const Page = (props: Props) => {
     );
   }
 
-  return;
+
+  return(
+    <DndProvider backend={HTML5Backend}>
+      <div>
+        
+      </div>
+    </DndProvider>
+  )
 };
 
 export default Page;
