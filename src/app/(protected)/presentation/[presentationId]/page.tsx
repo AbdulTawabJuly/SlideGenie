@@ -61,6 +61,13 @@ const Page = () => {
     <DndProvider backend={HTML5Backend}>
       <div>
         <Navbar presentationId={params.presentation as string}/>
+        <div className="flex-1 flex overflow-hidden pt-16" style={{
+          backgroundColor: currentTheme.backgroundColor,
+          fontFamily : currentTheme.fontFamily,
+          color : currentTheme.accentColor
+        }}>
+          {/* <LayoutPreview/> */}
+        </div>
       </div>
     </DndProvider>
   )
