@@ -7,7 +7,9 @@ type Props = {
 
 const Navbar = ({ presentationId }: Props) => {
   const { currentTheme } = useSlideStore();
-  return <div>Navbar</div>;
+  const [isPresentationMode, setIsPresentationMode] = useState(false);
+
+  return <nav>Navbar</nav>;
 };
 
 export default Navbar;
