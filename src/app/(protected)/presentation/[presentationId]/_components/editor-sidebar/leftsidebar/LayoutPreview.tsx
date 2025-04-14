@@ -18,7 +18,7 @@ const LayoutPreview = (props: Props) => {
     <div className="w-64 h-full fixed left-0 top-20 border-r overscroll-y-auto">
       <ScrollArea className="h-full w-full" suppressHydrationWarning>
         {loading ? (
-          <div className="w-full px-4 flex flex-col space-y-6">
+          <div className="w-full px-4 flex flex-col space-y-6 mt-20">
             <Skeleton className="w-full h-20" />
             <Skeleton className="w-full h-20" />
             <Skeleton className="w-full h-20" />

@@ -11,6 +11,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import Navbar from "./_components/Navbar/Navbar";
 import LayoutPreview from "./_components/editor-sidebar/leftsidebar/LayoutPreview";
+import Editor from "./_components/editor/Editor";
 
 const Page = () => {
   const params = useParams();
@@ -35,11 +36,11 @@ const Page = () => {
         );
         setCurrentTheme(findTheme || themes[0]);
         // setTheme(findTheme?.type === "dark" ? "dark" : "light");
-        setTheme("dark")
+        setTheme("dark");
         setProject(res.data);
         setSlides(JSON.parse(JSON.stringify(res.data.slides)));
       } catch (error) {
-        console.log(error)
+        console.log(error);
         toast.error("Error", {
           description: "An Unexpected Error Occured",
         });
@@ -57,21 +58,26 @@ const Page = () => {
     );
   }
 
-
-  return(
+  return (
     <DndProvider backend={HTML5Backend}>
       <div>
-        <Navbar presentationId={params.presentation as string}/>
-        <div className="flex-1 flex overflow-hidden pt-16" style={{
-          backgroundColor: currentTheme.backgroundColor,
-          fontFamily : currentTheme.fontFamily,
-          color : currentTheme.accentColor
-        }}>
-          <LayoutPreview/>
+        <Navbar presentationId={params.presentation as string} />
+        <div
+          className="flex-1 flex overflow-hidden pt-16"
+          style={{
+            backgroundColor: currentTheme.backgroundColor,
+            fontFamily: currentTheme.fontFamily,
+            color: currentTheme.accentColor,
+          }}
+        >
+          <LayoutPreview />
+          <div className="flex-1 ml-64 pr-16">
+            <Editor isEditable={true} />
+          </div>
         </div>
       </div>
     </DndProvider>
-  )
+  );
 };
 
 export default Page;
