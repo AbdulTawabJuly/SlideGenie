@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import Navbar from "./_components/Navbar/Navbar";
+import LayoutPreview from "./_components/editor-sidebar/leftsidebar/LayoutPreview";
 
 const Page = () => {
   const params = useParams();
@@ -66,7 +67,7 @@ const Page = () => {
           fontFamily : currentTheme.fontFamily,
           color : currentTheme.accentColor
         }}>
-          {/* <LayoutPreview/> */}
+          <LayoutPreview/>
         </div>
       </div>
     </DndProvider>
