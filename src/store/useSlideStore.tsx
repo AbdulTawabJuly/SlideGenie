@@ -2,16 +2,20 @@ import { Slide, Theme } from "@/lib/types";
 import { Project } from "@prisma/client";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { v4 as uuidv4 } from "uuid";
 
 interface SlideState {
   slides: Slide[];
   project: Project | null;
   setProject: (id: Project) => void;
   setSlides: (slides: Slide[]) => void;
+  currentSlide: number;
   currentTheme: Theme;
+  removeSlide: (id: string) => void;
   setCurrentTheme: (theme: Theme) => void;
   getOrderedSlides: () => Slide[];
   reorderSlides: (fromIndex: number, toIndex: number) => void;
+  addSlideAtIndex: (slide: Slide, index: number) => void;
 }
 
 const defaultTheme: Theme = {
@@ -34,25 +38,42 @@ export const useSlideStore = create(
           slides,
         }),
       setProject: (project) => set({ project }),
+      currentSlide: 0,
+
       currentTheme: defaultTheme,
       setCurrentTheme: (theme: Theme) => set({ currentTheme: theme }),
       getOrderedSlides: () => {
         const state = get();
         return [...state.slides].sort((a, b) => a.slideOrder - b.slideOrder);
       },
-      reorderSlides: (fromIndex: number, toIndex: number) => {
-        set((state)=>{
+
+      addSlideAtIndex: (slide: Slide, index: number) =>
+        set((state) => {
           const newSlides = [...state.slides];
-          const [removed] = newSlides.splice(fromIndex , 1)
+          newSlides.splice(index, 0, { ...slide, id: uuidv4() });
+          newSlides.forEach((s, i) => {
+            s.slideOrder = i;
+          });
+          return { slides: newSlides, currentSlide: index };
+        }),
+      removeSlide: (id) =>
+        set((state) => ({
+          slides: state.slides.filter((slide) => slide.id !== id),
+        })),
+
+      reorderSlides: (fromIndex: number, toIndex: number) => {
+        set((state) => {
+          const newSlides = [...state.slides];
+          const [removed] = newSlides.splice(fromIndex, 1);
           newSlides.splice(toIndex, 0, removed);
-          return{
-            slides : newSlides.map((slide , index) =>({
-              ...slide ,
-              slideOrder : index,
-            }))
-          }
-        })
-      } 
+          return {
+            slides: newSlides.map((slide, index) => ({
+              ...slide,
+              slideOrder: index,
+            })),
+          };
+        });
+      },
     }),
     {
       name: "slides-storage",
