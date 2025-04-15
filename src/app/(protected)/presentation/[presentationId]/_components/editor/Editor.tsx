@@ -3,8 +3,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { LayoutSlides, Slide } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useSlideStore } from "@/store/useSlideStore";
+import { isDragging } from "motion-dom";
 import React, { useEffect, useRef, useState } from "react";
-import { useDrop } from "react-dnd";
+import { useDrag, useDrop } from "react-dnd";
 import { v4 as uuidv4 } from "uuid";
 
 interface DropZoneProps {
@@ -78,7 +79,38 @@ export const DraggableSlide: React.FC<DraggableSlideProps> = ({
   const ref = useRef(null);
   const { currentSlide, setCurrentSlide, currentTheme, updateContentItem } =
     useSlideStore();
-  return <></>;
+  const [{ isDragging }, drag] = useDrag({
+    type: "SLIDE",
+    item: {
+      index,
+      type: "SLIDE",
+    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+    canDrag: isEditable,
+  });
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "w-full rounded-lg shadow-lg relative p-0 min-h-[400px] max-h-[800px]",
+        "shadow-xl transition-shadow duration-300",
+        "flex flex-col",
+        index === currentSlide ? "ring-2 ring-blue-500 ring-offset-2" : "",
+        slide.className,
+        isDragging ? "opacity-50" : "opacity-100"
+      )}
+      style={{
+        backgroundImage: currentTheme.gradientBackground,
+      }}
+      onClick={() => setCurrentSlide(index)}
+    >
+      <div className="w-full h-full flex-grow overflow-hidden">
+        <MasterRecursiveComponent/>
+      </div>
+    </div>
+  );
 };
 
 type Props = {
