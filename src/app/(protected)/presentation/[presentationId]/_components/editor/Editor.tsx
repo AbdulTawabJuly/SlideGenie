@@ -1,6 +1,6 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
-import { LayoutSlides } from "@/lib/types";
+import { LayoutSlides, Slide } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useSlideStore } from "@/store/useSlideStore";
 import React, { useEffect, useRef, useState } from "react";
@@ -59,6 +59,28 @@ export const DropZone: React.FC<DropZoneProps> = ({
     </div>
   );
 };
+
+interface DraggableSlideProps {
+  index: number;
+  slide: Slide;
+  moveSlide: (dragIndex: number, hoverIndex: number) => void;
+  isEditable: boolean;
+  handleDelete: (id: string) => void;
+}
+
+export const DraggableSlide: React.FC<DraggableSlideProps> = ({
+  slide,
+  index,
+  moveSlide,
+  handleDelete,
+  isEditable,
+}) => {
+  const ref = useRef(null);
+  const { currentSlide, setCurrentSlide, currentTheme, updateContentItem } =
+    useSlideStore();
+  return <></>;
+};
+
 type Props = {
   isEditable: boolean;
 };
@@ -73,6 +95,8 @@ const Editor = ({ isEditable }: Props) => {
     slides,
     project,
   } = useSlideStore();
+
+  const orderedSlides = getOrderedSlides();
 
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [loading, setLoading] = useState(true);
@@ -130,6 +154,11 @@ const Editor = ({ isEditable }: Props) => {
             {isEditable && (
               <DropZone index={0} onDrop={handleDrop} isEditable={isEditable} />
             )}
+            {orderedSlides.map((slide, index) => (
+              <React.Fragment key={slide.id || index}>
+                <DraggableSlide />
+              </React.Fragment>
+            ))}
           </div>
         </ScrollArea>
       )}
