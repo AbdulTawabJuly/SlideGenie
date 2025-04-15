@@ -3,7 +3,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { LayoutSlides } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useSlideStore } from "@/store/useSlideStore";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useDrop } from "react-dnd";
+import { v4 as uuidv4 } from "uuid";
 
 interface DropZoneProps {
   index: number;
@@ -24,13 +26,38 @@ export const DropZone: React.FC<DropZoneProps> = ({
   onDrop,
   isEditable,
 }) => {
-    return(
-        <div className= {cn(
-            "h-4 my-2 rounded-md transition-all duration-200",
-            isOver && canDrop ? "border-green-500 bg-green-100" : "border-gray-300",
-            canDrop ? "border-blue-300" : ""
-        )}></div>
-    )
+  const [{ isOver, canDrop }, dropRef] = useDrop({
+    accept: ["SLIDE", "layout"],
+    drop: (item: {
+      type: string;
+      layoutType: string;
+      component: LayoutSlides;
+      index?: number;
+    }) => {
+      onDrop(item, index);
+    },
+    canDrop: () => isEditable,
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+      canDrop: !!monitor.canDrop(),
+    }),
+  });
+  if (!isEditable) return null;
+  return (
+    <div
+      className={cn(
+        "h-4 my-2 rounded-md transition-all duration-200",
+        isOver && canDrop ? "border-green-500 bg-green-100" : "border-gray-300",
+        canDrop ? "border-blue-300" : ""
+      )}
+    >
+      {isOver && canDrop && (
+        <div className="h-full flex items-center justify-center text-green-600">
+          Drop Here
+        </div>
+      )}
+    </div>
+  );
 };
 type Props = {
   isEditable: boolean;
@@ -46,7 +73,48 @@ const Editor = ({ isEditable }: Props) => {
     slides,
     project,
   } = useSlideStore();
+
+  const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [loading, setLoading] = useState(true);
+  const moveSlide = (dragIndex: number, hoverIndex: number) => {
+    if (isEditable) {
+      reorderSlides(dragIndex, hoverIndex);
+    }
+  };
+
+  const handleDrop = (
+    item: {
+      type: string;
+      layoutType: string;
+      component: LayoutSlides;
+      index?: number;
+    },
+    dropIndex: number
+  ) => {
+    // handle drop event here
+    if (!isEditable) return;
+    if (item.type === "layout") {
+      addSlideAtIndex(
+        {
+          ...item.component,
+          id: uuidv4(),
+          slideOrder: dropIndex,
+        },
+        dropIndex
+      );
+    } else if (item.type === "SLIDE" && item.index !== undefined) {
+      moveSlide(item.index, dropIndex);
+    }
+  };
+
+  useEffect(() => {
+    if (slideRefs.current[currentSlide]) {
+      slideRefs.current[currentSlide]?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [currentSlide]);
 
   return (
     <div className="flex-1 flex flex-col h-full max-w-3xl mx-auto px-4 mb-20 mt-20">
@@ -59,7 +127,9 @@ const Editor = ({ isEditable }: Props) => {
       ) : (
         <ScrollArea className="flex-1 mt-8">
           <div className="px-4 pb-4 space-y-4 pt-2">
-            {isEditable && <DropZone />}
+            {isEditable && (
+              <DropZone index={0} onDrop={handleDrop} isEditable={isEditable} />
+            )}
           </div>
         </ScrollArea>
       )}
