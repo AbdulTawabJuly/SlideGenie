@@ -71,7 +71,7 @@ const Page = () => {
           }}
         >
           <LayoutPreview />
-          <div className="flex-1 ml-64 pr-16">
+          <div className="flex-1 px-8 transition-all duration-300">
             <Editor isEditable={true} />
           </div>
         </div>
