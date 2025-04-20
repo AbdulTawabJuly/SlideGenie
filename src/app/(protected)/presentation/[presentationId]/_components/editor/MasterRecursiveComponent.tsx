@@ -4,6 +4,7 @@ import { Heading1 } from "@/components/global/editor/components/Headings";
 import { ContentItem } from "@/lib/types";
 import { motion } from "framer-motion";
 import React, { useCallback } from "react";
+import { cn } from "@/lib/utils";
 
 type MasterRecursiveComponentProps = {
   content: ContentItem;
@@ -18,7 +19,7 @@ type MasterRecursiveComponentProps = {
 };
 
 const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
-  ({ content, onContentChange, slideId, index, isPreview }) => {
+  ({ content, onContentChange, slideId, index, isPreview, isEditable }) => {
     const handleChange = useCallback(
       (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         onContentChange(content.id, e.target.value);
@@ -46,8 +47,27 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
             <Heading1 {...commonProps} />
           </motion.div>
         );
+      case "column":
+        if (Array.isArray(content.content)) {
+          return (
+            <motion.div
+              {...animationProps}
+              className={cn("w-full h-full flex flex-col", content.className)}
+            >
+              {content.content.length > 0
+                ? (content.content as ContentItem[]).map(
+                    (subItem: ContentItem, subIndex: number) => (
+                      <React.Fragment key={subItem.id || `item-${subIndex}`}>
+                        {!isPreview && !subItem.restrictToDrop && subIndex === 0 && isEditable && <DropZone/>}
+                      </React.Fragment>
+                    )
+                  )
+                : ""}
+            </motion.div>
+          );
+        }
       default:
-        return <h1>Nothing</h1>;
+        return <h1>Nothing </h1>;
     }
   }
 );

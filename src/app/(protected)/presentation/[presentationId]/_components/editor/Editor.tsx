@@ -234,8 +234,8 @@ const Editor = ({ isEditable }: Props) => {
           <Skeleton className="w-full h-52" />
         </div>
       ) : (
-        <ScrollArea className="flex-1">
-          <div className="space-y-4 pt-2">
+        <ScrollArea className="flex-1 mt-8">
+          <div className="px-4 pb-4 space-y-4 pt-2">
             {isEditable && (
               <DropZone index={0} onDrop={handleDrop} isEditable={isEditable} />
             )}
