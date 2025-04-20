@@ -60,7 +60,7 @@ const Page = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div>
+      <div className="min-h-screen flex flex-col">
         <Navbar presentationId={params.presentation as string} />
         <div
           className="flex-1 flex overflow-hidden pt-16"
