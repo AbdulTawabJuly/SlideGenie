@@ -5,6 +5,7 @@ import { ContentItem } from "@/lib/types";
 import { motion } from "framer-motion";
 import React, { useCallback } from "react";
 import { cn } from "@/lib/utils";
+import DropZone from "./DropZone";
 
 type MasterRecursiveComponentProps = {
   content: ContentItem;
@@ -58,7 +59,10 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
                 ? (content.content as ContentItem[]).map(
                     (subItem: ContentItem, subIndex: number) => (
                       <React.Fragment key={subItem.id || `item-${subIndex}`}>
-                        {!isPreview && !subItem.restrictToDrop && subIndex === 0 && isEditable && <DropZone/>}
+                        {!isPreview &&
+                          !subItem.restrictToDrop &&
+                          subIndex === 0 &&
+                          isEditable && <DropZone />}
                       </React.Fragment>
                     )
                   )
