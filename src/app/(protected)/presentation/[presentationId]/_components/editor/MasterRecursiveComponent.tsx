@@ -69,14 +69,14 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
                               slideId={slideId}
                             />
                           )}
-                          <MasterRecursiveComponent
+                        <MasterRecursiveComponent
                           content={subItem}
                           onContentChange={onContentChange}
                           isPreview={isPreview}
                           slideId={slideId}
                           index={subIndex}
                           isEditable={isEditable}
-                          />
+                        />
                       </React.Fragment>
                     )
                   )
