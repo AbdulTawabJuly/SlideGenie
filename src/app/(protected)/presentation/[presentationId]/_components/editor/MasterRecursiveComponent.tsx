@@ -5,6 +5,7 @@ import {
   Heading2,
   Heading3,
   Heading4,
+  Title,
 } from "@/components/global/editor/components/Headings";
 import { ContentItem } from "@/lib/types";
 import { motion } from "framer-motion";
@@ -32,6 +33,7 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
       },
       [content.id, onContentChange]
     );
+    console.log("Content ",content)
 
     const commonProps = {
       placeHolder: content.placeholder,
@@ -39,6 +41,7 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
       onChange: handleChange,
       isPreview: isPreview,
     };
+    console.log(commonProps)
 
     const animationProps = {
       initial: { opacity: 0, y: 20 },
@@ -71,6 +74,12 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
             <Heading4 {...commonProps} />
           </motion.div>
         );
+        case "title":
+          return (
+            <motion.div className="w-full h-full" {...animationProps}>
+              <Title {...commonProps} />
+            </motion.div>
+          );
       case "column":
         if (Array.isArray(content.content)) {
           return (
