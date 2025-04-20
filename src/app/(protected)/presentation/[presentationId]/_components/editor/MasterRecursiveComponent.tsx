@@ -62,7 +62,13 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
                         {!isPreview &&
                           !subItem.restrictToDrop &&
                           subIndex === 0 &&
-                          isEditable && <DropZone />}
+                          isEditable && (
+                            <DropZone
+                              index={0}
+                              parentId={content.id}
+                              slideId={slideId}
+                            />
+                          )}
                       </React.Fragment>
                     )
                   )
