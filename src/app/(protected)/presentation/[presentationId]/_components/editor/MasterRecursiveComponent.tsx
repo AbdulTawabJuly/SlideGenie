@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Heading1 } from "@/components/global/editor/components/Headings";
 import { ContentItem } from "@/lib/types";
@@ -46,8 +46,49 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
             <Heading1 {...commonProps} />
           </motion.div>
         );
-        default:
-            return null;
+      default:
+        return <h1>Nothing</h1>;
     }
   }
 );
+
+ContentRenderer.displayName = "ContentRenderer";
+
+export const MasterRecursiveComponent: React.FC<MasterRecursiveComponentProps> =
+  React.memo(
+    ({
+      content,
+      onContentChange,
+      isPreview = false,
+      isEditable = true,
+      slideId,
+      index,
+    }) => {
+      if (isPreview) {
+        return (
+          <ContentRenderer
+            content={content}
+            onContentChange={onContentChange}
+            isPreview={isPreview}
+            isEditable={isEditable}
+            slideId={slideId}
+            index={index}
+          />
+        );
+      }
+      return (
+        <React.Fragment>
+          <ContentRenderer
+            content={content}
+            onContentChange={onContentChange}
+            isPreview={isPreview}
+            isEditable={isEditable}
+            slideId={slideId}
+            index={index}
+          />
+        </React.Fragment>
+      );
+    }
+  );
+
+MasterRecursiveComponent.displayName = "MasterRecursiveComponent";
