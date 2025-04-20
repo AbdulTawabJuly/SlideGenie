@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 import React, { useCallback } from "react";
 import { cn } from "@/lib/utils";
 import DropZone from "./DropZone";
+import Paragraph from "@/components/global/editor/components/Paragraph";
 
 type MasterRecursiveComponentProps = {
   content: ContentItem;
@@ -33,15 +34,15 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
       },
       [content.id, onContentChange]
     );
-    console.log("Content ",content)
+    console.log("Content ", content);
 
     const commonProps = {
-      placeHolder: content.placeholder,
+      placeholder: content.placeholder,
       value: content.content as string,
       onChange: handleChange,
       isPreview: isPreview,
     };
-    console.log(commonProps)
+    console.log(commonProps);
 
     const animationProps = {
       initial: { opacity: 0, y: 20 },
@@ -52,34 +53,40 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
     switch (content.type) {
       case "heading1":
         return (
-          <motion.div className="w-full h-full" {...animationProps}>
+          <motion.div {...animationProps} className="w-full h-full">
             <Heading1 {...commonProps} />
           </motion.div>
         );
       case "heading2":
         return (
-          <motion.div className="w-full h-full" {...animationProps}>
+          <motion.div {...animationProps} className="w-full h-full">
             <Heading2 {...commonProps} />
           </motion.div>
         );
       case "heading3":
         return (
-          <motion.div className="w-full h-full" {...animationProps}>
+          <motion.div {...animationProps} className="w-full h-full">
             <Heading3 {...commonProps} />
           </motion.div>
         );
       case "heading4":
         return (
-          <motion.div className="w-full h-full" {...animationProps}>
+          <motion.div {...animationProps} className="w-full h-full">
             <Heading4 {...commonProps} />
           </motion.div>
         );
-        case "title":
-          return (
-            <motion.div className="w-full h-full" {...animationProps}>
-              <Title {...commonProps} />
-            </motion.div>
-          );
+      case "title":
+        return (
+          <motion.div {...animationProps} className="w-full h-full">
+            <Title {...commonProps} />
+          </motion.div>
+        );
+      case "paragraph":
+        return (
+          <motion.div {...animationProps} className="w-full h-full">
+            <Paragraph {...commonProps} />
+          </motion.div>
+        );
       case "column":
         if (Array.isArray(content.content)) {
           return (
