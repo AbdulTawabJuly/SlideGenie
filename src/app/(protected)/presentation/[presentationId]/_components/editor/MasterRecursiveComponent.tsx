@@ -13,6 +13,7 @@ import React, { useCallback } from "react";
 import { cn } from "@/lib/utils";
 import DropZone from "./DropZone";
 import Paragraph from "@/components/global/editor/components/Paragraph";
+import TableComponent from "@/components/global/editor/components/TableComponent";
 
 type MasterRecursiveComponentProps = {
   content: ContentItem;
@@ -87,6 +88,13 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
             <Paragraph {...commonProps} />
           </motion.div>
         );
+      case "table" :
+        return(
+          <motion.div {...animationProps} className="w-full h-full">
+            <TableComponent/>
+          </motion.div>
+
+        )
       case "column":
         if (Array.isArray(content.content)) {
           return (
