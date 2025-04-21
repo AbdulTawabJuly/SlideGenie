@@ -27,6 +27,7 @@ const TableComponent = ({
   const [rowSizes, setRowSizes] = useState<number[]>([]);
   const [colSizes, setColSizes] = useState<number[]>([]);
   const [tableData, setTableData] = useState<string[][]>(() => {
+    console.log("Length : ", content.length, content[0].length, content);
     if (content.length === 0 || content[0].length === 0) {
       return Array(initialRowSize).fill(Array(initialColSize).fill(""));
     }
