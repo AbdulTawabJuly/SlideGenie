@@ -36,6 +36,10 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
       [content.id, onContentChange]
     );
     console.log("Content ", content);
+    console.log("Length in MSR : ",content.content.length)
+    console.log("Content in MSR : ",content.content)
+
+
 
     const commonProps = {
       placeholder: content.placeholder,
@@ -106,6 +110,15 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
             />
           </motion.div>
         );
+
+      case "resizable-column":
+        if(Array.isArray(content.content)){
+          return(
+            <motion.div {...animationProps} className="w-full h-full">
+            <Title {...commonProps} />
+          </motion.div>
+          )
+        }
       case "column":
         if (Array.isArray(content.content)) {
           return (
