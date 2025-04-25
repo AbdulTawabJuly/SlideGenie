@@ -1,5 +1,5 @@
-import React from "react";
-import { FileUploaderRegular } from "@uploadcare/react-uploader";
+// "use client";
+import { FileUploaderRegular } from "@uploadcare/react-uploader/next";
 import "@uploadcare/react-uploader/core.css";
 
 type Props = {
@@ -14,12 +14,13 @@ const UploadImage = ({ contentId, onContentChange }: Props) => {
   const handleChangeEvent = (e: { cdnUrl: string | string[] | string[][] }) => {
     onContentChange(contentId, e.cdnUrl);
   };
+  console.log("Key : ", process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY);
   return (
     <div>
       <FileUploaderRegular
         sourceList="local, url, dropbox"
         classNameUploader="uc-light"
-        pubkey={process.env.UPLOADCARE_PUBLIC_KEY!}
+        pubkey={process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY!}
         multiple={false}
         onFileUploadSuccess={handleChangeEvent}
         maxLocalFileSizeBytes={10000000}

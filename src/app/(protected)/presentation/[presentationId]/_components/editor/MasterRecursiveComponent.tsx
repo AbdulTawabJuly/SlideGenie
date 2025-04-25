@@ -16,6 +16,7 @@ import Paragraph from "@/components/global/editor/components/Paragraph";
 import TableComponent from "@/components/global/editor/components/TableComponent";
 import ColumnComponent from "@/components/global/editor/components/ColumnComponent";
 import CustomImage from "../../../../../../components/global/editor/components/ImageComponent";
+import BlockQuote from "@/components/global/editor/components/BlockQuote";
 
 type MasterRecursiveComponentProps = {
   content: ContentItem;
@@ -145,10 +146,11 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
 
       case "blockquote":
         return (
-          <motion.div
-            {...animationProps}
-            className="w-full h-full"
-          ></motion.div>
+          <motion.div {...animationProps} className="w-full h-full">
+            <BlockQuote>
+              <Paragraph {...commonProps} />
+            </BlockQuote>
+          </motion.div>
         );
 
       case "column":
