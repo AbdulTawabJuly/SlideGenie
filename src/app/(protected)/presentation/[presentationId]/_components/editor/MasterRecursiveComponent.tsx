@@ -143,6 +143,14 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
           </motion.div>
         );
 
+      case "blockquote":
+        return (
+          <motion.div
+            {...animationProps}
+            className="w-full h-full"
+          ></motion.div>
+        );
+
       case "column":
         if (Array.isArray(content.content)) {
           return (
