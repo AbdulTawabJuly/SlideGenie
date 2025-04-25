@@ -15,6 +15,7 @@ import DropZone from "./DropZone";
 import Paragraph from "@/components/global/editor/components/Paragraph";
 import TableComponent from "@/components/global/editor/components/TableComponent";
 import ColumnComponent from "@/components/global/editor/components/ColumnComponent";
+import CustomImage from "../../../../../../components/global/editor/components/ImageComponent";
 
 type MasterRecursiveComponentProps = {
   content: ContentItem;
@@ -129,10 +130,17 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
 
       case "image":
         return (
-          <motion.div
-            {...animationProps}
-            className="w-full h-full"
-          ></motion.div>
+          <motion.div {...animationProps} className="w-full h-full">
+            <CustomImage
+              src={content.content as string}
+              alt={content.alt || "image"}
+              className={content.className}
+              isPreview={isPreview}
+              isEditable={isEditable}
+              contentId={content.id}
+              onContentChange={onContentChange}
+            />
+          </motion.div>
         );
 
       case "column":
