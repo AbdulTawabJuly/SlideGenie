@@ -4,7 +4,8 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { useSlideStore } from "@/store/useSlideStore";
-import React, { useState } from "react";
+import { table } from "console";
+import React, { useEffect, useState } from "react";
 
 interface TableComponentProps {
   content: string[][];
@@ -27,7 +28,13 @@ const TableComponent = ({
   const [rowSizes, setRowSizes] = useState<number[]>([]);
   const [colSizes, setColSizes] = useState<number[]>([]);
   const [tableData, setTableData] = useState<string[][]>(() => {
-    console.log("Length : ", content.length, content[0].length, "Content : " ,content);
+    console.log(
+      "Length : ",
+      content.length,
+      content[0].length,
+      "Content : ",
+      content
+    );
     if (content.length === 0 || content[0].length === 0) {
       return Array(initialRowSize).fill(Array(initialColSize).fill(""));
     }
@@ -51,6 +58,11 @@ const TableComponent = ({
     setTableData(newData);
     onChange(newData);
   };
+
+  useEffect(() => {
+    setRowSizes(new Array(tableData.length).fill(100 / tableData.length));
+    setColSizes(new Array(tableData[0].length).fill(100 / tableData[0].length));
+  }, [tableData]);
   if (isPreview) {
     return (
       <div className="w-full overflow-x-auto text-xs">
