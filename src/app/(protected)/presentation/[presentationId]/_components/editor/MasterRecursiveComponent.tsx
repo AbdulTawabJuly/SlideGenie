@@ -17,6 +17,9 @@ import TableComponent from "@/components/global/editor/components/TableComponent
 import ColumnComponent from "@/components/global/editor/components/ColumnComponent";
 import CustomImage from "../../../../../../components/global/editor/components/ImageComponent";
 import BlockQuote from "@/components/global/editor/components/BlockQuote";
+import NumberedList, {
+  BulletList,
+} from "@/components/global/editor/components/ListComponent";
 
 type MasterRecursiveComponentProps = {
   content: ContentItem;
@@ -150,6 +153,39 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
             <BlockQuote>
               <Paragraph {...commonProps} />
             </BlockQuote>
+          </motion.div>
+        );
+
+      case "numberedList":
+        return (
+          <motion.div {...animationProps} className="w-full h-full">
+            <NumberedList
+              items={content.content as string[]}
+              onChange={(newItems) => onContentChange(content.id, newItems)}
+              className={content.className}
+            />
+          </motion.div>
+        );
+
+      case "bulletList":
+        return (
+          <motion.div {...animationProps} className="w-full h-full">
+            <BulletList
+              items={content.content as string[]}
+              onChange={(newItems) => onContentChange(content.id, newItems)}
+              className={content.className}
+            />
+          </motion.div>
+        );
+
+      case "todoList":
+        return (
+          <motion.div {...animationProps} className="w-full h-full">
+            <TodoList
+              items={content.content as string[]}
+              onChange={(newItems) => onContentChange(content.id, newItems)}
+              className={content.className}
+            />
           </motion.div>
         );
 

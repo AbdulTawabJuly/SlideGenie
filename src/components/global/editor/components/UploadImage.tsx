@@ -1,6 +1,5 @@
-// "use client";
 import { FileUploaderRegular } from "@uploadcare/react-uploader/next";
-import "@uploadcare/react-uploader/core.css";
+import "./styles/uploadcare.css"
 
 type Props = {
   contentId: string;
@@ -14,7 +13,6 @@ const UploadImage = ({ contentId, onContentChange }: Props) => {
   const handleChangeEvent = (e: { cdnUrl: string | string[] | string[][] }) => {
     onContentChange(contentId, e.cdnUrl);
   };
-  console.log("Key : ", process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY);
   return (
     <div>
       <FileUploaderRegular
