@@ -1,5 +1,5 @@
 import { FileUploaderRegular } from "@uploadcare/react-uploader";
-import "./styles/uploadcare.css"
+import "../styles/uploadcare.css"
 
 type Props = {
   contentId: string;
