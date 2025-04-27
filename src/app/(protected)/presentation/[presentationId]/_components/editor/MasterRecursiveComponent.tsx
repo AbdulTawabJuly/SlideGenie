@@ -22,6 +22,7 @@ import NumberedList, {
   TodotList,
 } from "@/components/global/editor/components/ListComponent";
 import CalloutBox from "@/components/global/editor/components/CalloutBox";
+import CodeBlock from "@/components/global/editor/components/CodeBlock";
 
 type MasterRecursiveComponentProps = {
   content: ContentItem;
@@ -200,6 +201,18 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
             >
               <Paragraph {...commonProps} />
             </CalloutBox>
+          </motion.div>
+        );
+
+      case "codeBlock":
+        return (
+          <motion.div {...animationProps} className="w-full h-full">
+            <CodeBlock
+              code = {content.code}
+              language = {content.language}
+              onChange = {() => {}}
+              className={content.className}
+            />
           </motion.div>
         );
 
