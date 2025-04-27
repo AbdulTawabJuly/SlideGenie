@@ -19,6 +19,7 @@ import CustomImage from "../../../../../../components/global/editor/components/I
 import BlockQuote from "@/components/global/editor/components/BlockQuote";
 import NumberedList, {
   BulletList,
+  TodotList,
 } from "@/components/global/editor/components/ListComponent";
 
 type MasterRecursiveComponentProps = {
@@ -181,7 +182,7 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
       case "todoList":
         return (
           <motion.div {...animationProps} className="w-full h-full">
-            <TodoList
+            <TodotList
               items={content.content as string[]}
               onChange={(newItems) => onContentChange(content.id, newItems)}
               className={content.className}

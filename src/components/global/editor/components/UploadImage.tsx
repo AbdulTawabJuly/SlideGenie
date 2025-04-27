@@ -1,4 +1,4 @@
-import { FileUploaderRegular } from "@uploadcare/react-uploader/next";
+import { FileUploaderRegular } from "@uploadcare/react-uploader";
 import "./styles/uploadcare.css"
 
 type Props = {
@@ -14,7 +14,7 @@ const UploadImage = ({ contentId, onContentChange }: Props) => {
     onContentChange(contentId, e.cdnUrl);
   };
   return (
-    <div>
+    <div className="py-8 px-4">
       <FileUploaderRegular
         sourceList="local, url, dropbox"
         classNameUploader="uc-light"
