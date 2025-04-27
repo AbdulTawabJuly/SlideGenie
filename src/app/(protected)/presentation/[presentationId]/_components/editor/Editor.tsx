@@ -5,8 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { LayoutSlides, Slide } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useSlideStore } from "@/store/useSlideStore";
-import { isDragging } from "motion-dom";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { v4 as uuidv4 } from "uuid";
 import { MasterRecursiveComponent } from "./MasterRecursiveComponent";
@@ -17,6 +16,7 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { EllipsisVertical, Trash } from "lucide-react";
+import { updateSlides } from "@/actions/project";
 
 interface DropZoneProps {
   index: number;
@@ -180,6 +180,8 @@ const Editor = ({ isEditable }: Props) => {
     }
   };
 
+  const autoSaveTimeOutRef = useRef<NodeJS.Timeout | null>(null);
+
   const handleDrop = (
     item: {
       type: string;
@@ -221,9 +223,38 @@ const Editor = ({ isEditable }: Props) => {
     }
   }, [currentSlide]);
 
-  useEffect(() =>{
-    if(typeof window !== "undefined") setLoading(false)
-  },[])
+  useEffect(() => {
+    if (typeof window !== "undefined") setLoading(false);
+  }, []);
+
+  console.log("IsEditable from Editor Component",isEditable)
+  const saveSlide = useCallback(() => {
+    alert("Throtling")
+    if (isEditable && project) {
+      (async () => {
+        await updateSlides(project.id, JSON.parse(JSON.stringify(slides)));
+      })();
+    }
+  }, [isEditable, project, slides]);
+
+  useEffect(() => {
+    console.log("Use Effect Fired")
+    if (autoSaveTimeOutRef.current) {
+      clearTimeout(autoSaveTimeOutRef.current);
+    }
+
+    if (isEditable) {
+      autoSaveTimeOutRef.current = setTimeout(() => {
+        saveSlide();
+      }, 2000);
+    }
+
+    return () => {
+      if (autoSaveTimeOutRef.current) {
+        clearTimeout(autoSaveTimeOutRef.current);
+      }
+    };
+  }, [JSON.stringify(slides), isEditable, project]);
 
   return (
     <div className="flex-1 flex flex-col h-full w-full max-w-4xl mx-auto mb-20">

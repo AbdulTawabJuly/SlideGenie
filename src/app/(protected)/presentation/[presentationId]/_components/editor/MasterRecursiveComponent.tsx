@@ -46,8 +46,8 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
       },
       [content.id, onContentChange]
     );
-    console.log("Content ", content);
-    console.log("Length in MSR : ", content.content.length);
+    // console.log("Content ", content);
+    // console.log("Length in MSR : ", content.content.length);
     // console.log("Content in MSR : ", content.content);
 
     const commonProps = {
