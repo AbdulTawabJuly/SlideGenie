@@ -490,7 +490,19 @@ const existingLayouts = [
     },
 ]
 
+const fallbackImagesURL = [
+    "https://drive.google.com/file/d/1KDC6ghZgujMqp4XpGpnYJv5pXTxb3KHG/view?usp=sharing",
+    "https://drive.google.com/file/d/1WkTHfpISsuWuefq4LmnmTcuc5Pa8Whep/view?usp=sharing",
+    "https://drive.google.com/file/d/15OG1uoQvBFHxBwMDIaKaHRwygmb3jAiW/view?usp=sharing",
+    "https://drive.google.com/file/d/1GH9FW5u1HRBuwLb34t29U44waKU0Rr3A/view?usp=sharing"
+
+
+
+]
+
 const generateImageUrl = async (prompt: string): Promise<string> => {
+    const randomFallback =
+        fallbackImagesURL[Math.floor(Math.random() * fallbackImagesURL.length)]
     try {
         const improvedPrompt = `
           Create a vivid, Studio Ghibli-style illustration based on the following description. The artwork must retain the core details and context of the scene, while infusing it with the whimsical, emotional, and painterly aesthetic of Ghibli films. 
@@ -503,18 +515,19 @@ const generateImageUrl = async (prompt: string): Promise<string> => {
             - Make the image visually captivating, suitable for educational or storytelling slides.
         `
 
+
         const dalleResponse = await openai.images.generate({
-            model : "dall-e-3",
+            model: "dall-e-3",
             prompt: improvedPrompt,
             n: 1,
             size: '1024x1024',
         })
         console.log('🟢 Image generated successfully:', dalleResponse.data[0]?.url)
 
-        return dalleResponse.data[0]?.url || 'https://via.placeholder.com/1024'
+        return dalleResponse.data[0]?.url || randomFallback
     } catch (error) {
         console.error('Failed to generate image:', error)
-        return 'https://via.placeholder.com/1024'
+        return randomFallback
     }
 }
 
@@ -560,7 +573,7 @@ The output must be an array of JSON objects.
   4. Fill placeholder data into content fields where required.
   5. Generate unique image placeholders for the 'content' property of image components and also alt text according to the outline.
   6. Ensure proper formatting and schema alignment for the output JSON.
-7. First create LAYOUTS TYPES  at the top most level of the JSON output as follows ${JSON.stringify(
+  7. First create LAYOUTS TYPES  at the top most level of the JSON output as follows ${JSON.stringify(
         [
             {
                 slideName: 'Blank card',
@@ -571,8 +584,8 @@ The output must be an array of JSON objects.
         ]
     )}
 
-8.The content property of each LAYOUTS TYPE should start with “column” and within the columns content property you can use any  of the CONTENT TYPES I provided above. Resizable-column, column and other multi element contents should be an array because you can have more elements inside them nested. Static elements like title and paragraph should have content set to a string.Here is an example of what 1 layout with 1 column with 1 title inside would look like:
-${JSON.stringify([
+  8.The content property of each LAYOUTS TYPE should start with “column” and within the columns content property you can use any  of the CONTENT TYPES I provided above. Resizable-column, column and other multi element contents should be an array because you can have more elements inside them nested. Static elements like title and paragraph should have content set to a string.Here is an example of what 1 layout with 1 column with 1 title inside would look like:
+  ${JSON.stringify([
         {
             slideName: 'Blank card',
             type: 'blank-card',
@@ -595,8 +608,8 @@ ${JSON.stringify([
     ])}
 
 
-9. Here is a final example of an example output for you to get an idea 
-${JSON.stringify([
+  9. Here is a final example of an example output for you to get an idea 
+  ${JSON.stringify([
         {
             id: uuidv4(),
             slideName: 'Blank card',
@@ -640,7 +653,7 @@ ${JSON.stringify([
                                 type: 'image' as ContentType,
                                 name: 'Image',
                                 content:
-                                    'https://plus.unsplash.com/premium_photo-1729004379397-ece899804701?q=80&w=2767&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                                    'https://drive.google.com/file/d/1GH9FW5u1HRBuwLb34t29U44waKU0Rr3A/view?usp=sharing',
                                 alt: 'Title',
                             },
                             {
@@ -673,14 +686,13 @@ ${JSON.stringify([
         },
     ])}
 
- For Images 
-  - The alt text should describe the image clearly and concisely.
-  - Focus on the main subject(s) of the image and any relevant details such as colors, shapes, people, or objects.
-  - Ensure the alt text aligns with the context of the presentation slide it will be used on (e.g., professional, educational, business-related).
-  - Avoid using terms like "image of" or "picture of," and instead focus directly on the content and meaning.
-
-  Output the layouts in JSON format. Ensure there are no duplicate layouts across the array.
-`
+  For Images 
+   - The alt text should describe the image clearly and concisely.
+   - Focus on the main subject(s) of the image and any relevant details such as colors, shapes, people, or objects.
+   - Ensure the alt text aligns with the context of the presentation slide it will be used on (e.g., professional, educational, business-related).
+   - Avoid using terms like "image of" or "picture of," and instead focus directly on the content and meaning  
+   Output the layouts in JSON format. Ensure there are no duplicate layouts across the array.
+    `
     try {
         console.log('🟢 Generating layouts...')
         const completion = await openai.chat.completions.create({
