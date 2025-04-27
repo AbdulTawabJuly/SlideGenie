@@ -28,82 +28,85 @@ const TableComponent = ({
   const [rowSizes, setRowSizes] = useState<number[]>([]);
   const [colSizes, setColSizes] = useState<number[]>([]);
   const [tableData, setTableData] = useState<string[][]>(() => {
-    console.log(
-      "TC Length : ",
-      content.length,
-      content[0].length,
-      "TC Content : ",
-      content
-    );
-    if (content.length === 0 || content[0].length === 0) {
-      return Array(initialRowSize).fill(Array(initialColSize).fill(""));
-    }
+    // console.log(
+    //   "TC Length : ",
+    //   content.length,
+    //   content[0].length,
+    //   "TC Content : ",
+    //   content
+    // );
+    // if (content.length === 0 || content[0].length === 0) {
+    //   return Array(initialRowSize).fill(Array(initialColSize).fill(""));
+    // }
     return content;
   });
 
-  console.log("Table Data : ", tableData, tableData.length);
+  // console.log("Table Data : ", tableData, tableData.length);
 
-  const handleResizeCol = (index: number, newSize: number) => {
-    if (!isEditable) return;
-    const newSizes = [...colSizes];
-    newSizes[index] = newSize;
-    setColSizes(newSizes);
-  };
+  // const handleResizeCol = (index: number, newSize: number) => {
+  //   if (!isEditable) return;
+  //   const newSizes = [...colSizes];
+  //   newSizes[index] = newSize;
+  //   setColSizes(newSizes);
+  // };
 
-  const updateCell = (rowIndex: number, colIndex: number, value: string) => {
-    console.log("Inside updateCell");
-    if (!isEditable) return;
-    const newData = tableData.map((row, rIndex) =>
-      rIndex === rowIndex
-        ? row.map((cell, cIndex) => (cIndex === colIndex ? value : cell))
-        : row
-    );
-    setTableData(newData);
-    onChange(newData);
-  };
+  // const updateCell = (rowIndex: number, colIndex: number, value: string) => {
+  //   console.log("Inside updateCell");
+  //   if (!isEditable) return;
+  //   const newData = tableData.map((row, rIndex) =>
+  //     rIndex === rowIndex
+  //       ? row.map((cell, cIndex) => (cIndex === colIndex ? value : cell))
+  //       : row
+  //   );
+  //   setTableData(newData);
+  //   onChange(newData);
+  // };
 
-  useEffect(() => {
-    setRowSizes(new Array(tableData.length).fill(100 / tableData.length));
-    setColSizes(new Array(tableData[0].length).fill(100 / tableData[0].length));
-  }, [tableData]);
+  // useEffect(() => {
+  //   setRowSizes(new Array(tableData.length).fill(100 / tableData.length));
+  //   setColSizes(new Array(tableData[0].length).fill(100 / tableData[0].length));
+  // }, [tableData]);
 
   if (isPreview) {
     console.log("Inside IsPreview");
-    console.log(tableData[0]);
-    console.log(tableData.slice(1));
-    return (
-      <div className="w-full overflow-x-auto text-xs">
-        <table className="w-full">
-          <thead>
-            <tr>
-              {tableData[0].map((cell, index) => (
-                <th
-                  key={index}
-                  className="p-2 border"
-                  style={{ width: `${colSizes[index]}%` }}
-                >
-                  {cell || "Type Here"}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {tableData.slice(1).map((row, rowIndex) => (
-              <tr
-                key={rowIndex}
-                style={{ height: `${rowSizes[rowIndex + 1]}%` }}
-              >
-                {row.map((cell, cellIndex) => (
-                  <td key={cellIndex} className="p-2 border">
-                    {cell || "Type Here"}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
+    console.log(tableData[0]); 
+    // console.log(tableData.slice(1));
+
+    return <pre>{JSON.stringify(content, null, 2)}</pre>;
+
+    // return (
+    //   <div className="w-full overflow-x-auto text-xs">
+    //     <table className="w-full">
+    //       <thead>
+    //         <tr>
+    //           {tableData[0].map((cell, index) => (
+    //             <th
+    //               key={index}
+    //               className="p-2 border"
+    //               style={{ width: `${colSizes[index]}%` }}
+    //             >
+    //               {cell || "Type Here"}
+    //             </th>
+    //           ))}
+    //         </tr>
+    //       </thead>
+    //       <tbody>
+    //         {tableData.slice(1).map((row, rowIndex) => (
+    //           <tr
+    //             key={rowIndex}
+    //             style={{ height: `${rowSizes[rowIndex + 1]}%` }}
+    //           >
+    //             {row.map((cell, cellIndex) => (
+    //               <td key={cellIndex} className="p-2 border">
+    //                 {cell || "Type Here"}
+    //               </td>
+    //             ))}
+    //           </tr>
+    //         ))}
+    //       </tbody>
+    //     </table>
+    //   </div>
+    // );
   }
   return (
     // <div
