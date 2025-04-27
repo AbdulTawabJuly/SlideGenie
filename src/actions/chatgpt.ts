@@ -557,6 +557,9 @@ const replaceImagePlaceholders = async (layout: Slide) => {
     }
 }
 
+//5. **Exactly one image placeholder per layout**—each slide must include one (and only one) image component with a placeholder URL and appropriate alt text.
+
+
 export const generateLayoutsJson = async (outlineArray: string[]) => {
     const prompt = `### Guidelines
 You are a highly creative AI that generates JSON-based layouts for presentations. I will provide you with a pattern and a format to follow, and for each outline, you must generate unique layouts and contents and give me the output in the JSON format expected.

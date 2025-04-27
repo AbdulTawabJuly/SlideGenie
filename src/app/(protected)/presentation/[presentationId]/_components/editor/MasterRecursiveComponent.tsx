@@ -44,7 +44,7 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
     );
     console.log("Content ", content);
     console.log("Length in MSR : ", content.content.length);
-    console.log("Content in MSR : ", content.content);
+    // console.log("Content in MSR : ", content.content);
 
     const commonProps = {
       placeholder: content.placeholder,
@@ -52,7 +52,7 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
       onChange: handleChange,
       isPreview: isPreview,
     };
-    console.log(commonProps);
+    // console.log(commonProps);
 
     const animationProps = {
       initial: { opacity: 0, y: 20 },

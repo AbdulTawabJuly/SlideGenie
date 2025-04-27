@@ -29,10 +29,10 @@ const TableComponent = ({
   const [colSizes, setColSizes] = useState<number[]>([]);
   const [tableData, setTableData] = useState<string[][]>(() => {
     console.log(
-      "Length : ",
+      "TC Length : ",
       content.length,
       content[0].length,
-      "Content : ",
+      "TC Content : ",
       content
     );
     if (content.length === 0 || content[0].length === 0) {
@@ -40,6 +40,8 @@ const TableComponent = ({
     }
     return content;
   });
+
+  console.log("Table Data : ", tableData, tableData.length);
 
   const handleResizeCol = (index: number, newSize: number) => {
     if (!isEditable) return;
@@ -49,6 +51,7 @@ const TableComponent = ({
   };
 
   const updateCell = (rowIndex: number, colIndex: number, value: string) => {
+    console.log("Inside updateCell");
     if (!isEditable) return;
     const newData = tableData.map((row, rIndex) =>
       rIndex === rowIndex
@@ -63,7 +66,11 @@ const TableComponent = ({
     setRowSizes(new Array(tableData.length).fill(100 / tableData.length));
     setColSizes(new Array(tableData[0].length).fill(100 / tableData[0].length));
   }, [tableData]);
+
   if (isPreview) {
+    console.log("Inside IsPreview");
+    console.log(tableData[0]);
+    console.log(tableData.slice(1));
     return (
       <div className="w-full overflow-x-auto text-xs">
         <table className="w-full">
@@ -99,63 +106,67 @@ const TableComponent = ({
     );
   }
   return (
-    <div
-      className="w-full h-full relative"
-      style={{
-        background:
-          currentTheme.gradientBackground || currentTheme.backgroundColor,
-        borderRadius: "8px",
-      }}
-    >
-      <ResizablePanelGroup
-        direction="vertical"
-        className={`h-full w-full rounded-lg border ${
-          initialColSize === 2
-            ? "min-h-[100px]"
-            : initialColSize === 3
-            ? "min-h-[150px]"
-            : initialColSize === 4
-            ? "min-h-[200px]"
-            : "min-h-[1000px]"
-        }`}
-        onLayout={(sizes) => setRowSizes(sizes)}
-      >
-        {tableData.map((row, rowIndex) => (
-          <React.Fragment key={rowIndex}>
-            {rowIndex > 0 && <ResizableHandle />}
-            <ResizablePanelGroup
-              direction="horizontal"
-              onLayout={(sizes) => setColSizes(sizes)}
-              className="w-full h-full"
-            >
-              {row.map((cell, colIndex) => (
-                <React.Fragment key={colIndex}>
-                  {colIndex > 0 && <ResizableHandle />}
-                  <ResizablePanel
-                    defaultSize={colSizes[colIndex]}
-                    onResize={(size) => handleResizeCol(colIndex, size)}
-                    className="w-full h-full min-h-9"
-                  >
-                    <div className="h-full w-full relative min-h-3">
-                      <input
-                        value={cell}
-                        onChange={(e) =>
-                          updateCell(rowIndex, colIndex, e.target.value)
-                        }
-                        className="w-full h-full p-4 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md"
-                        style={{ color: currentTheme.fontColor }}
-                        placeholder="Type Here"
-                        readOnly={!isEditable}
-                      ></input>
-                    </div>
-                  </ResizablePanel>
-                </React.Fragment>
-              ))}
-            </ResizablePanelGroup>
-          </React.Fragment>
-        ))}
-      </ResizablePanelGroup>
-    </div>
+    // <div
+    //   className="w-full h-full relative"
+    //   style={{
+    //     background:
+    //       currentTheme.gradientBackground || currentTheme.backgroundColor,
+    //     borderRadius: "8px",
+    //   }}
+    // >
+    //   <ResizablePanelGroup
+    //     direction="vertical"
+    //     className={`h-full w-full rounded-lg border ${
+    //       initialColSize === 2
+    //         ? "min-h-[100px]"
+    //         : initialColSize === 3
+    //         ? "min-h-[150px]"
+    //         : initialColSize === 4
+    //         ? "min-h-[200px]"
+    //         : "min-h-[1000px]"
+    //     }`}
+    //     onLayout={(sizes) => setRowSizes(sizes)}
+    //   >
+    //     {tableData.map((row, rowIndex) => (
+    //       <React.Fragment key={rowIndex}>
+    //         {rowIndex > 0 && <ResizableHandle />}
+    //         <ResizablePanelGroup
+    //           direction="horizontal"
+    //           onLayout={(sizes) => setColSizes(sizes)}
+    //           className="w-full h-full"
+    //         >
+    //           {row.map((cell, colIndex) => (
+    //             <React.Fragment key={colIndex}>
+    //               {colIndex > 0 && <ResizableHandle />}
+    //               <ResizablePanel
+    //                 defaultSize={colSizes[colIndex]}
+    //                 onResize={(size) => handleResizeCol(colIndex, size)}
+    //                 className="w-full h-full min-h-9"
+    //               >
+    //                 <div className="h-full w-full relative min-h-3">
+    //                   <input
+    //                     value={cell}
+    //                     onChange={(e) =>
+    //                       updateCell(rowIndex, colIndex, e.target.value)
+    //                     }
+    //                     className="w-full h-full p-4 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md"
+    //                     style={{ color: currentTheme.fontColor }}
+    //                     placeholder="Type Here"
+    //                     readOnly={!isEditable}
+    //                   ></input>
+    //                 </div>
+    //               </ResizablePanel>
+    //             </React.Fragment>
+    //           ))}
+    //         </ResizablePanelGroup>
+    //       </React.Fragment>
+    //     ))}
+    //   </ResizablePanelGroup>
+    // </div>
+    <>
+      Table Component
+      <pre>{JSON.stringify(content, null, 2)}</pre>
+    </>
   );
 };
 
