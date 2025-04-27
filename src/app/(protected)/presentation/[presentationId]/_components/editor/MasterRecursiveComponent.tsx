@@ -21,6 +21,7 @@ import NumberedList, {
   BulletList,
   TodotList,
 } from "@/components/global/editor/components/ListComponent";
+import CalloutBox from "@/components/global/editor/components/CalloutBox";
 
 type MasterRecursiveComponentProps = {
   content: ContentItem;
@@ -187,6 +188,18 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
               onChange={(newItems) => onContentChange(content.id, newItems)}
               className={content.className}
             />
+          </motion.div>
+        );
+
+      case "calloutBox":
+        return (
+          <motion.div {...animationProps} className="w-full h-full">
+            <CalloutBox
+              type={content.callOutType || "info"}
+              className={content.className}
+            >
+              <Paragraph {...commonProps} />
+            </CalloutBox>
           </motion.div>
         );
 
