@@ -495,25 +495,35 @@ const fallbackImagesURL = [
     "https://drive.google.com/file/d/1WkTHfpISsuWuefq4LmnmTcuc5Pa8Whep/view?usp=sharing",
     "https://drive.google.com/file/d/15OG1uoQvBFHxBwMDIaKaHRwygmb3jAiW/view?usp=sharing",
     "https://drive.google.com/file/d/1GH9FW5u1HRBuwLb34t29U44waKU0Rr3A/view?usp=sharing"
-
-
-
 ]
 
 const generateImageUrl = async (prompt: string): Promise<string> => {
     const randomFallback =
         fallbackImagesURL[Math.floor(Math.random() * fallbackImagesURL.length)]
     try {
+        // const improvedPrompt = `
+        //   Create a vivid, Studio Ghibli-style illustration based on the following description. The artwork must retain the core details and context of the scene, while infusing it with the whimsical, emotional, and painterly aesthetic of Ghibli films. 
+        //     Description: ${prompt}  
+        //     Important Notes:
+        //     - Keep the image imaginative yet directly relevant to the described topic.
+        //     - Depict realistic objects, environments, and characters, but in Ghibli's soft, hand-painted style.
+        //     - Use natural light, expressive atmosphere, and subtle fantasy elements.
+        //     - Avoid photorealism, abstract, or sci-fi looks. No text or signage.
+        //     - Make the image visually captivating, suitable for educational or storytelling slides.
+        // `
+
         const improvedPrompt = `
-          Create a vivid, Studio Ghibli-style illustration based on the following description. The artwork must retain the core details and context of the scene, while infusing it with the whimsical, emotional, and painterly aesthetic of Ghibli films. 
-            Description: ${prompt}  
+        Create a highly realistic, professional image based on the following description. The image should look as if captured in real life, with attention to detail, lighting, and texture. 
+            Description: ${prompt}
             Important Notes:
-            - Keep the image imaginative yet directly relevant to the described topic.
-            - Depict realistic objects, environments, and characters, but in Ghibli's soft, hand-painted style.
-            - Use natural light, expressive atmosphere, and subtle fantasy elements.
-            - Avoid photorealism, abstract, or sci-fi looks. No text or signage.
-            - Make the image visually captivating, suitable for educational or storytelling slides.
+            - The image must be in a photorealistic style and visually compelling.
+            - Ensure all text, signs, or visible writing in the image are in English.
+            - Pay special attention to lighting, shadows, and textures to make the image as lifelike as possible.
+            - Avoid elements that appear abstract, cartoonish, or overly artistic. The image should be suitable for professional presentations.
+            - Focus on accurately depicting the concept described, including specific objects, environment, mood, and context. Maintain relevance to the description provided.
+            Example Use Cases: Business presentations, educational slides.
         `
+
 
 
         const dalleResponse = await openai.images.generate({

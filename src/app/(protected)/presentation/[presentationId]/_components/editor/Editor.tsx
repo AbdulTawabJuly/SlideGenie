@@ -105,7 +105,7 @@ export const DraggableSlide: React.FC<DraggableSlideProps> = ({
     contentId: string,
     newContent: string | string[] | string[][]
   ) => {
-    console.log("Content Changed", slide, contentId, newContent);
+    // console.log("Content Changed", slide, contentId, newContent);
     if (isEditable) {
       updateContentItem(slide.id, contentId, newContent);
     }
@@ -171,7 +171,6 @@ const Editor = ({ isEditable }: Props) => {
   } = useSlideStore();
 
   const orderedSlides = getOrderedSlides();
-
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [loading, setLoading] = useState(true);
   const moveSlide = (dragIndex: number, hoverIndex: number) => {
@@ -227,9 +226,8 @@ const Editor = ({ isEditable }: Props) => {
     if (typeof window !== "undefined") setLoading(false);
   }, []);
 
-  console.log("IsEditable from Editor Component",isEditable)
   const saveSlide = useCallback(() => {
-    alert("Throtling")
+    console.log("Debounce executed - saving slides");
     if (isEditable && project) {
       (async () => {
         await updateSlides(project.id, JSON.parse(JSON.stringify(slides)));
@@ -238,7 +236,7 @@ const Editor = ({ isEditable }: Props) => {
   }, [isEditable, project, slides]);
 
   useEffect(() => {
-    console.log("Use Effect Fired")
+    console.log("Slides changed, setting up debounce");
     if (autoSaveTimeOutRef.current) {
       clearTimeout(autoSaveTimeOutRef.current);
     }
@@ -254,7 +252,7 @@ const Editor = ({ isEditable }: Props) => {
         clearTimeout(autoSaveTimeOutRef.current);
       }
     };
-  }, [JSON.stringify(slides), isEditable, project]);
+  }, [slides, isEditable, project]);
 
   return (
     <div className="flex-1 flex flex-col h-full w-full max-w-4xl mx-auto mb-20">
