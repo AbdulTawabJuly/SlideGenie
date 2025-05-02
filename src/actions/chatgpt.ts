@@ -699,6 +699,34 @@ The output must be an array of JSON objects.
         },
     ])}
 
+    10.Table slides are optional, but if you choose to include one it must look exactly like this:
+    ${JSON.stringify([
+
+        {
+            "slideName": "<something appropriate>",
+            "type": "tableLayout",
+            "className": "<your usual styling>",
+            "content": {
+                "id": "<uuid>",
+                "type": "column",
+                "name": "Column",
+                "content": [
+                    {
+                        "id": "<uuid>",
+                        "type": "table",
+                        "name": "Table",
+                        "content": [
+                            ["Header1", "Header2"],
+                            ["Row1Col1", "Row1Col2"],
+                            ["Row2Col1", "Row2Col2"],
+                            ["Row3Col1", "Row3Col2"]
+                        ]
+                    }
+                ]
+            }
+        }
+    ])}
+
   For Images 
    - The alt text should describe the image clearly and concisely.
    - Focus on the main subject(s) of the image and any relevant details such as colors, shapes, people, or objects.

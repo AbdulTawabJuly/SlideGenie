@@ -89,6 +89,7 @@ export const DraggableSlide: React.FC<DraggableSlideProps> = ({
   isEditable,
 }) => {
   const ref = useRef(null);
+  console.log("Content in Editor : " , slide.content)
   const { currentSlide, setCurrentSlide, currentTheme, updateContentItem } =
     useSlideStore();
   const [{ isDragging }, drag] = useDrag({

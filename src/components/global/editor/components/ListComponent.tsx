@@ -218,38 +218,35 @@ export const TodotList: React.FC<ListProps> = ({
   };
 
   return (
-    <>
-      Todo List Component
-      <ul
-        className={cn("space-y-1", className)}
-        style={{ color: currentTheme.fontColor }}
-      >
-        {items.map((item, index) => (
-          <li key={index} className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              checked={item.startsWith("[x] ")}
-              onChange={() => toggleCheckbox(index)}
-              className="form-checkbox"
-              disabled={!isEditable}
-            />
-            <ListItem
-              item={item.replace(/^\[[ x]\] /, "")}
-              index={index}
-              onChange={(index, value) =>
-                handleChange(
-                  index,
-                  `${item.startsWith("[x] ") ? "[x] " : "[ ] "}${value}`
-                )
-              }
-              onKeyDown={handleKeyDown}
-              isEditable={isEditable}
-              fontColor={currentTheme.fontColor}
-            />
-          </li>
-        ))}
-      </ul>
-    </>
+    <ul
+      className={cn("space-y-1", className)}
+      style={{ color: currentTheme.fontColor }}
+    >
+      {items.map((item, index) => (
+        <li key={index} className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            checked={item.startsWith("[x] ")}
+            onChange={() => toggleCheckbox(index)}
+            className="form-checkbox"
+            disabled={!isEditable}
+          />
+          <ListItem
+            item={item.replace(/^\[[ x]\] /, "")}
+            index={index}
+            onChange={(index, value) =>
+              handleChange(
+                index,
+                `${item.startsWith("[x] ") ? "[x] " : "[ ] "}${value}`
+              )
+            }
+            onKeyDown={handleKeyDown}
+            isEditable={isEditable}
+            fontColor={currentTheme.fontColor}
+          />
+        </li>
+      ))}
+    </ul>
   );
 };
 

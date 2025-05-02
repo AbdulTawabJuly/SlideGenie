@@ -25,27 +25,24 @@ const CustomImage = ({
   isEditable,
 }: Props) => {
   return (
-    <>
-      Image Component
-      <div className={`relative group w-full h-full rounded-lg`}>
-        <Image
-          src={src}
-          alt={alt}
-          width={isPreview ? 48 : 800}
-          height={isPreview ? 48 : 800}
-          className={`object-cover w-full h-full rounded-lg ${className}`}
-        />
+    <div className={`relative group w-full h-full rounded-lg`}>
+      <Image
+        src={src}
+        alt={alt}
+        width={isPreview ? 48 : 800}
+        height={isPreview ? 48 : 800}
+        className={`object-cover w-full h-full rounded-lg ${className}`}
+      />
 
-        {!isPreview && isEditable && (
-          <div className="absolute top-0 left-0 hidden group-hover:block">
-            <UploadImage
-              contentId={contentId}
-              onContentChange={onContentChange}
-            />
-          </div>
-        )}
-      </div>
-    </>
+      {!isPreview && isEditable && (
+        <div className="absolute top-0 left-0 hidden group-hover:block">
+          <UploadImage
+            contentId={contentId}
+            onContentChange={onContentChange}
+          />
+        </div>
+      )}
+    </div>
   );
 };
 

@@ -51,8 +51,6 @@ const ColumnComponent = ({
     }
   }, [content]);
   return (
-    <>
-      Resizable Column Component
       <div className="relative w-full h-full">
         <ResizablePanelGroup
           direction="horizontal"
@@ -83,7 +81,6 @@ const ColumnComponent = ({
           ))}
         </ResizablePanelGroup>
       </div>
-    </>
   );
 };
 
