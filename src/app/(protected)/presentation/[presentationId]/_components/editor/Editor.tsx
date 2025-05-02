@@ -181,6 +181,14 @@ const Editor = ({ isEditable }: Props) => {
 
   const autoSaveTimeOutRef = useRef<NodeJS.Timeout | null>(null);
 
+  // at the top of the Editor component
+  const slide = useSlideStore((s) => s.slides);
+  useEffect(() => {
+    console.log("🎬 slides array changed:", slide);
+  }, [slide]);
+
+
+
   const handleDrop = (
     item: {
       type: string;

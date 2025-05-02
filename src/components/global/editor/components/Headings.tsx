@@ -51,6 +51,7 @@ const createHeading = (displayName: string, defaultClassName: string) => {
               else if (ref) ref.current = el;
             }}
             readOnly={isPreview}
+            {...props}
           ></textarea>
         </>
       );
