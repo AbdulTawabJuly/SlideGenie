@@ -12,8 +12,6 @@ interface BlockQuoteProps extends React.HTMLAttributes<HTMLQuoteElement> {
 const BlockQuote = ({ children, className, ...props }: BlockQuoteProps) => {
   const { currentTheme } = useSlideStore();
   return (
-    <>
-      Block Quote Component
       <blockquote
         className={cn(
           "pl-4 border-l-4 italic",
@@ -28,7 +26,6 @@ const BlockQuote = ({ children, className, ...props }: BlockQuoteProps) => {
       >
         {children}
       </blockquote>
-    </>
   );
 };
 

@@ -29,31 +29,28 @@ const createHeading = (displayName: string, defaultClassName: string) => {
       const previewClassName = isPreview ? "text-xs" : "";
 
       return (
-        <>
-        Heading Component
-          <textarea
-            className={cn(
-              `w-full bg-transparent ${defaultClassName} ${previewClassName} font-normal text-gray-900 placeholder:text-gray-300 focus:outline-none resize-none overflow-hidden leading-tight`,
-              className
-            )}
-            style={{
-              padding: 0,
-              margin: 0,
-              color: "inherit",
-              boxSizing: "content-box",
-              lineHeight: "1.2em",
-              minHeight: "1.2em",
-              ...styles,
-            }}
-            ref={(el) => {
-              (textAreaRef.current as HTMLTextAreaElement | null) = el;
-              if (typeof ref === "function") ref(el);
-              else if (ref) ref.current = el;
-            }}
-            readOnly={isPreview}
-            {...props}
-          ></textarea>
-        </>
+        <textarea
+          className={cn(
+            `w-full bg-transparent ${defaultClassName} ${previewClassName} font-normal text-gray-900 placeholder:text-gray-300 focus:outline-none resize-none overflow-hidden leading-tight`,
+            className
+          )}
+          style={{
+            padding: 0,
+            margin: 0,
+            color: "inherit",
+            boxSizing: "content-box",
+            lineHeight: "1.2em",
+            minHeight: "1.2em",
+            ...styles,
+          }}
+          ref={(el) => {
+            (textAreaRef.current as HTMLTextAreaElement | null) = el;
+            if (typeof ref === "function") ref(el);
+            else if (ref) ref.current = el;
+          }}
+          readOnly={isPreview}
+          {...props}
+        ></textarea>
       );
     }
   );
