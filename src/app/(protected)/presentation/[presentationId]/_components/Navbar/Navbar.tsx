@@ -57,9 +57,10 @@ const Navbar = ({ presentationId }: Props) => {
           <Share className="w-4 h-4" />
         </Button>
         <Button
-          variant={"default"}
+          variant={"outline"}
           className="flex items-center gap-2"
           onClick={() => setIsPresentationMode(true)}
+          style={{ backgroundColor: currentTheme.backgroundColor }}
         >
           <Play className="w-4 h-4" />
           <span className="hidden sm:inline">Present</span>

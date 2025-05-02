@@ -46,9 +46,6 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
       },
       [content.id, onContentChange]
     );
-    // console.log("Content ", content);
-    // console.log("Length in MSR : ", content.content.length);
-    // console.log("Content in MSR : ", content.content);
 
     const commonProps = {
       placeholder: content.placeholder,
@@ -56,7 +53,6 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
       onChange: handleChange,
       isPreview: isPreview,
     };
-    // console.log(commonProps);
 
     const animationProps = {
       initial: { opacity: 0, y: 20 },
@@ -102,6 +98,7 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
           </motion.div>
         );
       case "table":
+        const matrix = content.content as string[][];
         return (
           <motion.div {...animationProps} className="w-full h-full">
             <TableComponent
@@ -112,8 +109,8 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
                   newContent !== null ? newContent : ""
                 )
               }
-              initialRowSize={content.intialColumns}
-              initialColSize={content.initialRows}
+              initialRowSize={content.content.length}
+              initialColSize={matrix[0].length}
               isPreview={isPreview}
               isEditable={isEditable}
             />

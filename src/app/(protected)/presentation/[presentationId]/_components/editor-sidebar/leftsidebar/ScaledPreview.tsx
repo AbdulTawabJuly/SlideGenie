@@ -27,7 +27,7 @@ const ScaledPreview = ({ slide, isActive, index }: Props) => {
         backgroundImage: currentTheme.gradientBackground,
       }}
     >
-      <div className="scale-[0.5] origin-top-left w-[200%] h-[200%] overflow-hidden">
+      <div className="scale-[0.5] origin-top-left w-[200%] h-[200%] overflow-hidden ">
         <MasterRecursiveComponent
           slideId={slide.id}
           content={slide.content}

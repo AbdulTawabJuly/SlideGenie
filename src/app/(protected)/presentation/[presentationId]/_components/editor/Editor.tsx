@@ -89,6 +89,7 @@ export const DraggableSlide: React.FC<DraggableSlideProps> = ({
   isEditable,
 }) => {
   const ref = useRef(null);
+  console.log("Content in Editor : " , slide.content)
   const { currentSlide, setCurrentSlide, currentTheme, updateContentItem } =
     useSlideStore();
   const [{ isDragging }, drag] = useDrag({
@@ -182,14 +183,6 @@ const Editor = ({ isEditable }: Props) => {
   };
 
   const autoSaveTimeOutRef = useRef<NodeJS.Timeout | null>(null);
-
-  // at the top of the Editor component
-  const slide = useSlideStore((s) => s.slides);
-  useEffect(() => {
-    console.log("🎬 slides array changed:", slide);
-  }, [slide]);
-
-
 
   const handleDrop = (
     item: {

@@ -47,13 +47,13 @@ export interface Theme {
 
 export interface OutlineCard {
     title: string;
-    id : string;
-    order : number;
+    id: string;
+    order: number;
 }
 
 export interface LayoutSlides {
-    slideName : string;
-    content : ContentItem;
+    slideName: string;
+    content: ContentItem;
     classNAme?: string;
-    type : string;
+    type: string;
 }
