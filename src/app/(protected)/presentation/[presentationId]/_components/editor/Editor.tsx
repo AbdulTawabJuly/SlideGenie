@@ -89,7 +89,6 @@ export const DraggableSlide: React.FC<DraggableSlideProps> = ({
   isEditable,
 }) => {
   const ref = useRef(null);
-  console.log("Content in Editor : " , slide.content)
   const { currentSlide, setCurrentSlide, currentTheme, updateContentItem } =
     useSlideStore();
   const [{ isDragging }, drag] = useDrag({
@@ -138,7 +137,7 @@ export const DraggableSlide: React.FC<DraggableSlideProps> = ({
           onContentChange={handleContentChange}
         />
       </div>
-      {isEditable && (
+      {isEditable && index === currentSlide &&(
         <Popover>
           <PopoverTrigger asChild className="absolute top-2 left-2">
             <Button size="sm" variant="outline">
@@ -171,6 +170,8 @@ const Editor = ({ isEditable }: Props) => {
     reorderSlides,
     slides,
     project,
+    setIsSaving,
+    setLastSavedAt,
   } = useSlideStore();
 
   const orderedSlides = getOrderedSlides();
@@ -229,17 +230,19 @@ const Editor = ({ isEditable }: Props) => {
     if (typeof window !== "undefined") setLoading(false);
   }, []);
 
-  const saveSlide = useCallback(() => {
-    console.log("Debounce executed - saving slides");
+  const saveSlide = useCallback(async () => {
+    setIsSaving(true);
+    await new Promise((resolve) => setTimeout(resolve, 100));
     if (isEditable && project) {
       (async () => {
         await updateSlides(project.id, JSON.parse(JSON.stringify(slides)));
       })();
     }
-  }, [isEditable, project, slides]);
+    setIsSaving(false);
+    setLastSavedAt(Date.now());
+  }, [isEditable, project, slides, setIsSaving, setLastSavedAt]);
 
   useEffect(() => {
-    console.log("Slides changed, setting up debounce");
     if (autoSaveTimeOutRef.current) {
       clearTimeout(autoSaveTimeOutRef.current);
     }

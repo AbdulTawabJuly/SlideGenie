@@ -32,7 +32,6 @@ const TableComponent = ({
     }
     return content;
   });
-  console.log("Table Content : " , tableData)
   const handleResizeCol = (index: number, newSize: number) => {
     if (!isEditable) return;
     const newSizes = [...colSizes];
@@ -135,13 +134,12 @@ const TableComponent = ({
                         onChange={(e) =>
                           updateCell(rowIndex, colIndex, e.target.value)
                         }
-                        className="w-full h-full p-4 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md"
+                        className="w-full h-full font-bold p-4 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md"
                         style={{
                           fontFamily: currentTheme.fontFamily,
                           color: currentTheme.accentColor,
                           backgroundColor: currentTheme.slideBackgroundColor,
                           backgroundImage: currentTheme.gradientBackground,
-                          
                         }}
                         placeholder="Type Here"
                         readOnly={!isEditable}

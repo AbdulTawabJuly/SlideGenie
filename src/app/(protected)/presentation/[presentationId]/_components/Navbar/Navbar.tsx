@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { useSlideStore } from "@/store/useSlideStore";
-import { Home, Play, Share } from "lucide-react";
+import { Home, Play, Share, Loader2, CheckCircle } from "lucide-react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 type Props = {
@@ -10,8 +10,9 @@ type Props = {
 };
 
 const Navbar = ({ presentationId }: Props) => {
-  const { currentTheme } = useSlideStore();
+  const { currentTheme, isSaving, lastSavedAt } = useSlideStore();
   const [isPresentationMode, setIsPresentationMode] = useState(false);
+  const [showSaved, setShowSaved] = useState(false);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(
@@ -21,6 +22,14 @@ const Navbar = ({ presentationId }: Props) => {
       description: "The Link has been copied to your clipboard",
     });
   };
+
+  useEffect(() => {
+    if (lastSavedAt) {
+      setShowSaved(true);
+      const t = setTimeout(() => setShowSaved(false), 2000);
+      return () => clearTimeout(t);
+    }
+  }, [lastSavedAt]);
 
   return (
     <nav
@@ -49,6 +58,14 @@ const Navbar = ({ presentationId }: Props) => {
         Presentation Editor
       </Link>
       <div className="flex items-center gap-4">
+        
+      <div className="ml-auto flex items-center space-x-4">
+        {isSaving && <Loader2 className="w-5 h-5 animate-spin text-red-500" />}
+        {!isSaving && showSaved && (
+          <CheckCircle className="w-5 h-5 text-green-500" />
+        )}
+      </div>
+
         <Button
           style={{ backgroundColor: currentTheme.backgroundColor }}
           onClick={handleCopy}
@@ -67,7 +84,7 @@ const Navbar = ({ presentationId }: Props) => {
         </Button>
       </div>
 
-       {/* {isPresentationMode && <PresentationMode/>} */}
+      {/* {isPresentationMode && <PresentationMode/>} */}
     </nav>
   );
 };
