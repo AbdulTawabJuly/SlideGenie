@@ -137,7 +137,7 @@ export const DraggableSlide: React.FC<DraggableSlideProps> = ({
           onContentChange={handleContentChange}
         />
       </div>
-      {isEditable && (
+      {isEditable && index === currentSlide &&(
         <Popover>
           <PopoverTrigger asChild className="absolute top-2 left-2">
             <Button size="sm" variant="outline">
