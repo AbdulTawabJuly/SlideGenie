@@ -32,7 +32,6 @@ const TableComponent = ({
     }
     return content;
   });
-  console.log("Table Content : " , tableData)
   const handleResizeCol = (index: number, newSize: number) => {
     if (!isEditable) return;
     const newSizes = [...colSizes];
