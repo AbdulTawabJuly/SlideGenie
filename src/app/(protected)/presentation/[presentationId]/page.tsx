@@ -12,6 +12,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import Navbar from "./_components/Navbar/Navbar";
 import LayoutPreview from "./_components/editor-sidebar/leftsidebar/LayoutPreview";
 import Editor from "./_components/editor/Editor";
+import RightSidebar from "./_components/editor-sidebar/rightsidebar/RightSidebar";
 
 const Page = () => {
   const params = useParams();
@@ -42,7 +43,7 @@ const Page = () => {
       } catch (error) {
         console.log(error);
         toast.error("Error", {
-          description: "An Unexpected Error Occured",
+          description: "An Unexpected Error Occurred",
         });
       } finally {
         setIsLoading(false);
@@ -71,9 +72,10 @@ const Page = () => {
           }}
         >
           <LayoutPreview />
-          <div className="flex-1 ml-64 pr-16">
+          <div className="flex-1 ml-64 mr-64">
             <Editor isEditable={true} />
           </div>
+          <RightSidebar />
         </div>
       </div>
     </DndProvider>
