@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useSlideStore } from "@/store/useSlideStore";
-import { Home, Play, Share, Loader2, CheckCircle } from "lucide-react";
+import { Home, Play, Loader2, CheckCircle , DownloadIcon } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -71,7 +71,7 @@ const Navbar = ({ presentationId }: Props) => {
           onClick={handleCopy}
           variant="outline"
         >
-          <Share className="w-4 h-4" />
+          <DownloadIcon className="w-4 h-4" />
         </Button>
         <Button
           variant={"outline"}
