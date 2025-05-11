@@ -1,3 +1,4 @@
+// src/components/global/app-sidebar/nav-footer.tsx
 "use client";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,34 +13,41 @@ import React, { useState } from "react";
 
 const NavFooter = ({ prismaUser }: { prismaUser: User }) => {
   const { isLoaded, isSignedIn, user } = useUser();
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   if (!isLoaded || !isSignedIn) {
     return null;
   }
+
+  const handleUpgrade = () => {
+    setLoading(true);
+    router.push("/upgrade");
+  };
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <div className=" flex flex-col gap-y-6 items-start group-data-[collapsible=icon]:hidden">
+        <div className="flex flex-col gap-y-6 items-start group-data-[collapsible=icon]:hidden">
           {!prismaUser.subscription && (
-            <div className=" flex flex-col items-start p-2 pb-3 gap-4 bg-background-80 rounded-xl">
-              <div className=" flex flex-col items-start gap-1">
-                <p className=" text-base font-bold">
+            <div className="flex flex-col items-start p-2 pb-3 gap-4 bg-background-80 rounded-xl">
+              <div className="flex flex-col items-start gap-1">
+                <p className="text-base font-bold">
                   Get <span className="text-vivid">Full Access</span>
                 </p>
-                <span className=" text-sm dark:text-secondary">
+                <span className="text-sm dark:text-secondary">
                   Unlock All Premium Features
                 </span>
               </div>
-              <div className=" w-full bg-vivid-gradient p-[1px] rounded-full">
+              <div className="w-full bg-vivid-gradient p-[1px] rounded-full">
                 <Button
                   className="w-full border-vivid bg-background-80 hover:bg-background-90 text-primary rounded-full font-bold"
                   variant={"default"}
                   size={"lg"}
-                  //   onClick={handleUpgrading}
+                  onClick={handleUpgrade}
+                  disabled={loading}
                 >
-                  {loading ? "Upgrading ..." : "Upgrade"}
+                  {loading ? "Loading..." : "Upgrade"}
                 </Button>
               </div>
             </div>
@@ -52,7 +60,7 @@ const NavFooter = ({ prismaUser }: { prismaUser: User }) => {
               <UserButton />
               <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
                 <span className="truncate font-semibold">{user?.fullName}</span>
-                <span className=" truncate text-secondary">
+                <span className="truncate text-secondary">
                   {user?.emailAddresses[0].emailAddress}
                 </span>
               </div>
