@@ -1,9 +1,8 @@
 "use client";
 
 import { useSlideStore } from "@/store/useSlideStore";
-import { MasterRecursiveComponent } from "./editor/MasterRecursiveComponent";
+import { DraggableSlide } from "./editor/Editor";
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
 
 type Props = {
   onExit: () => void;
@@ -41,7 +40,7 @@ const PresentationMode = ({ onExit }: Props) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center"
+      className="fixed inset-0 z-50 flex flex-col"
       style={{
         backgroundColor: currentTheme.slideBackgroundColor,
         color: currentTheme.accentColor,
@@ -49,23 +48,16 @@ const PresentationMode = ({ onExit }: Props) => {
       }}
     >
       <div
-        className={cn(
-          "w-full h-full max-w-4xl mx-auto rounded-lg shadow-lg flex flex-col",
-          currentSlideData.className
-        )}
-        style={{
-          backgroundImage: currentTheme.gradientBackground,
-        }}
+        className="w-full max-w-4xl mx-auto px-4 flex-grow"
+        style={{ backgroundImage: currentTheme.gradientBackground }}
       >
-        <div className="h-full w-full flex-grow overflow-hidden">
-          <MasterRecursiveComponent
-            content={currentSlideData.content}
-            isPreview={true}
-            slideId={currentSlideData.id}
-            isEditable={false}
-            onContentChange={() => {}}
-          />
-        </div>
+        <DraggableSlide
+          slide={currentSlideData}
+          index={currentSlide}
+          isEditable={false}
+          handleDelete={() => {}}
+          moveSlide={() => {}}
+        />
       </div>
     </div>
   );

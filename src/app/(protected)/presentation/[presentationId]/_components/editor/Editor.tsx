@@ -79,6 +79,7 @@ interface DraggableSlideProps {
   moveSlide: (dragIndex: number, hoverIndex: number) => void;
   isEditable: boolean;
   handleDelete: (id: string) => void;
+  className?: string; // Add optional className prop
 }
 
 export const DraggableSlide: React.FC<DraggableSlideProps> = ({
@@ -87,6 +88,7 @@ export const DraggableSlide: React.FC<DraggableSlideProps> = ({
   moveSlide,
   handleDelete,
   isEditable,
+  className, // Destructure the new prop
 }) => {
   const ref = useRef(null);
   const { currentSlide, setCurrentSlide, currentTheme, updateContentItem } =
@@ -107,11 +109,11 @@ export const DraggableSlide: React.FC<DraggableSlideProps> = ({
     contentId: string,
     newContent: string | string[] | string[][]
   ) => {
-    // console.log("Content Changed", slide, contentId, newContent);
     if (isEditable) {
       updateContentItem(slide.id, contentId, newContent);
     }
   };
+
   return (
     <div
       ref={ref}
@@ -121,7 +123,8 @@ export const DraggableSlide: React.FC<DraggableSlideProps> = ({
         "flex flex-col",
         index === currentSlide ? "ring-2 ring-blue-500 ring-offset-2" : "",
         slide.className,
-        isDragging ? "opacity-50" : "opacity-100"
+        isDragging ? "opacity-50" : "opacity-100",
+        className // Add the passed className here
       )}
       style={{
         backgroundImage: currentTheme.gradientBackground,
