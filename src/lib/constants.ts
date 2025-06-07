@@ -5,9 +5,10 @@ import {
   Trash2,
   Settings
 } from "lucide-react";
-import { LayoutGroup, Theme } from "./types";
+import { ComponentGroup, LayoutGroup, Theme } from "./types";
 import { BlankCardIcon, FourColumnsIcon, FourImageColumnsIcon, ImageAndTextIcon, TextAndImageIcon, ThreeColumnsIcon, ThreeColumnsWithHeadingsIcon, ThreeImageColumnsIcon, TwoColumnsIcon, TwoColumnsWithHeadingsIcon, TwoImageColumnsIcon } from "./IconComponent";
 import { AccentLeft, AccentRight, BlankCard, FourColumns, FourImageColumns, ImageAndText, TextAndImage, ThreeColumns, ThreeColumnsWithHeadings, ThreeImageColumns, TwoColumns, TwoColumnsWithHeadings, TwoImageColumns } from "./slideLayouts";
+import { BulletListComponent, CalloutBoxComponent, Heading1, Heading2, Heading3, Heading4, NumberedListComponent, Paragraph, ResizableColumn, Table, Title, TodoListComponent } from "./slideComponents";
 
 export const data = {
   user: {
@@ -554,21 +555,21 @@ export const component: ComponentGroup[] = [
         componentType: "table2x2",
         name: "2×2 table",
         type: "component",
-        component: { ...Table, initialColumns: 2, initialRows: 2 },
+        component: { ...Table, intialColumns: 2, initialRows: 2 },
         icon: "⊞",
       },
       {
         componentType: "table3x3",
         name: "3×3 table",
         type: "component",
-        component: { ...Table, initialColumns: 3, initialRows: 3 },
+        component: { ...Table, intialColumns: 3, initialRows: 3 },
         icon: "⊞",
       },
       {
         componentType: "table4x4",
         name: "4×4 table",
         type: "component",
-        component: { ...Table, initialColumns: 4, initialRows: 4 },
+        component: { ...Table, intialColumns: 4, initialRows: 4 },
         icon: "⊞",
       },
     ],
