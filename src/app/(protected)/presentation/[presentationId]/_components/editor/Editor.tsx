@@ -58,8 +58,9 @@ export const DropZone: React.FC<DropZoneProps> = ({
   if (!isEditable) return null;
   return (
     <div
+      ref={dropRef as unknown as React.RefObject<HTMLDivElement>}
       className={cn(
-        "h-4 my-2 rounded-md transition-all duration-200",
+        "border-border h-4 my-2 rounded-md transition-all duration-200",
         isOver && canDrop ? "border-green-500 bg-green-100" : "border-gray-300",
         canDrop ? "border-blue-300" : ""
       )}
@@ -307,6 +308,13 @@ const Editor = ({ isEditable }: Props) => {
                   handleDelete={handleDelete}
                   moveSlide={moveSlide}
                 />
+                {isEditable && (
+                  <DropZone
+                    index={index + 1}
+                    onDrop={handleDrop}
+                    isEditable={isEditable}
+                  />
+                )}
               </React.Fragment>
             ))}
           </div>
