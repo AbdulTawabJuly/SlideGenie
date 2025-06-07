@@ -4,6 +4,7 @@ import { Home, Play, Share, Loader2, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
+import PresentationMode from "./PresentationMode";
 
 type Props = {
   presentationId: string;
@@ -84,7 +85,7 @@ const Navbar = ({ presentationId }: Props) => {
         </Button>
       </div>
 
-      {/* {isPresentationMode && <PresentationMode/>} */}
+      {isPresentationMode && (<PresentationMode onClose={()=>setIsPresentationMode(false)}/>)}
     </nav>
   );
 };
