@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useSlideStore } from "@/store/useSlideStore";
-import { Home, Play, Share, Loader2, CheckCircle } from "lucide-react";
+import { Home, Play, Loader2, CheckCircle, Download } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -59,20 +59,21 @@ const Navbar = ({ presentationId }: Props) => {
         Presentation Editor
       </Link>
       <div className="flex items-center gap-4">
-        
-      <div className="ml-auto flex items-center space-x-4">
-        {isSaving && <Loader2 className="w-5 h-5 animate-spin text-red-500" />}
-        {!isSaving && showSaved && (
-          <CheckCircle className="w-5 h-5 text-green-500" />
-        )}
-      </div>
+        <div className="ml-auto flex items-center space-x-4">
+          {isSaving && (
+            <Loader2 className="w-5 h-5 animate-spin text-red-500" />
+          )}
+          {!isSaving && showSaved && (
+            <CheckCircle className="w-5 h-5 text-green-500" />
+          )}
+        </div>
 
         <Button
           style={{ backgroundColor: currentTheme.backgroundColor }}
           onClick={handleCopy}
           variant="outline"
         >
-          <Share className="w-4 h-4" />
+          <Download className="w-4 h-4" />
         </Button>
         <Button
           variant={"outline"}
@@ -85,7 +86,9 @@ const Navbar = ({ presentationId }: Props) => {
         </Button>
       </div>
 
-      {isPresentationMode && (<PresentationMode onClose={()=>setIsPresentationMode(false)}/>)}
+      {isPresentationMode && (
+        <PresentationMode onClose={() => setIsPresentationMode(false)} />
+      )}
     </nav>
   );
 };

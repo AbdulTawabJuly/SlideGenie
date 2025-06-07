@@ -55,7 +55,7 @@ const ProjectCard = ({
         toast.error("Uh-oh 😬", {
           description: res.error || "Something went wrong, not my fault tho 🤷‍♂️",
         });
-        return
+        return;
       }
       setOpen(false);
       router.refresh();
@@ -83,7 +83,8 @@ const ProjectCard = ({
       const res = await deleteProject(projectId);
       if (res.status !== 200) {
         toast.error("Uh-oh 😬", {
-          description: res.error || "Couldn't delete it... maybe it has plot armor? 🛡️",
+          description:
+            res.error || "Couldn't delete it... maybe it has plot armor? 🛡️",
         });
       }
       setOpen(false);
@@ -99,7 +100,7 @@ const ProjectCard = ({
     }
   };
 
-//   const theme = themes.find((theme) => theme.name === themeName) || themes[0];
+  const theme = themes.find((theme) => theme.name === themeName) || themes[0];
   return (
     <motion.div
       className={`group w-full flex flex-col gap-y-3 rounded-xl p-3 transition-colors ${
@@ -111,10 +112,10 @@ const ProjectCard = ({
         className="relative aspect-[16/10] overflow-hidden rounded-lg cursor-pointer"
         onClick={handleNavigation}
       >
-        {/* <ThumbnailPreview
+        <ThumbnailPreview
           theme={theme}
-          //   slide={JSON.parse(JSON.stringify(slideData))?.[0]}
-        /> */}
+          slide={JSON.parse(JSON.stringify(slideData))?.[0]}
+        />
       </div>
       <div className="w-full">
         <div className="space-y-1">
