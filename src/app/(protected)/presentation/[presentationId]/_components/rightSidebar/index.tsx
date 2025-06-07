@@ -86,7 +86,7 @@ const EditorSidebar = (props: Props) => {
               <span className="sr-only">Change Theme</span>
             </Button>
           </PopoverTrigger>
-          <PopoverContent side="left" align="center" className="w-80 p-0">
+          <PopoverContent side="left" align="center" className="w-80">
             <ThemeChooser />
           </PopoverContent>
         </Popover>
