@@ -103,6 +103,30 @@ export const DraggableSlide: React.FC<DraggableSlideProps> = ({
     canDrag: isEditable,
   });
 
+  const [_, drop] = useDrop({
+    accept: ["SLIDE", "LAYOUT"],
+    hover(item: { index: number; type: string }) {
+      if (!ref.current || !isEditable) {
+        return;
+      }
+      const dragIndex = item.index;
+      const hoverIndex = index;
+
+      // Don't replace items with themselves
+      if (item.type === "SLIDE") {
+        if (dragIndex === hoverIndex) {
+          return;
+        }
+        // Perform the move
+        moveSlide(dragIndex, hoverIndex);
+        // Update the dragged item's index
+        item.index = hoverIndex;
+      }
+    },
+  });
+
+  drag(drop(ref));
+
   const handleContentChange = (
     contentId: string,
     newContent: string | string[] | string[][]
@@ -137,7 +161,7 @@ export const DraggableSlide: React.FC<DraggableSlideProps> = ({
           onContentChange={handleContentChange}
         />
       </div>
-      {isEditable && index === currentSlide &&(
+      {isEditable && index === currentSlide && (
         <Popover>
           <PopoverTrigger asChild className="absolute top-2 left-2">
             <Button size="sm" variant="outline">
