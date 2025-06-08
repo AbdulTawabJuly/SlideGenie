@@ -1,3 +1,5 @@
+"use server"
+
 import { lemonSqueezyClient } from "@/lib/axios";
 
 export const buySubscription = async (buyUserId: string) => {
