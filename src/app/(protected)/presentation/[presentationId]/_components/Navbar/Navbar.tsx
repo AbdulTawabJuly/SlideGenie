@@ -52,12 +52,9 @@ const Navbar = ({ presentationId }: Props) => {
         </Button>
       </Link>
 
-      <Link
-        href="/presentation/template-market"
-        className="text-lg font-semibold hidden sm:block"
-      >
+      <div className="text-lg font-semibold hidden sm:block">
         Presentation Editor
-      </Link>
+      </div>
       <div className="flex items-center gap-4">
         <div className="ml-auto flex items-center space-x-4">
           {isSaving && (

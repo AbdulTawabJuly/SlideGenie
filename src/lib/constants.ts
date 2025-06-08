@@ -24,20 +24,10 @@ export const data = {
       icon: Home
     },
     {
-      title: "Templates",
-      url: "/templates",
-      icon: File
-    },
-    {
       title: "Trash",
       url: "/trash",
       icon: Trash2
     },
-    {
-      title: "Settings",
-      url: "/settings",
-      icon: Settings
-    }
   ]
 };
 
