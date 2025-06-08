@@ -12,11 +12,15 @@ import React, { useState } from "react";
 
 const NavFooter = ({ prismaUser }: { prismaUser: User }) => {
   const { isLoaded, isSignedIn, user } = useUser();
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   if (!isLoaded || !isSignedIn) {
     return null;
+  }
+
+  const handleUpgrading = async () => {
+    setLoading(false);
   }
   return (
     <SidebarMenu>
@@ -37,7 +41,7 @@ const NavFooter = ({ prismaUser }: { prismaUser: User }) => {
                   className="w-full border-vivid bg-background-80 hover:bg-background-90 text-primary rounded-full font-bold"
                   variant={"default"}
                   size={"lg"}
-                  //   onClick={handleUpgrading}
+                  onClick={handleUpgrading}
                 >
                   {loading ? "Upgrading ..." : "Upgrade"}
                 </Button>
