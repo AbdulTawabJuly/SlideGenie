@@ -21,7 +21,6 @@ import {
   Shield,
 } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { AnimatedBackground } from "@/components/global/landing-page";
 
@@ -58,13 +57,33 @@ const scaleOnHover = {
 
 export default function LandingPage() {
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
+    const target = document.getElementById(sectionId);
+    if (!target) return;
+
+    const targetPosition = target.getBoundingClientRect().top + window.scrollY;
+    const startPosition = window.scrollY;
+    const distance = targetPosition - startPosition;
+    const duration = 800; // animation duration in ms
+    let start: number | null = null;
+
+    const easeInOutQuad = (t: number) => {
+      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    };
+
+    const step = (timestamp: number) => {
+      if (!start) start = timestamp;
+      const timeElapsed = timestamp - start;
+      const progress = Math.min(timeElapsed / duration, 1);
+      const ease = easeInOutQuad(progress);
+
+      window.scrollTo(0, startPosition + distance * ease);
+
+      if (timeElapsed < duration) {
+        window.requestAnimationFrame(step);
+      }
+    };
+
+    window.requestAnimationFrame(step);
   };
 
   return (
