@@ -5,7 +5,8 @@ import { useUser, useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-export const UserButton = () => {
+export const 
+UserButton = () => {
   const { isLoaded, user } = useUser();
   const { signOut } = useClerk();
   const router = useRouter();
@@ -18,7 +19,7 @@ export const UserButton = () => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
-        <button className="flex items-center py-2 rounded-xl transition">
+        <button className="flex items-center py-2 rounded-xl transition focus:outline-none">
           <Image
             src={user.imageUrl}
             alt="Profile"
@@ -40,7 +41,7 @@ export const UserButton = () => {
         <DropdownMenu.Item asChild>
           <button
             onClick={() => signOut(() => router.push("/"))}
-            className="w-full text-left text-sm text-red-400 hover:text-red-500 transition"
+            className="w-full text-left text-sm text-red-400 hover:text-red-500 transition hover:outline-none"
           >
             Sign Out
           </button>

@@ -1,11 +1,45 @@
 "use client"
 
+import React, { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 
+// Types
+type Star = {
+  id: number
+  x: number
+  y: number
+  size: number
+  duration: number
+  delay: number
+}
+
+type Planet = Star // same fields
+
+type Particle = {
+  id: number
+  x: number
+  y: number
+  delay: number
+  duration: number
+  moveX: number
+}
+
+type ShootingStar = {
+  id: number
+  x: number
+  y: number
+  delay: number
+}
+
 export function AnimatedBackground() {
-  // Generate random positions for stars
-  const generateStars = (count: number) => {
-    return Array.from({ length: count }, (_, i) => ({
+  const [stars, setStars] = useState<Star[]>([])
+  const [largePlanets, setLargePlanets] = useState<Planet[]>([])
+  const [particles, setParticles] = useState<Particle[]>([])
+  const [shootingStars, setShootingStars] = useState<ShootingStar[]>([])
+
+  // Helper functions
+  const generateStars = (count: number): Star[] =>
+    Array.from({ length: count }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
@@ -13,10 +47,45 @@ export function AnimatedBackground() {
       duration: Math.random() * 20 + 10,
       delay: Math.random() * 5,
     }))
-  }
 
-  const stars = generateStars(50)
-  const largePlanets = generateStars(8)
+  const generatePlanets = (count: number): Planet[] =>
+    generateStars(count)
+
+  const generateParticles = (count: number): Particle[] =>
+    Array.from({ length: count }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      delay: i * 2,
+      duration: 15 + Math.random() * 10,
+      moveX: Math.random() * 50 - 25,
+    }))
+
+  const generateShootingStars = (count: number): ShootingStar[] =>
+    Array.from({ length: count }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      delay: i * 8 + Math.random() * 5,
+    }))
+
+  // Only generate random data on the client
+  useEffect(() => {
+    setStars(generateStars(50))
+    setLargePlanets(generatePlanets(8))
+    setParticles(generateParticles(15))
+    setShootingStars(generateShootingStars(3))
+  }, [])
+
+  // Optionally: render nothing until state is hydrated
+  if (
+    stars.length === 0 ||
+    largePlanets.length === 0 ||
+    particles.length === 0 ||
+    shootingStars.length === 0
+  ) {
+    return null
+  }
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
@@ -78,13 +147,13 @@ export function AnimatedBackground() {
       ))}
 
       {/* Shooting stars */}
-      {[...Array(3)].map((_, i) => (
+      {shootingStars.map((star) => (
         <motion.div
-          key={`shooting-${i}`}
+          key={`shooting-${star.id}`}
           className="absolute w-1 h-1 bg-gradient-to-r from-orange-400 to-transparent rounded-full"
           style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
+            left: `${star.x}%`,
+            top: `${star.y}%`,
           }}
           animate={{
             x: [0, 200],
@@ -95,30 +164,30 @@ export function AnimatedBackground() {
           transition={{
             duration: 2,
             repeat: Number.POSITIVE_INFINITY,
-            delay: i * 8 + Math.random() * 5,
+            delay: star.delay,
             ease: "easeOut",
           }}
         />
       ))}
 
       {/* Floating particles */}
-      {[...Array(15)].map((_, i) => (
+      {particles.map((p) => (
         <motion.div
-          key={`particle-${i}`}
+          key={`particle-${p.id}`}
           className="absolute w-1 h-1 bg-orange-300 rounded-full opacity-40"
           style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
+            left: `${p.x}%`,
+            top: `${p.y}%`,
           }}
           animate={{
             y: [0, -100, 0],
-            x: [0, Math.random() * 50 - 25, 0],
+            x: [0, p.moveX, 0],
             opacity: [0, 0.6, 0],
           }}
           transition={{
-            duration: 15 + Math.random() * 10,
+            duration: p.duration,
             repeat: Number.POSITIVE_INFINITY,
-            delay: i * 2,
+            delay: p.delay,
             ease: "easeInOut",
           }}
         />
@@ -146,3 +215,4 @@ export function AnimatedBackground() {
     </div>
   )
 }
+
