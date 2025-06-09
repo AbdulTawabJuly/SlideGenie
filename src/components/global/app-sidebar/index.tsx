@@ -1,16 +1,15 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar } from "@/components/ui/avatar";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
   SidebarHeader,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
 import { Project, User } from "@prisma/client";
-import { Presentation } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 import React from "react";
 import NavMain from "./nav-main";
@@ -38,15 +37,11 @@ const AppSidebar = ({
         >
           <div className="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground">
             <Avatar className="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
-              <Presentation className="h-6 w-6 text-black" />
-              {/* <AvatarFallback className="rounded-lg">SG</AvatarFallback> */}
+              <Sparkles className="h-6 w-6 text-black" />
             </Avatar>
           </div>
-          {/* <span className="truncate text-primary text-xl font-semibold ml-2">
-            Slide Genie
-          </span> */}
           <span
-            className=" text-primary text-2xl font-semibold ml-2 mb-2"
+            className=" text-primary text-2xl font-semibold ml-2 mb-2 truncate"
             style={{
               fontFamily: "var(--font-noto-nastaliq-urdu)",
               fontWeight: 700,
@@ -56,7 +51,7 @@ const AppSidebar = ({
               overflow: "visible", // Ensure no text is cut off
             }}
           >
-            سلائیڈ جینی
+            Slide Genie
           </span>
         </SidebarMenuButton>
       </SidebarHeader>
