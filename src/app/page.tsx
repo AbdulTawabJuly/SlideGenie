@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { AnimatedBackground } from "@/components/global/landing-page";
 
 const fadeInUp = {
@@ -131,20 +132,24 @@ export default function LandingPage() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button
-                  variant="outline"
-                  className="border-[#5C5C5C] text-gray-300 hover:bg-[#1F1F1F] hover:text-white"
-                >
-                  Sign In
-                </Button>
+                <Link href="/sign-in">
+                  <Button
+                    variant="outline"
+                    className="border-[#5C5C5C] text-gray-300 hover:bg-[#1F1F1F] hover:text-white"
+                  >
+                    Sign In
+                  </Button>
+                </Link>
               </motion.div>
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600">
-                  Get Started
-                </Button>
+                <Link href="/sign-up">
+                  <Button className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600">
+                    Get Started
+                  </Button>
+                </Link>
               </motion.div>
             </div>
           </nav>
@@ -192,13 +197,15 @@ export default function LandingPage() {
                 variants={fadeInUp}
               >
                 <motion.div {...scaleOnHover}>
-                  <Button
-                    size="lg"
-                    className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-lg px-8 py-6"
-                  >
-                    Start Creating
-                    <Zap className="w-5 h-5 ml-2" />
-                  </Button>
+                  <Link href="/sign-in">
+                    <Button
+                      size="lg"
+                      className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-lg px-8 py-6"
+                    >
+                      Start Creating
+                      <Zap className="w-5 h-5 ml-2" />
+                    </Button>
+                  </Link>
                 </motion.div>
               </motion.div>
               <motion.div
