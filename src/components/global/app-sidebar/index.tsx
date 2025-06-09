@@ -36,8 +36,8 @@ const AppSidebar = ({
           className="data-[state=open]:text-sidebar-accent-foreground"
         >
           <div className="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground">
-            <Avatar className="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
-              <Sparkles className="h-6 w-6 text-black" />
+            <Avatar className="h-10 w-10 rounded-full bg-gradient-to-br from-orange-400 to-yellow-500 flex items-center justify-center">
+              <Sparkles className="h-6 w-6 text-white" />
             </Avatar>
           </div>
           <span
