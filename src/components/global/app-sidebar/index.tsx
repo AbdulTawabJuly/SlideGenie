@@ -16,6 +16,7 @@ import NavMain from "./nav-main";
 import { data } from "@/lib/constants";
 import RecentOpen from "./recent-open";
 import NavFooter from "./nav-footer";
+import Link from "next/link";
 
 const AppSidebar = ({
   recentProjects,
@@ -31,29 +32,31 @@ const AppSidebar = ({
       {...props}
     >
       <SidebarHeader className="pt-6 px-2 pb-0">
-        <SidebarMenuButton
-          size={"lg"}
-          className="data-[state=open]:text-sidebar-accent-foreground"
-        >
-          <div className="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground">
-            <Avatar className="h-10 w-10 rounded-full bg-gradient-to-br from-orange-400 to-yellow-500 flex items-center justify-center">
-              <Sparkles className="h-6 w-6 text-white" />
-            </Avatar>
-          </div>
-          <span
-            className=" text-primary text-2xl font-semibold ml-2 mb-2 truncate"
-            style={{
-              fontFamily: "var(--font-noto-nastaliq-urdu)",
-              fontWeight: 700,
-              direction: "rtl",
-              display: "inline-block", // Ensure the span behaves like a block for width control
-              width: "fit-content", // Allow the span to size itself based on content
-              overflow: "visible", // Ensure no text is cut off
-            }}
+        <Link href="/dashboard" passHref>
+          <SidebarMenuButton
+            size={"lg"}
+            className="data-[state=open]:text-sidebar-accent-foreground"
           >
-            Slide Genie
-          </span>
-        </SidebarMenuButton>
+            <div className="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground">
+              <Avatar className="h-10 w-10 rounded-full bg-gradient-to-br from-orange-400 to-yellow-500 flex items-center justify-center">
+                <Sparkles className="h-6 w-6 text-white" />
+              </Avatar>
+            </div>
+            <span
+              className=" text-primary text-2xl font-semibold ml-2 mb-2 truncate"
+              style={{
+                fontFamily: "var(--font-noto-nastaliq-urdu)",
+                fontWeight: 700,
+                direction: "rtl",
+                display: "inline-block", // Ensure the span behaves like a block for width control
+                width: "fit-content", // Allow the span to size itself based on content
+                overflow: "visible", // Ensure no text is cut off
+              }}
+            >
+              Slide Genie
+            </span>
+          </SidebarMenuButton>
+        </Link>
       </SidebarHeader>
       <SidebarContent className=" px-2 mt-10 gap-y-6">
         <NavMain items={data.navMain} />
