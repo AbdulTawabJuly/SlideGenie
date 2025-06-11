@@ -56,10 +56,8 @@ const PresentationMode = ({ onClose }: Props) => {
         className="relative w-full h-full"
         style={{
           aspectRatio: "16/9",
-          maxHeight: "80vh",
-          width: "auto",
+          maxHeight: "100vh",
           maxWidth: "177.78vh",
-          padding: "20px", // Added padding to center the content
         }}
       >
         <AnimatePresence mode="wait">
@@ -75,10 +73,6 @@ const PresentationMode = ({ onClose }: Props) => {
               color: currentTheme.accentColor,
               backgroundImage: currentTheme.gradientBackground,
               fontFamily: currentTheme.fontFamily,
-              display: "flex",
-              flexDirection: "column",
-              gap: "1rem", // Consistent spacing between content items
-              padding: "1rem", // Inner padding to match normal mode spacing
             }}
           >
             <MasterRecursiveComponent
@@ -87,7 +81,6 @@ const PresentationMode = ({ onClose }: Props) => {
               slideId={slides[currentSlideIndex].id}
               isPreview={false}
               isEditable={false}
-              isPresentationMode={true} // Pass isPresentationMode as true
             />
           </motion.div>
         </AnimatePresence>

@@ -36,18 +36,10 @@ type MasterRecursiveComponentProps = {
   isEditable?: boolean;
   slideId: string;
   index?: number;
-  isPresentationMode?: boolean; // Add isPresentationMode prop
 };
 
 const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
-  ({
-    content,
-    onContentChange,
-    slideId,
-    isPreview,
-    isEditable,
-    isPresentationMode,
-  }) => {
+  ({ content, onContentChange, slideId, isPreview, isEditable }) => {
     const handleChange = useCallback(
       (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         onContentChange(content.id, e.target.value);
@@ -153,7 +145,6 @@ const ContentRenderer: React.FC<MasterRecursiveComponentProps> = React.memo(
               isEditable={isEditable}
               contentId={content.id}
               onContentChange={onContentChange}
-              isPresentationMode={isPresentationMode} // Pass to CustomImage
             />
           </motion.div>
         );
@@ -307,18 +298,16 @@ export const MasterRecursiveComponent: React.FC<MasterRecursiveComponentProps> =
       isEditable = true,
       slideId,
       index,
-      isPresentationMode = false, // Default to false
     }) => {
       if (isPreview) {
         return (
           <ContentRenderer
             content={content}
-            onContentChange={onContentChange} 
+            onContentChange={onContentChange}
             isPreview={isPreview}
             isEditable={isEditable}
             slideId={slideId}
             index={index}
-            isPresentationMode={isPresentationMode} // Pass down
           />
         );
       }
@@ -331,7 +320,6 @@ export const MasterRecursiveComponent: React.FC<MasterRecursiveComponentProps> =
             isEditable={isEditable}
             slideId={slideId}
             index={index}
-            isPresentationMode={isPresentationMode} // Pass down
           />
         </React.Fragment>
       );

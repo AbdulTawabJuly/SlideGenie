@@ -89,7 +89,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black relative">
+    <div className="min-h-screen bg-black relative overflow-hidden">
       <AnimatedBackground />
 
       <div className="relative z-10">
