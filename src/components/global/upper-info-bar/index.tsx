@@ -5,6 +5,7 @@ import React from "react";
 import SearchBar from "./upper-info-searchbar";
 import ThemeSwitcher from "../mode-toggle";
 import NewProjectButton from "./new-project-button";
+import CoinDisplay from "./coin-display";
 
 type Props = {
   user: User;
@@ -19,11 +20,10 @@ const UpperInfoBar = ({ user }: Props) => {
       <div className="w-full max-w-[95%] flex items-center justify-between gap-4 flex-wrap">
         <SearchBar />
         <ThemeSwitcher />
-        <div className = "flex flex-wrap gap-4 items-center justify-end">
-            <NewProjectButton user={user} />
-
+        <div className="flex flex-wrap gap-4 items-center justify-end">
+          <CoinDisplay user={user} />
+          <NewProjectButton user={user} />
         </div>
-
       </div>
     </header>
   );
