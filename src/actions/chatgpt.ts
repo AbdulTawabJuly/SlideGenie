@@ -501,17 +501,6 @@ const generateImageUrl = async (prompt: string): Promise<string> => {
     const randomFallback =
         fallbackImagesURL[Math.floor(Math.random() * fallbackImagesURL.length)]
     try {
-        // const improvedPrompt = `
-        //   Create a vivid, Studio Ghibli-style illustration based on the following description. The artwork must retain the core details and context of the scene, while infusing it with the whimsical, emotional, and painterly aesthetic of Ghibli films. 
-        //     Description: ${prompt}  
-        //     Important Notes:
-        //     - Keep the image imaginative yet directly relevant to the described topic.
-        //     - Depict realistic objects, environments, and characters, but in Ghibli's soft, hand-painted style.
-        //     - Use natural light, expressive atmosphere, and subtle fantasy elements.
-        //     - Avoid photorealism, abstract, or sci-fi looks. No text or signage.
-        //     - Make the image visually captivating, suitable for educational or storytelling slides.
-        // `
-
         const improvedPrompt = `
         Create a highly realistic, professional image based on the following description. The image should look as if captured in real life, with attention to detail, lighting, and texture. 
             Description: ${prompt}
