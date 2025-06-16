@@ -1,4 +1,4 @@
-"use Client";
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -24,6 +24,8 @@ import { OutlineCard } from "@/lib/types";
 import { createProject } from "@/actions/project";
 import { useSlideStore } from "@/store/useSlideStore";
 import { useRouter } from "next/navigation";
+import { deductCoinsForOutline } from "@/actions/user";
+import { useUserStore } from "@/store/useUserStore";
 
 type Props = {
   onBack: () => void;
@@ -46,6 +48,7 @@ const CreativeAI = ({ onBack }: Props) => {
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const [editText, setEditText] = useState("");
   const { prompts, addPrompt } = usePromptStore();
+  const { updateUserCoins } = useUserStore();
 
   const handleBack = () => {
     onBack();
@@ -85,6 +88,17 @@ const CreativeAI = ({ onBack }: Props) => {
         description:
           "Outline cooked to perfection! 🔥 Now go be productive... or not 😎",
       });
+      
+      // Deduct coins and update store
+      const deductResult = await deductCoinsForOutline();
+      if (deductResult.status === 200 && deductResult.user) {
+        updateUserCoins(deductResult.user.coins);
+        console.log("💰 Coins updated:", deductResult.user.coins);
+      } else if (deductResult.status === 400) {
+        toast.error("Insufficient Coins!", {
+          description: deductResult.error || "You don't have enough coins for this operation.",
+        });
+      }
     } else {
       toast.error("L moment 💀", {
         description:
@@ -93,6 +107,9 @@ const CreativeAI = ({ onBack }: Props) => {
     }
     setIsGenerating(false);
   };
+
+
+
   const handleGenerate = async () => {
     setIsGenerating(true);
     if (outlines.length === 0) {

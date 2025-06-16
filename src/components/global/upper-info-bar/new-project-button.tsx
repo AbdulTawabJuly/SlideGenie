@@ -22,8 +22,9 @@ const NewProjectButton = ({ user }: { user: User }) => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              className="rounded-lg font-semibold bg-gray-200 cursor-not-allowed"
+              className="rounded-lg font-semibold bg-gray-400 hover:bg-gray-400 cursor-not-allowed"
               aria-disabled={true}
+              onClick={(e) => e.preventDefault()}
             >
               <Plus />
               New Project

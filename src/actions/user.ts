@@ -51,3 +51,71 @@ export const onAuthenticateUser = async () => {
         return { status: 500 , error: "Internal Server Error" }
     }
 }
+
+
+export const deductCoins = async (amount: number, operation: string) => {
+    try {
+        const user = await currentUser();
+        if (!user) {
+            return { status: 403, error: "User not authenticated" }
+        }
+
+        const userExists = await client.user.findUnique({
+            where: {
+                clerkId: user.id,
+            },
+            select: {
+                id: true,
+                coins: true,
+            }
+        });
+
+        if (!userExists) {
+            return { status: 404, error: "User not found" }
+        }
+
+        // Check if user has enough coins
+        if (userExists.coins < amount) {
+            return { 
+                status: 400, 
+                error: `Insufficient coins. You need ${amount} coins for ${operation}. Current balance: ${userExists.coins}` 
+            }
+        }
+
+        // Deduct coins
+        const updatedUser = await client.user.update({
+            where: {
+                clerkId: user.id,
+            },
+            data: {
+                coins: {
+                    decrement: amount
+                }
+            },
+            select: {
+                id: true,
+                coins: true,
+            }
+        });
+
+        return {
+            status: 200,
+            user: updatedUser,
+            message: `${amount} coins deducted for ${operation}. Remaining balance: ${updatedUser.coins}`
+        }
+
+    } catch (error) {
+        console.log("😶‍🌫️ Error deducting coins:", error)
+        return { status: 500, error: "Internal Server Error" }
+    }
+}
+
+// Specific function for outline creation
+export const deductCoinsForOutline = async () => {
+    return await deductCoins(1, "outline creation");
+}
+
+// Specific function for slide generation
+export const deductCoinsForSlides = async () => {
+    return await deductCoins(4, "slide generation");
+}

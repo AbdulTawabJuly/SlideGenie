@@ -1,16 +1,31 @@
-export const dynamic = "force-dynamic";
+"use client";
 
 import { onAuthenticateUser } from "@/actions/user";
+import { useUserStore } from "@/store/useUserStore";
 import { redirect } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
+
+export const dynamic = "force-dynamic";
 
 type Props = { children: React.ReactNode };
 
-const Layout = async (props: Props) => {
-  const auth = await onAuthenticateUser();
-  if (!auth.user) redirect("/sign-in");
+const Layout = ({ children }: Props) => {
+  const { setUser } = useUserStore();
 
-  return <div className="w-full min-h-screen">{props.children}</div>;
+  useEffect(() => {
+    const authenticateAndSetUser = async () => {
+      const auth = await onAuthenticateUser();
+      if (!auth.user) {
+        redirect("/sign-in");
+      } else {
+        setUser(auth.user);
+      }
+    };
+
+    authenticateAndSetUser();
+  }, [setUser]);
+
+  return <div className="w-full min-h-screen">{children}</div>;
 };
 
 export default Layout;
