@@ -19,7 +19,7 @@ model User {
   name                String
   email               String @unique
   profileImage        String?
-  subscription        Boolean? @default(true)
+  subscription        Boolean? @default(false)
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
   lemonSqueezyApiKey  String?
@@ -27,7 +27,8 @@ model User {
   webhookSecret       String?
   Projects            Project[] @relation("OwnedProjects")
   PurchasedProjects   Project[] @relation("PurchasedProjects")
-  coins               Int      @default(10)
+  coins               Int      @default(5)
+  CoinTransactions    CoinTransaction[]
 }
 
 model Project{
@@ -46,4 +47,16 @@ model Project{
 
   User                User @relation("OwnedProjects", fields : [userId], references : [id])
   Purchasers          User[] @relation("PurchasedProjects")
+}
+
+model CoinTransaction {
+  id                  String @id @default(cuid())
+  userId              String @db.Uuid
+  amount              Float
+  coins               Int
+  lemonSqueezyOrderId String?
+  status              String // "pending", "completed", "failed"
+  createdAt           DateTime @default(now())
+
+  User                User @relation(fields: [userId], references: [id])
 }

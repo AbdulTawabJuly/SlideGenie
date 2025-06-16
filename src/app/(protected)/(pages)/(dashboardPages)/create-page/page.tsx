@@ -10,9 +10,8 @@ const Page = async () => {
     redirect("/sign-in");
   }
 
-  if (!checkUser.user.subscription) {
-    redirect("/dashboard");
-  }
+  // No longer checking subscription - users can access with coins
+  // Users will be prevented from creating if they don't have enough coins
 
   return (
     <main className="w-full h-full pt-6">

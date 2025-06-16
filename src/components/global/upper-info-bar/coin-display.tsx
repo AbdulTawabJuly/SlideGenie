@@ -4,20 +4,45 @@ import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
 import { Coins } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useUserStore } from "@/store/useUserStore";
 
 const CoinDisplay = ({ coins }: { coins: number | undefined }) => {
   const [displayCoins, setDisplayCoins] = useState(coins);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  
+  // Listen to store changes for real-time updates - use the reactive selector
+  const storeUser = useUserStore((state) => state.user);
 
   useEffect(() => {
-    if (coins !== displayCoins) {
-      setIsAnimating(true);
-      setTimeout(() => {
-        setDisplayCoins(coins);
-        setTimeout(() => setIsAnimating(false), 300);
-      }, 150);
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (isMounted) {
+      const newCoins = storeUser?.coins ?? coins;
+      
+      if (newCoins !== displayCoins && newCoins !== undefined) {
+        setIsAnimating(true);
+        setTimeout(() => {
+          setDisplayCoins(newCoins);
+          setTimeout(() => setIsAnimating(false), 300);
+        }, 150);
+      }
+    } else {
+      setDisplayCoins(coins);
     }
-  }, [coins, displayCoins]);
+  }, [storeUser?.coins, coins, displayCoins, isMounted]);
+
+  // Prevent hydration mismatch by showing a simple version on first render
+  if (!isMounted) {
+    return (
+      <Button className="rounded-lg font-semibold hover:cursor-default">
+        <Coins />
+        {coins}
+      </Button>
+    );
+  }
 
   return (
     <Button className="rounded-lg font-semibold hover:cursor-default relative overflow-hidden">

@@ -24,7 +24,7 @@ import { OutlineCard } from "@/lib/types";
 import { createProject } from "@/actions/project";
 import { useSlideStore } from "@/store/useSlideStore";
 import { useRouter } from "next/navigation";
-import { deductCoinsForOutline } from "@/actions/user";
+import { deductCoinsForOutline, deductCoinsForSlides } from "@/actions/user";
 import { useUserStore } from "@/store/useUserStore";
 
 type Props = {
@@ -108,8 +108,6 @@ const CreativeAI = ({ onBack }: Props) => {
     setIsGenerating(false);
   };
 
-
-
   const handleGenerate = async () => {
     setIsGenerating(true);
     if (outlines.length === 0) {
@@ -117,9 +115,23 @@ const CreativeAI = ({ onBack }: Props) => {
         description:
           "No outlines, no slides 🤡 Add at least one card to cook! 🔥",
       });
+      setIsGenerating(false);
       return;
     }
+    
     try {
+      // First, check if user has enough coins without deducting yet
+      const { getUser } = useUserStore.getState();
+      const currentUser = getUser();
+      if (!currentUser || currentUser.coins < 4) {
+        toast.error("Insufficient Coins!", {
+          description: "You need 4 coins to generate slides.",
+        });
+        setIsGenerating(false);
+        return;
+      }
+
+      // Proceed with project creation first
       const res = await createProject(
         currentAiPrompt,
         outlines.slice(0, noOfCards)
@@ -128,6 +140,18 @@ const CreativeAI = ({ onBack }: Props) => {
       if (res.status !== 200 || !res.data) {
         throw new Error("Unable to Create Project");
       }
+
+      // Only deduct coins AFTER successful project creation
+      const deductResult = await deductCoinsForSlides();
+      if (deductResult.status === 200 && deductResult.user) {
+        // Update user store with new coin count
+        updateUserCoins(deductResult.user.coins);
+        console.log("💰 Coins deducted after successful project creation:", deductResult.user.coins);
+      } else {
+        console.warn("Project created but coin deduction failed:", deductResult);
+        // Project was created successfully, so we still proceed
+      }
+      
       router.push(`/presentation/${res.data.id}/select-theme`);
       setProject(res.data);
 

@@ -119,3 +119,44 @@ export const deductCoinsForOutline = async () => {
 export const deductCoinsForSlides = async () => {
     return await deductCoins(4, "slide generation");
 }
+
+export const addCoins = async (userId: string, coinsToAdd: number, amount: number, lemonSqueezyOrderId?: string) => {
+    try {
+        // Add coins to user account
+        const updatedUser = await client.user.update({
+            where: { id: userId },
+            data: {
+                coins: {
+                    increment: coinsToAdd
+                }
+            },
+            select: {
+                id: true,
+                coins: true,
+                name: true,
+                email: true
+            }
+        });
+
+        // Create transaction record
+        await client.coinTransaction.create({
+            data: {
+                userId: userId,
+                amount: amount,
+                coins: coinsToAdd,
+                lemonSqueezyOrderId: lemonSqueezyOrderId,
+                status: "completed"
+            }
+        });
+
+        return {
+            status: 200,
+            user: updatedUser,
+            message: `Successfully added ${coinsToAdd} coins to your account!`
+        };
+
+    } catch (error) {
+        console.log("😶‍🌫️ Error adding coins:", error);
+        return { status: 500, error: "Internal Server Error" };
+    }
+};
