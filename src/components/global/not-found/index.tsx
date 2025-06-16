@@ -1,11 +1,15 @@
 export const dynamic = "force-dynamic";
 
-import Link from "next/link";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
-function ProjectNotFound() {
+type Props = {
+  className?: string;
+};
+
+function ProjectNotFound({ className }: Props) {
   return (
-    <main className="grid  place-items-center bg-Auth-0 px-6 py-24 sm:py-32 lg:px-8">
+    <main className={cn("grid place-items-center bg-Auth-0 px-6 py-24 sm:py-32 lg:px-8", className)}>
       <div className="text-center">
         <Image
           src="https://cdn.rawgit.com/ahmedhosna95/upload/1731955f/sad404.svg"
