@@ -53,12 +53,12 @@ const PresentationMode = ({ onClose }: Props) => {
       style={{ backgroundColor: currentTheme.slideBackgroundColor }}
     >
       <div
-        className="relative shadow-2xl"
+        className="relative shadow-2xl rounded-xl overflow-hidden"
         style={{
           aspectRatio: "16/9",
-          height: "70vh",
+          height: "85vh",
           width: "auto",
-          maxWidth: "90vw",
+          maxWidth: "95vw",
         }}
       >
         <AnimatePresence mode="wait">
@@ -68,23 +68,26 @@ const PresentationMode = ({ onClose }: Props) => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1.2 }}
             transition={{ duration: 0.5 }}
-            className={`w-full h-full pointer-events-none ${slides[currentSlideIndex].className}`}
+            className={`w-full h-full pointer-events-none p-6 overflow-hidden ${slides[currentSlideIndex].className}`}
             style={{
               backgroundColor: currentTheme.slideBackgroundColor,
               color: currentTheme.accentColor,
               backgroundImage: currentTheme.gradientBackground,
               fontFamily: currentTheme.fontFamily,
-              transform: "scale(0.8)",
+              transform: "scale(0.85)",
               transformOrigin: "center",
+              boxSizing: "border-box",
             }}
           >
-            <MasterRecursiveComponent
-              content={slides[currentSlideIndex].content}
-              onContentChange={() => {}}
-              slideId={slides[currentSlideIndex].id}
-              isPreview={false}
-              isEditable={false}
-            />
+            <div className="w-full h-full overflow-hidden">
+              <MasterRecursiveComponent
+                content={slides[currentSlideIndex].content}
+                onContentChange={() => {}}
+                slideId={slides[currentSlideIndex].id}
+                isPreview={false}
+                isEditable={false}
+              />
+            </div>
           </motion.div>
         </AnimatePresence>
 

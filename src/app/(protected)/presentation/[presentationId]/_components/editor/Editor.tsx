@@ -141,7 +141,7 @@ export const DraggableSlide: React.FC<DraggableSlideProps> = ({
     <div
       ref={ref}
       className={cn(
-        "w-full rounded-lg shadow-lg relative p-0 min-h-[400px] max-h-[800px]",
+        "w-full rounded-lg shadow-lg relative p-6 min-h-[400px] max-h-[800px]",
         "shadow-xl transition-shadow duration-300",
         "flex flex-col",
         index === currentSlide ? "ring-2 ring-blue-500 ring-offset-2" : "",
