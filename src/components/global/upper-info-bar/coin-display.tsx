@@ -20,23 +20,32 @@ const CoinDisplay = ({ coins }: { coins: number | undefined }) => {
 
   useEffect(() => {
     if (isMounted) {
-      const newCoins = storeUser?.coins ?? coins;
+      // Prioritize store user coins over props, fallback to props if store is empty
+      const currentCoins = storeUser?.coins ?? coins;
       
-      if (newCoins !== displayCoins && newCoins !== undefined && displayCoins !== undefined) {
-        // Determine if coins increased or decreased
-        const coinChange = newCoins - displayCoins;
+      if (currentCoins !== displayCoins && currentCoins !== undefined && displayCoins !== undefined) {
+        // Check if this is just the store catching up to the props (after purchase redirect)
+        // If store coins now match props coins, and display was already showing props, don't animate
+        if (storeUser?.coins === coins && displayCoins === coins) {
+          // This is just store sync, not a real change - update silently
+          setDisplayCoins(currentCoins);
+          return;
+        }
+        
+        // This is a real change - animate it
+        const coinChange = currentCoins - displayCoins;
         setAnimationType(coinChange > 0 ? 'increase' : 'decrease');
         
         setIsAnimating(true);
         setTimeout(() => {
-          setDisplayCoins(newCoins);
+          setDisplayCoins(currentCoins);
           setTimeout(() => {
             setIsAnimating(false);
             setAnimationType(null);
           }, 500);
         }, 150);
       } else if (displayCoins === undefined) {
-        setDisplayCoins(newCoins);
+        setDisplayCoins(currentCoins);
       }
     } else {
       setDisplayCoins(coins);
@@ -48,7 +57,7 @@ const CoinDisplay = ({ coins }: { coins: number | undefined }) => {
     return (
       <Button className="rounded-lg font-semibold hover:cursor-default">
         <Coins />
-        {coins}
+        {coins || 0}
       </Button>
     );
   }
@@ -108,25 +117,25 @@ const CoinDisplay = ({ coins }: { coins: number | undefined }) => {
             isAnimating ? animationProps.textColor : ''
           }`} />
         </motion.div>
-      <AnimatePresence mode="wait">
-        <motion.span
-          key={displayCoins}
-          initial={{ y: animationProps.initialY, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: animationProps.exitY, opacity: 0 }}
-          transition={{ 
-            duration: 0.4,
-            type: "spring",
-            stiffness: 300,
-            damping: 20
-          }}
-          className={`inline-block transition-colors duration-300 ${
-            isAnimating ? animationProps.textColor : ''
-          }`}
-        >
-          {displayCoins}
-        </motion.span>
-      </AnimatePresence>
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={displayCoins}
+            initial={{ y: animationProps.initialY, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: animationProps.exitY, opacity: 0 }}
+            transition={{ 
+              duration: 0.4,
+              type: "spring",
+              stiffness: 300,
+              damping: 20
+            }}
+            className={`inline-block transition-colors duration-300 ${
+              isAnimating ? animationProps.textColor : ''
+            }`}
+          >
+            {displayCoins}
+          </motion.span>
+        </AnimatePresence>
       </Button>
     </motion.div>
   );
