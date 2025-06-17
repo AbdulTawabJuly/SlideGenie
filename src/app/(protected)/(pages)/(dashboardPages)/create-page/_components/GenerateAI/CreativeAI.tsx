@@ -64,10 +64,10 @@ const CreativeAI = ({ onBack }: Props) => {
   };
   const generateOutline = async () => {
     if (currentAiPrompt === "") {
-      toast.error("Bruh 💀", {
-        description:
-          "You really thought I could read your mind? Drop a prompt first! 🤦‍♂️",
-      });
+        toast.error("Bruh 💀", {
+          description:
+            "You really thought I could read your mind? Drop a prompt first! 🤦‍♂️",
+        });
       return;
     }
     setIsGenerating(true);

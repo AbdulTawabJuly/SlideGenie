@@ -19,6 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { EllipsisVertical, Trash } from "lucide-react";
 import { updateSlides } from "@/actions/project";
+import { toast } from "sonner";
 
 interface DropZoneProps {
   index: number;
@@ -241,12 +242,24 @@ const Editor = ({ isEditable }: Props) => {
       
       if (!id) {
         console.error("No ID provided to handleDelete");
+        toast.error("Bruh 💀", {
+          description:
+            "ID is Undefined 🤦‍♂️",
+        });
         return;
       }
       
       removeSlide(id);
+      toast.success("W move 🚀", {
+        description:
+          "Slide Deleted Successfully 😎",
+      });
     } else {
       console.log("Not editable, delete ignored");
+      toast.error("Bruh 💀", {
+        description:
+          "The Slide is not Editable 🤦‍♂️",
+      });
     }
   };
 
