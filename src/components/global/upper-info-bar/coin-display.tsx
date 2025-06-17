@@ -1,143 +1,56 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import React, { useEffect, useState } from "react";
-import { Coins } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { useUserStore } from "@/store/useUserStore";
+import { useEffect, useState } from "react";
+import { Coins } from "lucide-react";
+import { motion, useAnimation } from "framer-motion";
 
-const CoinDisplay = ({ coins }: { coins: number | undefined }) => {
-  const [displayCoins, setDisplayCoins] = useState(coins);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [animationType, setAnimationType] = useState<'increase' | 'decrease' | null>(null);
-  const [isMounted, setIsMounted] = useState(false);
-  
-  const storeUser = useUserStore((state) => state.user);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+const CoinDisplay = () => {
+  const { user, shouldAnimateCoins } = useUserStore();
+  const [displayCoins, setDisplayCoins] = useState(user?.coins || 0);
+  const controls = useAnimation();
 
   useEffect(() => {
-    if (isMounted) {
-      // Prioritize store user coins over props, fallback to props if store is empty
-      const currentCoins = storeUser?.coins ?? coins;
-      
-      if (currentCoins !== displayCoins && currentCoins !== undefined && displayCoins !== undefined) {
-        // Check if this is just the store catching up to the props (after purchase redirect)
-        // If store coins now match props coins, and display was already showing props, don't animate
-        if (storeUser?.coins === coins && displayCoins === coins) {
-          // This is just store sync, not a real change - update silently
-          setDisplayCoins(currentCoins);
-          return;
+    if (user?.coins !== undefined && shouldAnimateCoins) {
+      const startCoins = displayCoins;
+      const endCoins = user.coins;
+      const duration = 1; // Animation duration in seconds
+
+      controls.start({
+        scale: [1, 1.2, 1],
+        color: ["#000", "#ef4444", "#000"], // Adjust colors to match 'text-vivid'
+        transition: { duration },
+      });
+
+      // Smoothly increment coins
+      const startTime = performance.now();
+      const animate = (currentTime: number) => {
+        const elapsed = (currentTime - startTime) / 1000;
+        const progress = Math.min(elapsed / duration, 1);
+        const newCoins = Math.floor(startCoins + (endCoins - startCoins) * progress);
+        setDisplayCoins(newCoins);
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
         }
-        
-        // This is a real change - animate it
-        const coinChange = currentCoins - displayCoins;
-        setAnimationType(coinChange > 0 ? 'increase' : 'decrease');
-        
-        setIsAnimating(true);
-        setTimeout(() => {
-          setDisplayCoins(currentCoins);
-          setTimeout(() => {
-            setIsAnimating(false);
-            setAnimationType(null);
-          }, 500);
-        }, 150);
-      } else if (displayCoins === undefined) {
-        setDisplayCoins(currentCoins);
-      }
+      };
+
+      requestAnimationFrame(animate);
     } else {
-      setDisplayCoins(coins);
+      setDisplayCoins(user?.coins || 0);
     }
-  }, [storeUser?.coins, coins, displayCoins, isMounted]);
-
-  // Prevent hydration mismatch by showing a simple version on first render
-  if (!isMounted) {
-    return (
-      <Button className="rounded-lg font-semibold hover:cursor-default">
-        <Coins />
-        {coins || 0}
-      </Button>
-    );
-  }
-
-  // Get animation colors and directions based on type
-  const getAnimationProps = () => {
-    if (!isAnimating || !animationType) {
-      return {
-        textColor: '',
-        iconRotation: 0,
-        initialY: -20,
-        exitY: 20
-      };
-    }
-
-    if (animationType === 'increase') {
-      return {
-        textColor: 'text-green-500',
-        iconRotation: 180, // Rotate down
-        initialY: -30, // Come from above
-        exitY: 30 // Exit downward
-      };
-    } else {
-      return {
-        textColor: 'text-red-500',
-        iconRotation: -180, // Rotate up
-        initialY: 30, // Come from below
-        exitY: -30 // Exit upward
-      };
-    }
-  };
-
-  const animationProps = getAnimationProps();
+  }, [user?.coins, shouldAnimateCoins, displayCoins, controls]);
 
   return (
-    <motion.div
-      animate={{
-        backgroundColor: isAnimating 
-          ? animationType === 'increase' 
-            ? 'rgba(34, 197, 94, 0.1)' // green-500 with opacity
-            : 'rgba(239, 68, 68, 0.1)'  // red-500 with opacity
-          : 'transparent',
-        scale: isAnimating ? 1.02 : 1
-      }}
-      transition={{ duration: 0.4, type: "spring", stiffness: 200 }}
-      className="rounded-lg"
-    >
-      <Button className="rounded-lg font-semibold cursor-default relative overflow-hidden">
-        <motion.div
-          animate={{ 
-            rotate: isAnimating ? animationProps.iconRotation : 0,
-            scale: isAnimating ? 1.1 : 1
-          }}
-          transition={{ duration: 0.4, type: "spring", stiffness: 200 }}
-        >
-          <Coins className={`transition-all duration-300 ${
-            isAnimating ? animationProps.textColor : ''
-          }`} />
-        </motion.div>
-        <AnimatePresence mode="wait">
-          <motion.span
-            key={displayCoins}
-            initial={{ y: animationProps.initialY, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: animationProps.exitY, opacity: 0 }}
-            transition={{ 
-              duration: 0.4,
-              type: "spring",
-              stiffness: 300,
-              damping: 20
-            }}
-            className={`inline-block transition-colors duration-300 ${
-              isAnimating ? animationProps.textColor : ''
-            }`}
-          >
-            {displayCoins}
-          </motion.span>
-        </AnimatePresence>
-      </Button>
-    </motion.div>
+    <div className="flex items-center gap-2">
+      <motion.span
+        animate={controls}
+        className="font-sm font-sans font-bold bg-primary text-primary-foreground hover:bg-primary/90 px-2 py-1 rounded-lg flex items-center gap-1"
+      >
+        <Coins className="h-5 w-5 text-vivid" />
+        {displayCoins} Coins
+      </motion.span>
+    </div>
   );
 };
 

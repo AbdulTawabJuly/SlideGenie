@@ -3,7 +3,7 @@
 import { onAuthenticateUser } from "@/actions/user";
 import { useUserStore } from "@/store/useUserStore";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Project } from "@prisma/client";
 import Projects from "@/components/global/projects";
@@ -18,8 +18,8 @@ const DashboardClient = ({ projects }: Props) => {
   const { setUser } = useUserStore();
   const purchaseStatus = searchParams.get("purchase");
   const searchQuery = searchParams.get("search") || "";
+  const [isLoadingUser, setIsLoadingUser] = useState(purchaseStatus === "success");
 
-  // Filter projects based on search query
   const filteredProjects = useMemo(() => {
     if (!searchQuery.trim()) {
       return projects;
@@ -32,31 +32,62 @@ const DashboardClient = ({ projects }: Props) => {
 
   useEffect(() => {
     if (purchaseStatus === "success") {
-      // Refresh user data to get updated coin balance
       const refreshUserData = async () => {
         try {
           const auth = await onAuthenticateUser();
           if (auth.user) {
+            useUserStore.getState().updateUserCoins(auth.user.coins, true);
             setUser(auth.user);
             toast.success("Payment successful! Your coins have been added to your account.");
           }
         } catch (error) {
-          // Only log errors that aren't from browser extensions
           const errorMessage = error instanceof Error ? error.message : String(error);
           if (!errorMessage.includes('chrome-extension://')) {
             console.error("Error refreshing user data:", error);
           }
+        } finally {
+          setIsLoadingUser(false);
         }
       };
 
       refreshUserData();
 
-      // Clean up URL by removing the purchase parameter
       const url = new URL(window.location.href);
       url.searchParams.delete("purchase");
       window.history.replaceState({}, "", url.toString());
+    } else {
+      const ensureUserData = async () => {
+        try {
+          const auth = await onAuthenticateUser();
+          if (auth.user) {
+            setUser(auth.user);
+          }
+        } catch (error) {
+          console.error("Error ensuring user data:", error);
+        } finally {
+          setIsLoadingUser(false);
+        }
+      };
+      ensureUserData();
     }
   }, [purchaseStatus, setUser]);
+
+  if (isLoadingUser) {
+    return (
+      <div className="w-full flex flex-col gap-6 relative md:p-0 p-4">
+        <div className="flex flex-col-reverse items-start w-full gap-6 sm:flex-row sm:justify-between sm:items-center">
+          <div className="flex flex-col items-start ml-2">
+            <h1 className="text-2xl font-semibold dark:text-primary backdrop-blur-lg">
+              Projects
+            </h1>
+            <p className="text-base font-normal dark:text-secondary">
+              Loading your dashboard...
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full flex flex-col gap-6 relative md:p-0 p-4">
@@ -90,4 +121,4 @@ const DashboardClient = ({ projects }: Props) => {
   );
 };
 
-export default DashboardClient; 
+export default DashboardClient;

@@ -4,9 +4,10 @@ import { devtools, persist } from "zustand/middleware";
 
 interface UserState {
   user: User | null;
+  shouldAnimateCoins: boolean;
   setUser: (user: User) => void;
   getUser: () => User | null;
-  updateUserCoins: (newCoins: number) => void;
+  updateUserCoins: (newCoins: number, animate?: boolean) => void;
 }
 
 export const useUserStore = create(
@@ -14,12 +15,17 @@ export const useUserStore = create(
     persist<UserState>(
       (set, get) => ({
         user: null,
-        setUser: (user: User) => set({ user }),
+        shouldAnimateCoins: false,
+        setUser: (user: User) =>
+          set({ user, shouldAnimateCoins: false }),
         getUser: () => get().user,
-        updateUserCoins: (newCoins: number) => {
+        updateUserCoins: (newCoins: number, animate: boolean = true) => {
           const currentUser = get().user;
           if (currentUser) {
-            set({ user: { ...currentUser, coins: newCoins } });
+            set({
+              user: { ...currentUser, coins: newCoins },
+              shouldAnimateCoins: animate,
+            });
           }
         },
       }),

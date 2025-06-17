@@ -29,7 +29,7 @@ const UpperInfoBar = ({ user }: Props) => {
         <SearchBar />
         <ThemeSwitcher />
         <div className="flex flex-wrap gap-4 items-center justify-end">
-          <CoinDisplay coins={currentCoins} />
+          <CoinDisplay />
           <NewProjectButton user={user} />
         </div>
       </div>

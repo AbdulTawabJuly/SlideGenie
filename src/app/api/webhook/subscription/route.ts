@@ -29,32 +29,46 @@ export async function POST(req: NextRequest) {
             throw new Error("Signature mismatch");
         }
 
-        // Calculate coins to add
-        let coinsToAdd = 0;
-        const amountPaid = orderTotal / 100; // Convert cents to dollars
-
-        // For predefined packages, use the specified coin amount (convert string to number)
-        coinsToAdd = parseInt(coinsAmount) || calculateCoinsFromAmount(amountPaid);
-
-        // Find user by Clerk ID to get database ID
+        // Check if this order has already been processed
         const { client } = await import("@/lib/prisma");
+        const existingTransaction = await client.coinTransaction.findFirst({
+            where: { lemonSqueezyOrderId: orderId },
+        });
+
+        if (existingTransaction) {
+            console.log(`Order ${orderId} already processed`);
+            return Response.json({
+                message: "Order already processed",
+                status: 200,
+                data: {
+                    userId: buyerUserId,
+                    coinsAdded: existingTransaction.coins,
+                    amountPaid: existingTransaction.amount,
+                },
+            });
+        }
+
+        // Calculate coins to add
+        const coinsToAdd = parseInt(coinsAmount) || calculateCoinsFromAmount(orderTotal / 100);
+
+        // Find user by Clerk ID
         const user = await client.user.findUnique({
             where: { id: buyerUserId },
-            select: { id: true }
+            select: { id: true },
         });
 
         if (!user) {
             throw new Error(`User not found with Clerk ID: ${buyerUserId}`);
         }
 
-        // Add coins to user account using database ID
-        const result = await addCoins(user.id, coinsToAdd, amountPaid, orderId);
+        // Add coins to user account
+        const result = await addCoins(user.id, coinsToAdd, orderTotal / 100, orderId);
 
         if (result.status !== 200) {
             return Response.json({
                 message: "Failed to add coins to user account",
                 status: result.status,
-                error: result.error
+                error: result.error,
             });
         }
 
@@ -64,19 +78,19 @@ export async function POST(req: NextRequest) {
             message: "Coins added successfully to user account",
             status: 200,
             data: {
-                userId: buyerUserId,
+                userId: user.id,
                 coinsAdded: coinsToAdd,
-                amountPaid: amountPaid,
-                totalCoins: result.user?.coins
-            }
+                amountPaid: orderTotal / 100,
+                totalCoins: result.user?.coins,
+            },
         });
 
     } catch (error) {
         console.error("Error in webhook coin purchase route:", error);
-        return Response.json({ 
-            message: "Internal Server Error", 
+        return Response.json({
+            message: "Internal Server Error",
             status: 500,
-            error: error instanceof Error ? error.message : "Unknown error"
+            error: error instanceof Error ? error.message : "Unknown error",
         });
     }
 }
