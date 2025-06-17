@@ -171,8 +171,8 @@ export const DraggableSlide: React.FC<DraggableSlideProps> = ({
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-fit p-0">
-            <Button variant="ghost" onClick={() => handleDelete(slide.id)}>
-              <Trash className="w-5 h-5 text-red-500" />
+            <Button variant="ghost" onClick={() => handleDelete(slide.content.id)}>
+              <Trash className="w-5 h-5 text-red-900" />
               <span className="sr-only">Delete Slide</span>
             </Button>
           </PopoverContent>
@@ -237,8 +237,16 @@ const Editor = ({ isEditable }: Props) => {
 
   const handleDelete = (id: string) => {
     if (isEditable) {
-      console.log("Deleting : ", id);
+      console.log("handleDelete called with id:", id);
+      
+      if (!id) {
+        console.error("No ID provided to handleDelete");
+        return;
+      }
+      
       removeSlide(id);
+    } else {
+      console.log("Not editable, delete ignored");
     }
   };
 

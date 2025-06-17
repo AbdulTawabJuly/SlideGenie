@@ -75,7 +75,7 @@ export const useSlideStore = create(
           }),
         removeSlide: (id) =>
           set((state) => ({
-            slides: state.slides.filter((slide) => slide.id !== id),
+            slides: state.slides.filter((slide) => slide.content.id !== id),
           })),
         setCurrentSlide: (index) => set({ currentSlide: index }),
 
