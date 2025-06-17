@@ -18,7 +18,7 @@ const CoinDisplay = () => {
 
       controls.start({
         scale: [1, 1.2, 1],
-        color: ["#000", "#ef4444", "#000"], // Adjust colors to match 'text-vivid'
+        color: ["#000", "#ef4444", "#000"],
         transition: { duration },
       });
 

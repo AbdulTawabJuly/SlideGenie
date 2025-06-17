@@ -53,11 +53,12 @@ const PresentationMode = ({ onClose }: Props) => {
       style={{ backgroundColor: currentTheme.slideBackgroundColor }}
     >
       <div
-        className="relative w-full h-full"
+        className="relative shadow-2xl"
         style={{
           aspectRatio: "16/9",
-          maxHeight: "100vh",
-          maxWidth: "177.78vh",
+          height: "70vh",
+          width: "auto",
+          maxWidth: "90vw",
         }}
       >
         <AnimatePresence mode="wait">
@@ -73,6 +74,8 @@ const PresentationMode = ({ onClose }: Props) => {
               color: currentTheme.accentColor,
               backgroundImage: currentTheme.gradientBackground,
               fontFamily: currentTheme.fontFamily,
+              transform: "scale(0.8)",
+              transformOrigin: "center",
             }}
           >
             <MasterRecursiveComponent
