@@ -1,28 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { useSlideStore } from "@/store/useSlideStore";
-import { Home, Play, Loader2, CheckCircle, Download } from "lucide-react";
+import { Home, Play, Loader2, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { toast } from "sonner";
 import PresentationMode from "./PresentationMode";
 
-type Props = {
-  presentationId: string;
-};
 
-const Navbar = ({ presentationId }: Props) => {
+const Navbar = () => {
   const { currentTheme, isSaving, lastSavedAt } = useSlideStore();
   const [isPresentationMode, setIsPresentationMode] = useState(false);
   const [showSaved, setShowSaved] = useState(false);
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(
-      `${window.location.origin}/share/${presentationId}`
-    );
-    toast.success("Link Copied", {
-      description: "The Link has been copied to your clipboard",
-    });
-  };
 
   useEffect(() => {
     if (lastSavedAt) {
@@ -65,13 +52,6 @@ const Navbar = ({ presentationId }: Props) => {
           )}
         </div>
 
-        <Button
-          style={{ backgroundColor: currentTheme.backgroundColor }}
-          onClick={handleCopy}
-          variant="outline"
-        >
-          <Download className="w-4 h-4" />
-        </Button>
         <Button
           variant={"outline"}
           className="flex items-center gap-2"
