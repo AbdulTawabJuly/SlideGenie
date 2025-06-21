@@ -28,7 +28,7 @@ const NavMain = ({
   return (
     <SidebarGroup className="p-0">
       <SidebarMenu>
-        {items.map((item, idx) => (
+        {items.map((item) => (
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton
               asChild

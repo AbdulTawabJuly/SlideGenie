@@ -1,8 +1,6 @@
-import { onAuthenticateUser } from "@/actions/user";
 import React from "react";
 
 const Page = async () => {
-  const checkUser = await onAuthenticateUser();
   return (
     <div className="felx justify-between items-center">
       <div className="flex flex-col items-start">

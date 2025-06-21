@@ -1,9 +1,7 @@
 import {
   User,
   Home,
-  File,
-  Trash2,
-  Settings
+  Trash2
 } from "lucide-react";
 import { ComponentGroup, LayoutGroup, Theme } from "./types";
 import { BlankCardIcon, FourColumnsIcon, FourImageColumnsIcon, ImageAndTextIcon, TextAndImageIcon, ThreeColumnsIcon, ThreeColumnsWithHeadingsIcon, ThreeImageColumnsIcon, TwoColumnsIcon, TwoColumnsWithHeadingsIcon, TwoImageColumnsIcon } from "./IconComponent";

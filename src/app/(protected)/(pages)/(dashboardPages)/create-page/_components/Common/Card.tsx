@@ -1,7 +1,7 @@
 "use client";
 import { OutlineCard } from "@/lib/types";
 import React, { useRef } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { Card as UICard } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { containerVariants, itemVariants } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, RotateCcw } from "lucide-react";
@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import CardList from "../Common/CardList";
-import { title } from "process";
+
 import { OutlineCard } from "@/lib/types";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "sonner";
@@ -150,7 +150,6 @@ const ScratchPage = ({ onBack }: Props) => {
       </motion.div>
       <CardList
         outlines={outlines}
-        addOutline={addOutlines}
         addMultipleOutlines={addMultipleOutlines}
         editingCard={editingCard}
         selectedCard={selectedCard}

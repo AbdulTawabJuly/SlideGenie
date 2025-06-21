@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   containerVariants,
   CreatePageCard,
@@ -19,7 +19,7 @@ const CreatePage = ({ onSelectOption }: Props) => {
 
   useEffect(()=>{
     setPage("create")
-  },[])
+  },[setPage])
 
   return (
     <motion.div initial="hidden" animate="visible" className="space-y-8">

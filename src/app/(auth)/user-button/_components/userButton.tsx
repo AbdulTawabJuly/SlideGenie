@@ -5,8 +5,7 @@ import { useUser, useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-export const 
-UserButton = () => {
+export const UserButton = () => {
   const { isLoaded, user } = useUser();
   const { signOut } = useClerk();
   const router = useRouter();

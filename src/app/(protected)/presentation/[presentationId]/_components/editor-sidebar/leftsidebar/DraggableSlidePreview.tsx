@@ -55,7 +55,6 @@ const DraggableSlidePreview = ({ slide, index, moveSlide }: Props) => {
         <ScaledPreview
           slide={slide}
           isActive={index === currentSlide}
-          index={index}
         />
       </div>
     </div>

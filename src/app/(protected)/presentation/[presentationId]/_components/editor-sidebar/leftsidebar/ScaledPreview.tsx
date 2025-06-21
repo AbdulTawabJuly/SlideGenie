@@ -7,10 +7,9 @@ import { MasterRecursiveComponent } from "../../editor/MasterRecursiveComponent"
 type Props = {
   slide: Slide;
   isActive: boolean;
-  index: number;
 };
 
-const ScaledPreview = ({ slide, isActive, index }: Props) => {
+const ScaledPreview = ({ slide, isActive }: Props) => {
   const { currentTheme } = useSlideStore();
   return (
     <div

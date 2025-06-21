@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import { useSlideStore } from "@/store/useSlideStore";
-import { Value } from "@radix-ui/react-select";
 import React, { KeyboardEvent } from "react";
 
 type ListProps = {

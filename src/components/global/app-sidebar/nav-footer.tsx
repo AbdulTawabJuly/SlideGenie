@@ -1,5 +1,5 @@
 "use client";
-import { UserButton } from "@/app/(auth)/user-button/page";
+import { UserButton } from "@/app/(auth)/user-button/_components/userButton";
 import {
   SidebarMenu,
   SidebarMenuItem,

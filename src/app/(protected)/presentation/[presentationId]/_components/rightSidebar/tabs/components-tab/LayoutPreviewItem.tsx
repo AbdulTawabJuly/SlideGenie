@@ -15,9 +15,7 @@ const LayoutPreviewItem = ({
   name,
   Icon,
   onClick,
-  isSelected,
-  type,
-  component,
+  isSelected
 }: Props) => {
   return (
     <button

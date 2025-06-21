@@ -271,7 +271,6 @@ const CreativeAI = ({ onBack }: Props) => {
 
       <CardList
         outlines={outlines}
-        addOutline={addOutline}
         addMultipleOutlines={addMultipleOutlines}
         editingCard={editingCard}
         selectedCard={selectedCard}

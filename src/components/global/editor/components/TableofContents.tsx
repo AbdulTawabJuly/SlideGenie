@@ -8,7 +8,7 @@ type Props = {
   className?: string;
 };
 
-const TableofContents = ({ items, onItemClick, className }: Props) => {
+const TableofContents = ({ items, className }: Props) => {
   const { currentTheme } = useSlideStore();
   return (
     <nav

@@ -2,9 +2,7 @@ import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import React from "react";
 
-type Props = {};
-
-const CreatePageSkeleton = (props: Props) => {
+const CreatePageSkeleton = () => {
   return (
     <div className="space-y-8">
       <div className="text-center space-y-2">
