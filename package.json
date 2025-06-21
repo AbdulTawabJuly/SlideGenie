@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "vercel-build": "npm install $NPM_FLAGS && npm run build"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.12.4",
