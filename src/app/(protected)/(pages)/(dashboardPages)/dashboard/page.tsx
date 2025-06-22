@@ -4,6 +4,7 @@ import DashboardClient from "./DashboardClient";
 
 const DashboardPage = async () => {
   const allProjects = await getAllProjects();
+  console.log("All Projects on Dashboard Page : ",allProjects);
   
   return (
     <DashboardClient projects={allProjects.data || []} />
