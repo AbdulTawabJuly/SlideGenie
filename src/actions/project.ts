@@ -7,8 +7,12 @@ import { JsonValue } from "@prisma/client/runtime/library"
 
 export const getAllProjects = async () => {
     try {
+        console.log("getAllProjects: Starting authentication check...");
         const checkUser = await onAuthenticateUser()
+        console.log("getAllProjects auth result:", checkUser, "User exists:", !!checkUser.user);
+        
         if (checkUser.status !== 200 || !checkUser.user) {
+            console.log("getAllProjects: Authentication failed, returning 403");
             return { status: 403, error: "User Not Authenticated" }
         }
 
