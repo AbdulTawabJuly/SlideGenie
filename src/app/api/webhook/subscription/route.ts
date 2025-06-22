@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 import crypto from "node:crypto";
 import { NextRequest } from "next/server";
 import { addCoins } from "@/actions/user";
