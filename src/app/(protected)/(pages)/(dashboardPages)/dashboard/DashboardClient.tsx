@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Project } from "@prisma/client";
 import Projects from "@/components/global/projects";
 import ProjectNotFound from "@/components/global/not-found";
+import { useUser } from "@clerk/nextjs";
 
 type Props = {
   projects: Project[];
@@ -19,6 +20,7 @@ const DashboardClient = ({ projects }: Props) => {
   const purchaseStatus = searchParams.get("purchase");
   const searchQuery = searchParams.get("search") || "";
   const [isLoadingUser, setIsLoadingUser] = useState(purchaseStatus === "success");
+  const { user, isLoaded } = useUser();
 
   const filteredProjects = useMemo(() => {
     if (!searchQuery.trim()) {
@@ -30,47 +32,83 @@ const DashboardClient = ({ projects }: Props) => {
     );
   }, [projects, searchQuery]);
 
+  console.log("Clerk Entities : ",user , isLoaded);
+
+  // useEffect(() => {
+  //   if (purchaseStatus === "success") {
+  //     const refreshUserData = async () => {
+  //       try {
+  //         const auth = await onAuthenticateUser();
+  //         if (auth.user) {
+  //           useUserStore.getState().updateUserCoins(auth.user.coins, true);
+  //           setUser(auth.user);
+  //           toast.success("Payment successful! Your coins have been added to your account.");
+  //         }
+  //       } catch (error) {
+  //         const errorMessage = error instanceof Error ? error.message : String(error);
+  //         if (!errorMessage.includes('chrome-extension://')) {
+  //           console.error("Error refreshing user data:", error);
+  //         }
+  //       } finally {
+  //         setIsLoadingUser(false);
+  //       }
+  //     };
+
+  //     refreshUserData();
+
+  //     const url = new URL(window.location.href);
+  //     url.searchParams.delete("purchase");
+  //     window.history.replaceState({}, "", url.toString());
+  //   } else {
+  //     const ensureUserData = async () => {
+  //       try {
+  //         const auth = await onAuthenticateUser();
+  //         if (auth.user) {
+  //           setUser(auth.user);
+  //         }
+  //       } catch (error) {
+  //         console.error("Error ensuring user data:", error);
+  //       } finally {
+  //         setIsLoadingUser(false);
+  //       }
+  //     };
+  //     ensureUserData();
+  //   }
+  // }, [purchaseStatus, setUser]);
+
   useEffect(() => {
-    if (purchaseStatus === "success") {
-      const refreshUserData = async () => {
-        try {
-          const auth = await onAuthenticateUser();
-          if (auth.user) {
-            useUserStore.getState().updateUserCoins(auth.user.coins, true);
-            setUser(auth.user);
+    if (!isLoaded) return;
+
+    if (!user) {
+      window.location.href = "/sign-in?error=no_user";
+      return;
+    }
+
+    const refreshUserData = async () => {
+      try {
+        const response = await fetch("/api/user"); // Create an API route to fetch user data
+        const auth = await response.json();
+        if (auth.user) {
+          setUser(auth.user);
+          if (purchaseStatus === "success") {
             toast.success("Payment successful! Your coins have been added to your account.");
           }
-        } catch (error) {
-          const errorMessage = error instanceof Error ? error.message : String(error);
-          if (!errorMessage.includes('chrome-extension://')) {
-            console.error("Error refreshing user data:", error);
-          }
-        } finally {
-          setIsLoadingUser(false);
         }
-      };
+      } catch (error) {
+        console.error("Error refreshing user data:", error);
+      } finally {
+        setIsLoadingUser(false);
+      }
+    };
 
-      refreshUserData();
+    refreshUserData();
 
+    if (purchaseStatus === "success") {
       const url = new URL(window.location.href);
       url.searchParams.delete("purchase");
       window.history.replaceState({}, "", url.toString());
-    } else {
-      const ensureUserData = async () => {
-        try {
-          const auth = await onAuthenticateUser();
-          if (auth.user) {
-            setUser(auth.user);
-          }
-        } catch (error) {
-          console.error("Error ensuring user data:", error);
-        } finally {
-          setIsLoadingUser(false);
-        }
-      };
-      ensureUserData();
     }
-  }, [purchaseStatus, setUser]);
+  }, [isLoaded, user, purchaseStatus, setUser]);
 
   if (isLoadingUser) {
     return (
