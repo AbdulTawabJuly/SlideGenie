@@ -1,0 +1,7 @@
+[install]
+# Allow installing packages with peer dependency conflicts
+peer = true
+# Use exact versions for more predictable builds
+exact = false
+# Automatically install peer dependencies
+auto = true 
