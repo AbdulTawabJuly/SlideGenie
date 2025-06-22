@@ -7,8 +7,7 @@ const DashboardPage = async () => {
   console.log("All Projects on Dashboard Page : ",allProjects);
   
   return (
-    // <DashboardClient projects={allProjects.data || []} />
-    <h1>Dashboard Page</h1>
+    <DashboardClient projects={allProjects.data || []} />
   );
 };
 

@@ -19,96 +19,61 @@ const DashboardClient = ({ projects }: Props) => {
   const { setUser } = useUserStore();
   const purchaseStatus = searchParams.get("purchase");
   const searchQuery = searchParams.get("search") || "";
-  const [isLoadingUser, setIsLoadingUser] = useState(purchaseStatus === "success");
+  const [isLoadingUser, setIsLoadingUser] = useState(
+    purchaseStatus === "success"
+  );
   const { user, isLoaded } = useUser();
 
   const filteredProjects = useMemo(() => {
     if (!searchQuery.trim()) {
       return projects;
     }
-    
-    return projects.filter(project => 
+
+    return projects.filter((project) =>
       project.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [projects, searchQuery]);
 
-  console.log("Clerk Entities : ",user , isLoaded);
-
-  // useEffect(() => {
-  //   if (purchaseStatus === "success") {
-  //     const refreshUserData = async () => {
-  //       try {
-  //         const auth = await onAuthenticateUser();
-  //         if (auth.user) {
-  //           useUserStore.getState().updateUserCoins(auth.user.coins, true);
-  //           setUser(auth.user);
-  //           toast.success("Payment successful! Your coins have been added to your account.");
-  //         }
-  //       } catch (error) {
-  //         const errorMessage = error instanceof Error ? error.message : String(error);
-  //         if (!errorMessage.includes('chrome-extension://')) {
-  //           console.error("Error refreshing user data:", error);
-  //         }
-  //       } finally {
-  //         setIsLoadingUser(false);
-  //       }
-  //     };
-
-  //     refreshUserData();
-
-  //     const url = new URL(window.location.href);
-  //     url.searchParams.delete("purchase");
-  //     window.history.replaceState({}, "", url.toString());
-  //   } else {
-  //     const ensureUserData = async () => {
-  //       try {
-  //         const auth = await onAuthenticateUser();
-  //         if (auth.user) {
-  //           setUser(auth.user);
-  //         }
-  //       } catch (error) {
-  //         console.error("Error ensuring user data:", error);
-  //       } finally {
-  //         setIsLoadingUser(false);
-  //       }
-  //     };
-  //     ensureUserData();
-  //   }
-  // }, [purchaseStatus, setUser]);
-
   useEffect(() => {
-    if (!isLoaded) return;
-
-    if (!user) {
-      window.location.href = "/sign-in?error=no_user";
-      return;
-    }
-
-    const refreshUserData = async () => {
-      try {
-        const response = await fetch("/api/user"); // Create an API route to fetch user data
-        const auth = await response.json();
-        if (auth.user) {
-          setUser(auth.user);
-          if (purchaseStatus === "success") {
-            toast.success("Payment successful! Your coins have been added to your account.");
-          }
-        }
-      } catch (error) {
-        console.error("Error refreshing user data:", error);
-      } finally {
-        setIsLoadingUser(false);
-      }
-    };
-
-    refreshUserData();
-
     if (purchaseStatus === "success") {
+      const refreshUserData = async () => {
+        try {
+          const auth = await onAuthenticateUser();
+          if (auth.user) {
+            useUserStore.getState().updateUserCoins(auth.user.coins, true);
+            setUser(auth.user);
+            toast.success(
+              "Payment successful! Your coins have been added to your account."
+            );
+          }
+        } catch (error) {
+          console.error("Error refreshing user data:", error);
+        } finally {
+          setIsLoadingUser(false);
+        }
+      };
+
+      refreshUserData();
+
       const url = new URL(window.location.href);
       url.searchParams.delete("purchase");
       window.history.replaceState({}, "", url.toString());
+    } else {
+      const ensureUserData = async () => {
+        try {
+          const auth = await onAuthenticateUser();
+          if (auth.user) {
+            setUser(auth.user);
+          }
+        } catch (error) {
+          console.error("Error ensuring user data:", error);
+        } finally {
+          setIsLoadingUser(false);
+        }
+      };
+      ensureUserData();
     }
-  }, [isLoaded, user, purchaseStatus, setUser]);
+  }, [purchaseStatus, setUser]);
 
   if (isLoadingUser) {
     return (
@@ -135,10 +100,9 @@ const DashboardClient = ({ projects }: Props) => {
             Projects
           </h1>
           <p className="text-base font-normal dark:text-secondary">
-            {searchQuery 
+            {searchQuery
               ? `Search results for "${searchQuery}" (${filteredProjects.length} found)`
-              : "All of your work in one place"
-            }
+              : "All of your work in one place"}
           </p>
         </div>
       </div>
