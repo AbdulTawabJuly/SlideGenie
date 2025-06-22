@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "vercel-build": "bun install && bun run build"
+    "postinstall": "prisma generate",
+    "vercel-build": "bun install && prisma generate && bun run build"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.12.4",
