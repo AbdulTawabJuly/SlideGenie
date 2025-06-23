@@ -5,16 +5,12 @@ import { currentUser } from "@clerk/nextjs/server"
 
 export const onAuthenticateUser = async () => {
     try {
-        console.log("onAuthenticateUser: Starting authentication...");
         const user = await currentUser();
-        console.log("onAuthenticateUser: Clerk user:", user ? "Found" : "Not found", user?.id);
         
         if (!user) {
-            console.log("onAuthenticateUser: No Clerk user, returning 403");
             return { status: 403 }
         }
 
-        console.log("onAuthenticateUser: Checking database for user:", user.id);
         const userExists = await client.user.findUnique({
             where: {
                 clerkId: user.id,
@@ -27,7 +23,6 @@ export const onAuthenticateUser = async () => {
                 },
             },
         })
-        console.log("onAuthenticateUser: Database query result:", userExists ? "User found" : "User not found");
 
         if (userExists) {
             return {

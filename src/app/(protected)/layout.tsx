@@ -14,15 +14,10 @@ const Layout = ({ children }: Props) => {
 
   useEffect(() => {
     const authenticateAndSetUser = async () => {
-      console.log("Protected layout: Starting authentication check...");
       const auth = await onAuthenticateUser();
-      console.log("Protected layout auth result:", auth, "User exists:", !!auth.user);
-      
       if (!auth.user) {
-        console.log("Protected layout: No user found, redirecting to sign-in");
         redirect("/sign-in");
       } else {
-        console.log("Protected layout: User found, setting user in store");
         setUser(auth.user);
       }
     };

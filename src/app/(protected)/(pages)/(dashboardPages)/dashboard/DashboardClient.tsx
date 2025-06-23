@@ -8,7 +8,6 @@ import { toast } from "sonner";
 import { Project } from "@prisma/client";
 import Projects from "@/components/global/projects";
 import ProjectNotFound from "@/components/global/not-found";
-import { useUser } from "@clerk/nextjs";
 
 type Props = {
   projects: Project[];
@@ -22,7 +21,6 @@ const DashboardClient = ({ projects }: Props) => {
   const [isLoadingUser, setIsLoadingUser] = useState(
     purchaseStatus === "success"
   );
-  const { user, isLoaded } = useUser();
 
   const filteredProjects = useMemo(() => {
     if (!searchQuery.trim()) {
@@ -47,7 +45,11 @@ const DashboardClient = ({ projects }: Props) => {
             );
           }
         } catch (error) {
-          console.error("Error refreshing user data:", error);
+          const errorMessage =
+            error instanceof Error ? error.message : String(error);
+          if (!errorMessage.includes("chrome-extension://")) {
+            console.error("Error refreshing user data:", error);
+          }
         } finally {
           setIsLoadingUser(false);
         }
