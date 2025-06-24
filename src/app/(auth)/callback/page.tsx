@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 const AuthCallbackPage = async () => {
   const auth = await onAuthenticateUser();
+  console.log("Auth from CallBack : ",auth);
 
   if (auth.status === 200 || auth.status === 201) {
     redirect("/dashboard");

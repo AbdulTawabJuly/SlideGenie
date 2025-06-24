@@ -13,6 +13,7 @@ type Props = {
 const Layout = async ({ children }: Props) => {
   const recentProjects = await getRecentProjects();
   const checkUser = await onAuthenticateUser();
+  console.log("User From Dashboard Layout : ",checkUser);
   if (!checkUser.user) {
     redirect("/sign-in");
   }
