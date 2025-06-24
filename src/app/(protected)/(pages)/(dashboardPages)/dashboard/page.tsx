@@ -6,7 +6,7 @@ const DashboardPage = async () => {
   const allProjects = await getAllProjects();
   
   return (
-    <DashboardClient projects={allProjects.data || []} />
+    <DashboardClient projects={allProjects.data ? allProjects.data : []} />
   );
 };
 
