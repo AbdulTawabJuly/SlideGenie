@@ -5,15 +5,16 @@ import { useUserStore } from "@/store/useUserStore";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { Project } from "@prisma/client";
+import { Project, User } from "@prisma/client";
 import Projects from "@/components/global/projects";
 import ProjectNotFound from "@/components/global/not-found";
 
 type Props = {
   projects: Project[];
+  user: User | null;
 };
 
-const DashboardClient = ({ projects }: Props) => {
+const DashboardClient = ({ projects, user }: Props) => {
   const searchParams = useSearchParams();
   const { setUser } = useUserStore();
   const purchaseStatus = searchParams.get("purchase");
@@ -33,6 +34,10 @@ const DashboardClient = ({ projects }: Props) => {
   }, [projects, searchQuery]);
 
   useEffect(() => {
+    if (user) {
+      setUser(user);
+    }
+    
     if (purchaseStatus === "success") {
       const refreshUserData = async () => {
         try {
@@ -61,21 +66,9 @@ const DashboardClient = ({ projects }: Props) => {
       url.searchParams.delete("purchase");
       window.history.replaceState({}, "", url.toString());
     } else {
-      const ensureUserData = async () => {
-        try {
-          const auth = await onAuthenticateUser();
-          if (auth.user) {
-            setUser(auth.user);
-          }
-        } catch (error) {
-          console.error("Error ensuring user data:", error);
-        } finally {
-          setIsLoadingUser(false);
-        }
-      };
-      ensureUserData();
+      setIsLoadingUser(false);
     }
-  }, [purchaseStatus, setUser]);
+  }, [purchaseStatus, setUser, user]);
 
   if (isLoadingUser) {
     return (
