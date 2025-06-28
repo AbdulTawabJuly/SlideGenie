@@ -10,9 +10,6 @@ const Page = async () => {
     redirect("/sign-in");
   }
 
-  // No longer checking subscription - users can access with coins
-  // Users will be prevented from creating if they don't have enough coins
-
   return (
     <main className="w-full h-full pt-6">
       <Suspense fallback={<CreatePageSkeleton />}>

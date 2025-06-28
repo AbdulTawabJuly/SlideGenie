@@ -12,12 +12,6 @@ export const buyCoinPackage = async (buyUserId: string, packageType: keyof typeo
         const storeId = process.env.LEMON_SQUEEZY_STORE_ID;
         const variantId = selectedPackage.variantId;
         
-        console.log("🔍 Environment Check:");
-        console.log("API Key exists:", !!apiKey);
-        console.log("Store ID:", storeId);
-        console.log("Variant ID:", variantId);
-        console.log("Package:", selectedPackage);
-        
         if (!apiKey) {
             return { status: 500, error: "Missing LEMON_SQUEEZY_API_KEY" };
         }

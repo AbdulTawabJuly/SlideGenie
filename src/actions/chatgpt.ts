@@ -361,10 +361,10 @@ export const generateLayouts = async (projectId: string, theme: string) => {
             where: { clerkId: user.id }
         })
 
-        if (!userExist || !userExist.subscription) {
+        if (!userExist) {
             return {
                 status: 403,
-                error: !userExist?.subscription ? "User Does not have an active subscription" : "User not found in the Database"
+                error: "User not found in the Database"
             }
         }
         const project = await client.project.findUnique({
