@@ -4,6 +4,7 @@ import { currentUser } from "@clerk/nextjs/server"
 import OpenAI from "openai"
 import { v4 as uuidv4 } from 'uuid'
 import { ContentItem, ContentType, Slide } from '@/lib/types'
+import axios from "axios"
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -83,37 +84,101 @@ const fallbackImagesURL = [
 ]
 
 const generateImageUrl = async (prompt: string): Promise<string> => {
-    const randomFallback =
-        fallbackImagesURL[Math.floor(Math.random() * fallbackImagesURL.length)]
+    const randomFallback = fallbackImagesURL[Math.floor(Math.random() * fallbackImagesURL.length)]
+    const LEONARDO_API_KEY = process.env.LEONARDO_API_KEY
+    const endpoint = "https://cloud.leonardo.ai/api/rest/v1/generations"
+    
+    if (!LEONARDO_API_KEY) {
+        console.error('Leonardo API key not found, using fallback image')
+        return randomFallback
+    }
+
     try {
         const improvedPrompt = `
         Create a highly realistic, professional image based on the following description. The image should look as if captured in real life, with attention to detail, lighting, and texture. 
-            Description: ${prompt}
-            Important Notes:
-            - The image must be in a photorealistic style and visually compelling.
-            - Ensure all text, signs, or visible writing in the image are in English.
-            - Pay special attention to lighting, shadows, and textures to make the image as lifelike as possible.
-            - Avoid elements that appear abstract, cartoonish, or overly artistic. The image should be suitable for professional presentations.
-            - Focus on accurately depicting the concept described, including specific objects, environment, mood, and context. Maintain relevance to the description provided.
-            Example Use Cases: Business presentations, educational slides.
+        Description: ${prompt}
+        Important Notes:
+        - The image must be in a photorealistic style and visually compelling.
+        - Ensure all text, signs, or visible writing in the image are in English.
+        - Pay special attention to lighting, shadows, and textures to make the image as lifelike as possible.
+        - Avoid elements that appear abstract, cartoonish, or overly artistic. The image should be suitable for professional presentations.
+        - Focus on accurately depicting the concept described, including specific objects, environment, mood, and context. Maintain relevance to the description provided.
         `
 
+        // Step 1: Generate the image
+        const { data: generateResponse } = await axios.post(
+            endpoint,
+            {
+                height: 536,
+                prompt: improvedPrompt,
+                modelId: "aa77f04e-3eec-4034-9c07-d0f619684628", // Leonardo Kino XL model
+                width: 720,
+                alchemy: true,
+                photoReal: true,
+                photoRealVersion: "v2",
+                presetStyle: "STOCK_PHOTO",
+                num_images: 1,
+            },
+            { 
+                headers: { 
+                    Authorization: `Bearer ${LEONARDO_API_KEY}`,
+                    'Content-Type': 'application/json'
+                } 
+            }
+        )
 
+        const generationId = generateResponse?.sdGenerationJob?.generationId
+        if (!generationId) {
+            console.error('No generation ID received from Leonardo AI')
+            return randomFallback
+        }
 
-        const dalleResponse = await openai.images.generate({
-            model: "dall-e-3",
-            prompt: improvedPrompt,
-            n: 1,
-            size: '1024x1024',
+        // Step 2: Poll for completion
+        const imageUrl = await new Promise<string>((resolve) => {
+            let tries = 0
+            const maxTries = 20 // Maximum polling attempts (100 seconds)
+            
+            const interval = setInterval(async () => {
+                tries++
+                
+                if (tries > maxTries) {
+                    clearInterval(interval)
+                    resolve(randomFallback)
+                    return
+                }
+
+                try {
+                    const { data: getGenerationResponse } = await axios.get(
+                        `${endpoint}/${generationId}`,
+                        {
+                            headers: { 
+                                Authorization: `Bearer ${LEONARDO_API_KEY}` 
+                            }
+                        }
+                    )
+
+                    const generatedImages = getGenerationResponse?.generations_by_pk?.generated_images
+                    if (generatedImages && generatedImages.length > 0) {
+                        clearInterval(interval)
+                        resolve(generatedImages[0].url)
+                    }
+                } catch (error) {
+                    console.error('Error polling Leonardo AI:', error)
+                    clearInterval(interval)
+                    resolve(randomFallback)
+                }
+            }, 5000) // Poll every 5 seconds
         })
-        console.log('🟢 Image generated successfully:', dalleResponse.data[0]?.url)
 
-        return dalleResponse.data[0]?.url || randomFallback
+        console.log('🟢 Image generated successfully with Leonardo AI:', imageUrl)
+        return imageUrl || randomFallback
+
     } catch (error) {
-        console.error('Failed to generate image:', error)
+        console.error('Failed to generate image with Leonardo AI:', error)
         return randomFallback
     }
 }
+
 
 const findImageComponents = (layout: ContentItem): ContentItem[] => {
     const images = []
@@ -397,3 +462,37 @@ export const generateLayouts = async (projectId: string, theme: string) => {
     }
 
 }
+
+
+// const generateImageUrl = async (prompt: string): Promise<string> => {
+//     const randomFallback =
+//         fallbackImagesURL[Math.floor(Math.random() * fallbackImagesURL.length)]
+//     try {
+//         const improvedPrompt = `
+//         Create a highly realistic, professional image based on the following description. The image should look as if captured in real life, with attention to detail, lighting, and texture. 
+//             Description: ${prompt}
+//             Important Notes:
+//             - The image must be in a photorealistic style and visually compelling.
+//             - Ensure all text, signs, or visible writing in the image are in English.
+//             - Pay special attention to lighting, shadows, and textures to make the image as lifelike as possible.
+//             - Avoid elements that appear abstract, cartoonish, or overly artistic. The image should be suitable for professional presentations.
+//             - Focus on accurately depicting the concept described, including specific objects, environment, mood, and context. Maintain relevance to the description provided.
+//             Example Use Cases: Business presentations, educational slides.
+//         `
+
+
+
+//         const dalleResponse = await openai.images.generate({
+//             model: "dall-e-3",
+//             prompt: improvedPrompt,
+//             n: 1,
+//             size: '1024x1024',
+//         })
+//         console.log('🟢 Image generated successfully:', dalleResponse.data[0]?.url)
+
+//         return dalleResponse.data[0]?.url || randomFallback
+//     } catch (error) {
+//         console.error('Failed to generate image:', error)
+//         return randomFallback
+//     }
+// }
