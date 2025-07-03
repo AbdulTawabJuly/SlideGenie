@@ -95,14 +95,15 @@ const generateImageUrl = async (prompt: string): Promise<string> => {
 
     try {
         const improvedPrompt = `
-        Create a highly realistic, professional image based on the following description. The image should look as if captured in real life, with attention to detail, lighting, and texture. 
+        Create a beautiful Studio Ghibli-style artwork based on the following description. The image should capture the whimsical, dreamy aesthetic characteristic of Studio Ghibli films, with soft colors, detailed backgrounds, and enchanting atmosphere.
         Description: ${prompt}
         Important Notes:
-        - The image must be in a photorealistic style and visually compelling.
+        - The image must be in authentic Studio Ghibli art style with hand-painted quality and attention to detail.
         - Ensure all text, signs, or visible writing in the image are in English.
-        - Pay special attention to lighting, shadows, and textures to make the image as lifelike as possible.
-        - Avoid elements that appear abstract, cartoonish, or overly artistic. The image should be suitable for professional presentations.
-        - Focus on accurately depicting the concept described, including specific objects, environment, mood, and context. Maintain relevance to the description provided.
+        - Pay special attention to soft lighting, atmospheric effects, and the characteristic Ghibli color palette with gentle pastels and vibrant nature scenes.
+        - Include typical Ghibli elements: detailed backgrounds, expressive characters (if any), beautiful landscapes, and a sense of wonder and magic.
+        - The image should be suitable for professional presentations while maintaining the enchanting Ghibli aesthetic.
+        - Focus on accurately depicting the concept described, including specific objects, environment, mood, and context, all rendered in the distinctive Studio Ghibli style.
         `
 
         // Step 1: Generate the image
@@ -114,9 +115,8 @@ const generateImageUrl = async (prompt: string): Promise<string> => {
                 modelId: "aa77f04e-3eec-4034-9c07-d0f619684628", // Leonardo Kino XL model
                 width: 720,
                 alchemy: true,
-                photoReal: true,
-                photoRealVersion: "v2",
-                presetStyle: "STOCK_PHOTO",
+                photoReal: false,
+                presetStyle: "ANIME",
                 num_images: 1,
             },
             { 
@@ -496,3 +496,14 @@ export const generateLayouts = async (projectId: string, theme: string) => {
 //         return randomFallback
 //     }
 // }
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// const improvedPrompt = `
+// Create a highly realistic, professional image based on the following description. The image should look as if captured in real life, with attention to detail, lighting, and texture. 
+// Description: ${prompt}
+// Important Notes:
+// - The image must be in a photorealistic style and visually compelling.
+// - Ensure all text, signs, or visible writing in the image are in English.
+// - Pay special attention to lighting, shadows, and textures to make the image as lifelike as possible.
+// - Avoid elements that appear abstract, cartoonish, or overly artistic. The image should be suitable for professional presentations.
+// - Focus on accurately depicting the concept described, including specific objects, environment, mood, and context. Maintain relevance to the description provided.
+// `
